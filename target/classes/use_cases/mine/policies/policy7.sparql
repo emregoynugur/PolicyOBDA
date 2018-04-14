@@ -1,9 +1,0 @@
-PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX : <https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#>
-SELECT * WHERE {
-	?fire rdf:type :Fire .
-	?region :hasDanger ?fire .
-	?fireman rdf:type :Fireman .
-}
-
-
