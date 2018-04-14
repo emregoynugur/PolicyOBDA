@@ -22,41 +22,39 @@ import org.apache.jena.sparql.syntax.ElementFilter;
 import org.apache.jena.sparql.syntax.ElementGroup;
 import org.apache.jena.sparql.syntax.ElementTriplesBlock;
 import org.semanticweb.owlapi.model.IRI;
+import org.semarglproject.vocab.RDF;
 import org.semarglproject.vocab.XSD;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import utils.Config;
 import utils.SchemaDateFormat;
 import utils.SystemFunctionParser;
 
 public class PolicyReader {
 
-	// private final static String POLICY_FILE = System.getProperty("user.dir") +
-	// "/resources/policies/mine_policies.xml";
-	private final static String POLICY_FILE = System.getProperty("user.dir") + "/resources/use_cases/smart_home/policies.xml";
-	private final static String REGEX = ",(?=(?:[^']*'[^']*')*[^']*$)(?=(?:[^()]*\\([^()]*\\))*[^()]*$)";
-	// private final static String ONTOLOGY_IRI =
-	// "https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#";
-	private final static String ONTOLOGY_IRI = "http://cs.ozyegin.edu.tr/muratsensoy/2015/03/sspn-ql#";
+	private String ontologyIri = Config.getInstance().getOntologyIri();
 
+	private final static String REGEX = ",(?=(?:[^']*'[^']*')*[^']*$)(?=(?:[^()]*\\([^()]*\\))*[^()]*$)";
+	
 	public Triple getObjectPropertyTriple(String s, String rel, String o) {
 		Node sub = createQueryNode(s);
-		Node pred = NodeFactory.createURI(ONTOLOGY_IRI + rel);
+		Node pred = NodeFactory.createURI(ontologyIri + rel);
 		Node obj = createQueryNode(o);
 		return new Triple(sub, pred, obj);
 	}
 
 	public Triple getMembershipTriple(String cls, String var) {
 		Node sub = createQueryNode(var);
-		Node pred = NodeFactory.createURI("http://www.w3.org/1999/02/22-rdf-syntax-ns#type");
-		Node obj = NodeFactory.createURI(ONTOLOGY_IRI + cls);
+		Node pred = NodeFactory.createURI(RDF.TYPE);
+		Node obj = NodeFactory.createURI(ontologyIri + cls);
 		return new Triple(sub, pred, obj);
 	}
 
 	public Triple getDataPropertyTriple(String s, String rel, String d) {
 		Node sub = createQueryNode(s);
-		Node pred = NodeFactory.createURI(ONTOLOGY_IRI + rel);
+		Node pred = NodeFactory.createURI(ontologyIri + rel);
 		Node data = getDataNode(d);
 		return new Triple(sub, pred, data);
 	}
@@ -66,7 +64,7 @@ public class PolicyReader {
 			String v = var;
 			if (v.contains("'")) {
 				v = v.replace("'", "");
-				return NodeFactory.createURI(ONTOLOGY_IRI + v);
+				return NodeFactory.createURI(ontologyIri + v);
 			}
 			URL url = new URL(v);
 			return NodeFactory.createURI(IRI.create(url).toString());
@@ -166,7 +164,7 @@ public class PolicyReader {
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder builder = factory.newDocumentBuilder();
 
-		Document document = builder.parse(new File(POLICY_FILE));
+		Document document = builder.parse(new File(Config.getInstance().getPolicyFile()));
 		NodeList nodeList = document.getDocumentElement().getChildNodes();
 		for (int i = 0; i < nodeList.getLength(); i++) {
 			org.w3c.dom.Node node = nodeList.item(i);

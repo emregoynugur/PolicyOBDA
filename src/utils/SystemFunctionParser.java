@@ -156,10 +156,10 @@ public class SystemFunctionParser {
                 Expr firstOperand = stack.pop();
                 stack.push(new E_Add(firstOperand, secondOperand));
             } else if (token.equals("^")) {
-                Expr secondOperand = stack.pop();
+                // TODO:
+                /*Expr secondOperand = stack.pop();
                 Expr firstOperand = stack.pop();
-                //TODO
-//                stack.push(Math.pow(firstOperand, secondOperand));
+                stack.push(Math.pow(firstOperand, secondOperand));*/
             } else {//just in case
                 System.err.println("Error EvalRPN");
                 return null;

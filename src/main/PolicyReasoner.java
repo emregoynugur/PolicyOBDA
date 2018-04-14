@@ -43,31 +43,21 @@ import it.unibz.inf.ontop.owlapi.resultset.OWLBindingSet;
 import it.unibz.inf.ontop.owlapi.resultset.TupleOWLResultSet;
 import it.unibz.inf.ontop.si.OntopSemanticIndexLoader;
 import it.unibz.inf.ontop.si.SemanticIndexException;
+import utils.Config;
 
 
 
 public class PolicyReasoner {
-	private final String owlFile = System.getProperty("user.dir") + "/resources/use_cases/smart_home/sspn-ql-rdf.owl";
+	
+	private String ontologyIri = Config.getInstance().getOntologyIri();
 
 	private OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
 	private OWLOntology ontology = null;
 	private OWLDataFactory factory = manager.getOWLDataFactory();
 	
-	QuestOWL reasoner = null;
-
-	// private String ontologyIRI =
-	// "https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#";
-	private final static String ontologyIRI = "http://cs.ozyegin.edu.tr/muratsensoy/2015/03/sspn-ql#";
-
-	private static int indCounter = 0;
-
-	private String getIndividual() {
-		return "ind" + Integer.toString(indCounter++);
-	}
-
-	private void resetIndividuals() {
-		indCounter = 0;
-	}
+	private QuestOWL reasoner = null;
+	
+	private int indCounter = 0;
 
 	private boolean checkModalityConflict(Policy a, Policy b) {
 		/* Goal based policies also make modality check easier */
@@ -116,7 +106,7 @@ public class PolicyReasoner {
 
 	private void loadOntology() {
 		try {
-			ontology = manager.loadOntologyFromOntologyDocument(new File(owlFile));
+			ontology = manager.loadOntologyFromOntologyDocument(new File(Config.getInstance().getOntologyFile()));
 		} catch (Exception e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -245,13 +235,23 @@ public class PolicyReasoner {
 	private OWLNamedIndividual getOrCreateIndividual(String var, Map<String, OWLNamedIndividual> cache) {
 		if (cache.containsKey(var))
 			return cache.get(var);
-		OWLNamedIndividual ind = factory.getOWLNamedIndividual(IRI.create(ontologyIRI + getIndividual()));
+		OWLNamedIndividual ind = factory.getOWLNamedIndividual(IRI.create(ontologyIri + getIndividual()));
 		cache.put(var, ind);
 		return ind;
 	}
+	
+	private String getIndividual() {
+		return "ind" + Integer.toString(indCounter++);
+	}
+
+	private void resetIndividuals() {
+		indCounter = 0;
+	}
+
 
 	public static void main(String[] args)
 			throws ParserConfigurationException, IOException, SAXException, OWLException, IllegalConfigurationException, SemanticIndexException {
+		
 		PolicyReader reader = new PolicyReader();
 		ArrayList<Policy> readPolicies = reader.readPolicies();
 
