@@ -89,14 +89,13 @@ public class PolicyReasoner {
 			String subject = condition.getSubject().toString();
 			String object = condition.getObject().toString();
 
-			// Assuming individual is a variable. TODO support individuals in policy
-			// descriptions
+			// Assuming individual is a variable. 
+			// TODO support individuals in policy
 			OWLNamedIndividual subjectInd = getOrCreateIndividual(subject, cache);
 
 			if (predicate.contains("#type")) {
 				OWLClass owlClass = factory.getOWLClass(IRI.create(object));
 				OWLClassAssertionAxiom axiom = factory.getOWLClassAssertionAxiom(owlClass, subjectInd);
-				//manager.applyChange(new AddAxiom(ontology, axiom));
 				manager.addAxiom(ontology, axiom);
 				axioms.add(axiom);
 			} else {
@@ -105,7 +104,6 @@ public class PolicyReasoner {
 					OWLIndividual objectInd = getOrCreateIndividual(object, cache);
 					OWLObjectPropertyAssertionAxiom axiom = factory.getOWLObjectPropertyAssertionAxiom(property,
 							subjectInd, objectInd);
-					//manager.applyChange(new AddAxiom(ontology, axiom));
 					manager.addAxiom(ontology, axiom);
 					axioms.add(axiom);
 				} else {
@@ -164,17 +162,15 @@ public class PolicyReasoner {
 			OntopOWLConnection conn = reasoner.getConnection();
 			OntopOWLStatement st = conn.createStatement();
 			
-			String prefix = "PREFIX : <http://cs.ozyegin.edu.tr/muratsensoy/2015/03/sspn-ql#> \n PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> \n PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> \n PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>";
-
 			try {
 				TupleOWLResultSet rs = st.executeSelectQuery(p2.getActionDescription().toString());
 				while (rs.hasNext()) {
 					OWLBindingSet result = rs.next();
 					HashMap<String, OWLNamedIndividual> map = new HashMap<String, OWLNamedIndividual>();
-					for (Object var : p2.getActionDescription().getResultVars()) {
+					for (String var : p2.getActionDescription().getResultVars()) {
 						System.out.println(var);
-						//OWLNamedIndividual binding = (OWLNamedIndividual) result.getOWLObject(var);
-						//map.put("?" + var, binding);
+						OWLNamedIndividual binding = (OWLNamedIndividual) result.getOWLObject(var);
+						map.put("?" + var, binding);
 					}
 					results.add(map);
 				}
