@@ -55,7 +55,6 @@ public class PolicyReasoner {
 	
 	QuestOWL reasoner = null;
 
-
 	// private String ontologyIRI =
 	// "https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#";
 	private final static String ontologyIRI = "http://cs.ozyegin.edu.tr/muratsensoy/2015/03/sspn-ql#";
@@ -262,7 +261,5 @@ public class PolicyReasoner {
 
 		PolicyReasoner r = new PolicyReasoner();
 		System.out.println(r.checkConflict(readPolicies.get(0), readPolicies.get(1)));
-
-		System.out.println(readPolicies);
 	}
 }
