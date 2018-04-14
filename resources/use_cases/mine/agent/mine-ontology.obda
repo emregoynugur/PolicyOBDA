@@ -1,0 +1,199 @@
+[PrefixDeclaration]
+:		https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#
+owl:		http://www.w3.org/2002/07/owl#
+rdf:		http://www.w3.org/1999/02/22-rdf-syntax-ns#
+xml:		http://www.w3.org/XML/1998/namespace
+xsd:		http://www.w3.org/2001/XMLSchema#
+rdfs:		http://www.w3.org/2000/01/rdf-schema#
+
+[SourceDeclaration]
+sourceUri	datasource1
+connectionUrl	jdbc:postgresql://localhost:5432/smart_mine
+username	iot
+password	iot
+driverClass	org.postgresql.Driver
+
+[MappingDeclaration] @collection [[
+mappingId	Vehicle Tags
+target		:tag{tag_id} a :VehicleTag ; :battery {battery} . 
+source		select "tag_id", "battery" from tbl_tags where "type" = 4
+
+mappingId	Badge Tags
+target		:tag{tag_id} a :BadgeTag ; :battery {battery} . 
+source		select "tag_id", "battery" from tbl_tags where "type" = 3
+
+mappingId	Staff Tags
+target		:tag{tag_id} a :StaffTag ; :battery {battery} . 
+source		select "tag_id", "battery" from tbl_tags where "type" = 2
+
+mappingId	Asset Tags
+target		:tag{tag_id} a :AssetTag ; :battery {battery} . 
+source		select "tag_id", "battery" from tbl_tags where "type" = 1
+
+mappingId	All Tags
+target		:tag{tag_id} a :Tag ; :battery {battery} . 
+source		select "tag_id", "battery" from tbl_tags
+
+mappingId	Employees
+target		:employee{employee_id} a :Employee ; :authorizationLevel {auth_level} ; :hasTag :tag{tag_id} . 
+source		select "employee_id", "tag_id", "auth_level" from tbl_employees
+
+mappingId	Indoor Readers
+target		:reader{rn_id} a :IndoorReader ; :battery {battery} ; :x {x} ; :y {y} ; :inRegion :region{subregion_id} ; :backupBattery {battery} . 
+source		select * from tbl_readers where type=1
+
+mappingId	UWB Readers
+target		:reader{rn_id} a :UWBReader ; :battery {battery} ; :x {x} ; :y {y} ; :inRegion :region{subregion_id} ; :backupBattery {battery} . 
+source		select * from tbl_readers where type = 2
+
+mappingId	Drillers
+target		:employee{employee_id} a :Driller ; :authorizationLevel {auth_level} ; :hasTag :tag{tag_id} . 
+source		select "employee_id", "tag_id", "auth_level" from tbl_employees where role = 1
+
+mappingId	Operators
+target		:employee{employee_id} a :Operator ; :authorizationLevel {auth_level} ; :hasTag :tag{tag_id} . 
+source		select "employee_id", "tag_id", "auth_level" from tbl_employees where role = 2
+
+mappingId	Engineers
+target		:employee{employee_id} a :Engineer ; :authorizationLevel {auth_level} ; :hasTag :tag{tag_id} . 
+source		select "employee_id", "tag_id", "auth_level" from tbl_employees where role = 3
+
+mappingId	Drivers
+target		:employee{employee_id} a :Driver ; :authorizationLevel {auth_level} ; :hasTag :tag{tag_id} . 
+source		select "employee_id", "tag_id", "auth_level" from tbl_employees where role = 4
+
+mappingId	Blasters
+target		:employee{employee_id} a :Blaster ; :authorizationLevel {auth_level} ; :hasTag :tag{tag_id} . 
+source		select "employee_id", "tag_id", "auth_level" from tbl_employees where role = 5
+
+mappingId	SensorReadings
+target		:reader{rn_id} a :UWBReader . :region{subregion_id} :oxygen {oxygen} ; :carbonmonoxide {carbonmonoxide} ; :temperature {temperature} ; :humidity {humidity} ; :methane {methane} . 
+source		select * from tbl_lastsensorreadings;
+
+mappingId	Tag Readings
+target		:tag{tag_id} a :Tag ; :x {x} ; :y {y} ; :inRegion :region{subregion_id} ; :temperatureAlarm {temp_alarm} ; :motionAlarm {motion_alarm} ; :readBy :reader{rn_id} . 
+source		select * from tbl_tagreadings;
+
+mappingId	Regions
+target		:region{region_id} a :Region ; :x {x} ; :y {y} ; :height {height} ; :width {width} ; :length {length} . 
+source		select * from tbl_regions
+
+mappingId	Corridors
+target		:region{region_id} a :Corridor ; :x {x} ; :y {y} ; :height {height} ; :width {width} ; :length {length} . 
+source		select * from tbl_regions where type = 1
+
+mappingId	Safe Zones
+target		:region{region_id} a :SafeZone ; :x {x} ; :y {y} ; :height {height} ; :width {width} ; :length {length} . 
+source		select * from tbl_regions where type = 2
+
+mappingId	Hazardous Zones
+target		:region{region_id} a :HazardousZone ; :x {x} ; :y {y} ; :height {height} ; :width {width} ; :length {length} . 
+source		select * from tbl_regions where type = 5
+
+mappingId	Mining Zones
+target		:region{region_id} a :MiningZone ; :x {x} ; :y {y} ; :height {height} ; :width {width} ; :length {length} . 
+source		select * from tbl_regions where type = 3
+
+mappingId	Vehicles
+target		:vehicle{vehicle_id} a :Vehicle ; :hasTag :tag{tag_id} ; :width {width} ; :height {height} . 
+source		select * from tbl_vehicles
+
+mappingId	LHD Loaders
+target		:vehicle{vehicle_id} a :LHDLoader ; :hasTag :tag{tag_id} ; :width {width} ; :height {height} . 
+source		select * from tbl_vehicles where type = 1
+
+mappingId	Drilling Vehicles
+target		:vehicle{vehicle_id} a :DrillerVehicle ; :hasTag :tag{tag_id} ; :width {width} ; :height {height} . 
+source		select * from tbl_vehicles where type = 2
+
+mappingId	Scalers
+target		:vehicle{vehicle_id} a :Scaler ; :hasTag :tag{tag_id} ; :width {width} ; :height {height} . 
+source		select * from tbl_vehicles where type = 3
+
+mappingId	Transporters
+target		:vehicle{vehicle_id} a :Transporter ; :hasTag :tag{tag_id} ; :width {width} ; :height {height} . 
+source		select * from tbl_vehicles where type = 4
+
+mappingId	Rock Flows
+target		:vehicle{vehicle_id} a :RockFlow ; :hasTag :tag{tag_id} ; :width {width} ; :height {height} . 
+source		select * from tbl_vehicles where type = 5
+
+mappingId	Assets
+target		:asset{asset_id} a :Asset ; :hasTag :tag{tag_id} ; :errorCode {err_code} ; :status {status} . 
+source		select * from tbl_assets
+
+mappingId	Oxygen Masks
+target		:asset{asset_id} a :OxygenMask ; :hasTag :tag{tag_id} ; :errorCode {err_code} ; :status {status} ; :assignedTo :region{assigned_region} . 
+source		select * from tbl_assets where type = 1
+
+mappingId	Explosives
+target		:asset{asset_id} a :Explosive ; :hasTag :tag{tag_id} ; :errorCode {err_code} ; :status {status} ; :assignedTo :region{assigned_region} . 
+source		select * from tbl_assets where type = 2
+
+mappingId	Hand-Held Drillers
+target		:asset{asset_id} a :HandHeldDriller ; :hasTag :tag{tag_id} ; :errorCode {err_code} ; :status {status} ; :assignedTo :region{assigned_region} . 
+source		select * from tbl_assets where type = 3
+
+mappingId	Fire Extinguishers
+target		:asset{asset_id} a :FireExtinguisher ; :hasTag :tag{tag_id} ; :errorCode {err_code} ; :status {status} ; :assignedTo :region{assigned_region} . 
+source		select * from tbl_assets where type = 4
+
+mappingId	Restricted Zones
+target		:region{region_id} a :RestrictedZone ; :x {x} ; :y {y} ; :height {height} ; :width {width} ; :length {length} . 
+source		select * from tbl_regions where type = 4
+
+mappingId	Low Oxygen Risk
+target		:danger{subregion_id} a :LowOxygen . 
+source		select subregion_id
+			from tbl_lastsensorreadings where "oxygen" < 19.5
+
+mappingId	Fire Danger
+target		:danger{subregion_id} a :Fire . 
+source		select subregion_id
+			from tbl_lastsensorreadings where "humidity" < 50 and "temperature" > 20
+
+mappingId	High CarbonMonoxide Exposure
+target		:danger{subregion_id} a :CarbonMonoxideExposure . 
+source		select subregion_id
+			from tbl_lastsensorreadings where "carbonmonoxide" >= 0.005
+
+mappingId	Explosion Risk
+target		:danger{subregion_id} a :ExplosionRisk . 
+source		select subregion_id
+			from tbl_lastsensorreadings where "methane" >= 1.0 AND  "oxygen" >= 12.5
+
+mappingId	Flashlights
+target		:asset{asset_id} a :Flashlight ; :hasTag :tag{tag_id} ; :errorCode {err_code} ; :status {status} ; :assignedTo :region{assigned_region} . 
+source		select *from tbl_assets where type = 5
+
+mappingId	Connected Regions
+target		:region{first_region} :connectedTo :region{second_region} . :region{second_region} :connectedTo :region{first_region} . 
+source		select * from tbl_connectedregions
+
+mappingId	No Danger
+target		:danger{subregion_id} a :NoDanger . 
+source		select subregion_id
+			from tbl_lastsensorreadings where "methane" < 1.0 AND  "oxygen" >= 19 AND carbonmonoxide < 0.005
+
+mappingId	Has Explosives
+target		:region{subregion_id} :hasExplosives :asset{asset_id} . 
+source		select t2.subregion_id, tbl_assets.asset_id from tbl_assets INNER JOIN tbl_tagreadings t2   ON tbl_assets.tag_id = t2.tag_id WHERE type = 2;
+
+mappingId	Employee In Region
+target		:employee{employee_id} a :Employee ; :inRegion :region{subregion_id} . 
+source		select employee_id, subregion_id from tbl_employees t1 inner join tbl_tagreadings t2 on t1.tag_id = t2.tag_id;
+
+mappingId	Has Danger
+target		:region{subregion_id} a :Region ; :hasDanger :danger{subregion_id} . 
+source		select subregion_id
+			from tbl_lastsensorreadings where ("methane" >= 1.0 AND  "oxygen" >= 12.5) OR "carbonmonoxide" >= 0.005 OR ("humidity" < 50 and "temperature" > 20) OR oxygen < 19.5;
+
+mappingId	Asset In Region
+target		:asset{asset_id} a :Asset ; :inRegion :region{subregion_id} . 
+source		select asset_id, subregion_id from tbl_assets t1 inner join tbl_tagreadings t2 on t1.tag_id = t2.tag_id;
+
+mappingId	Fireman
+target		:employee{employee_id} a :Fireman ; :authorizationLevel {auth_level} ; :hasTag :tag{tag_id} . 
+source		select "employee_id", "tag_id", "auth_level" from tbl_employees where role = 6
+]]
+

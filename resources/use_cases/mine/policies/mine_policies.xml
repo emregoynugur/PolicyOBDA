@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<Policies>
+	<!-- Hand Held Drillers would require miners to function. -->
+	<!-- If the driller is in its assigned location and there are no miners to use it, it shouldn't work. -->
+    <Policy Name="DrillingProhibition" Modality="Prohibition" Addressee="?e">
+    	<AddresseeRole> Employee(?e) </AddresseeRole>
+    	<Activation> inRegion(?e, ?region) </Activation>
+    	<ActionDescription Var="?a"> DrillingAction(?a), actor(?a, ?e), target(?a, ?region) </ActionDescription>
+    	<Expiration> Driller(?e) </Expiration>
+    	<Cost> 10.0 </Cost>
+    </Policy>
+
+    <!-- If the asset is out of its assigned location, it shouldn't work -->
+    <!-- This is already being done by their software. But it just sends a notification/alarm. -->
+    <Policy Name="AssetGeoFencing" Modality="Prohibition" Addressee="?tool">
+    	<AddresseeRole> Tool(?tool) </AddresseeRole>
+    	<Activation> inRegion(?tool, ?region), assignedTo(?tool, ?assigned), sys:'not_equals'(?region, ?assigned) </Activation>
+    	<ActionDescription Var="?a"> Action(?a) </ActionDescription>
+    	<Expiration> inRegion(?tool, ?assigned) </Expiration>
+    	<Cost> 5.0 </Cost>
+    </Policy>
+
+    <!-- Employees cannot go to the areas, for which they are not authorized -->
+    <!-- Tag is the addresse, since I assumed that personal tags are opening the doors -->
+    <Policy Name="RestrictedArea" Modality="Prohibition" Addressee="?e">
+    	<AddresseeRole> Employee(?e) </AddresseeRole>
+    	<Activation> authorizationLevel(?e, ?level), sys:'less_than'(?level, 4) </Activation>
+    	<ActionDescription Var="?a"> EnterRegion(?a), actor(?a, ?e), target(?a, 'Area51') </ActionDescription>
+    	<Expiration> </Expiration>
+    	<Cost> 8.0 </Cost>
+    </Policy>
+
+    <!-- If there is an explosion risk, take explosives to safety. 
+    	 However, blasters, who specializes in explosives, should do this operation. -->
+    <Policy Name="GetOutOfExplosionZone" Modality="Obligation" Addressee="?e">
+    	<AddresseeRole> Employee (?e) </AddresseeRole>
+    	<Activation> inRegion(?e, ?region), ExplosionZone(?region) </Activation>
+    	<ActionDescription Var="?a"> Move(?a), actor(?a, ?e), target(?a, ?zone), SafeZone(?zone) </ActionDescription>
+    	<Expiration> Blaster(?e) :or SafeZone(?zone) </Expiration>
+    	<Deadline> 5:MINUTES </Deadline>
+    	<Cost> 20.0 </Cost>
+    </Policy>
+
+    <!-- When someone presses his panic button, take him to the safety -->
+    <Policy Name="HelpPanickedPersonnel" Modality="Obligation" Addressee="?e">
+    	<AddresseeRole> Employee(?e) </AddresseeRole>
+    	<Activation> panic(?p, ?urgent), inRegion(?p, ?region), inRegion(?e, ?region) </Activation>
+    	<ActionDescription Var="?a"> Rescue(?a), actor(?a, ?e), target(?a, ?p) </ActionDescription>
+    	<Expiration>inRegion(?p, ?safe), SafeZone(?safe)</Expiration>
+    	<Deadline> 10:minutes </Deadline>
+    	<Cost> 20.0 </Cost>
+    </Policy>
+
+    <!-- Warn the personnel about a potential fire risk -->
+    <Policy Name="WarnEmployeeCarbonMonoxide" Modality="Obligation" Addressee="?e">
+    	<AddresseeRole> Employee(?e) </AddresseeRole>
+    	<Activation> inRegion(?e, ?region), oxygen(?region, ?carbonmonoxide), sys:'greater_than'(?carbonmonoxide, 1.0) </Activation>
+    	<ActionDescription Var="?a"> VentilateRegion(?a), actor(?a, ?e), target(?a, ?region) </ActionDescription>
+    	<Expiration>SafeZone(?region)</Expiration>
+    	<Deadline> 5:minutes </Deadline>
+    	<Cost> 30.0 </Cost>
+    </Policy>
+
+    <Policy Name="ExtinguishFire" Modality="Obligation" Addressee="?fm">
+    	<AddresseeRole> Fireman(?fm) </AddresseeRole>
+    	<Activation> hasDanger(?region, ?fire), Fire(?fire) </Activation>
+    	<ActionDescription Var="?a"> ExtinguishFire(?a), actor(?a, ?fm), target(?a, ?region) </ActionDescription>
+    	<Expiration>SafeZone(?region)</Expiration>
+    	<Deadline> 5:minutes </Deadline>
+    	<Cost> 30.0 </Cost>
+    </Policy>
+
+    <!-- If the environment is dangerous, evacuate it. -->
+    <Policy Name="EvacuateZone" Modality="Obligation" Addressee="?e">
+    	<AddresseeRole> Employer(?e) </AddresseeRole>
+    	<Activation> HazardousZone(?region) </Activation>
+    	<ActionDescription Var="?a"> Evacuate(?a), actor(?a, ?e), target(?a, ?region) </ActionDescription>
+    	<Expiration> SafeZone(?region) </Expiration>
+    	<Deadline> 25:minutes </Deadline>
+    	<Cost> 40.0 </Cost>
+    </Policy>
+
+    <!-- Fire Alarm -->
+    <!-- Working zones must have sufficient lighting -->
+</Policies>

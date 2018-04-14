@@ -1,0 +1,8 @@
+PREFIX : <https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+select * where {
+	?t rdf:type :Tool .
+	?t :inRegion ?region .
+	?t :assignedTo ?another .
+	FILTER (?region != ?another)
+}
