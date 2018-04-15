@@ -1,4 +1,4 @@
-package main;
+package policy;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,6 +14,7 @@ import java.util.Set;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.jena.graph.Triple;
+import org.apache.jena.query.ParameterizedSparqlString;
 import org.apache.jena.query.Query;
 import org.apache.jena.sparql.syntax.ElementTriplesBlock;
 import org.semanticweb.owlapi.apibinding.OWLManager;
@@ -24,7 +25,9 @@ import org.semanticweb.owlapi.model.OWLClassAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLException;
 import org.semanticweb.owlapi.model.OWLIndividual;
+import org.semanticweb.owlapi.model.OWLLiteral;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
+import org.semanticweb.owlapi.model.OWLObject;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLObjectPropertyAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLOntology;
@@ -32,7 +35,6 @@ import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.reasoner.IllegalConfigurationException;
 import org.xml.sax.SAXException;
-
 
 import it.unibz.inf.ontop.owlapi.connection.OntopOWLConnection;
 import it.unibz.inf.ontop.owlapi.connection.OntopOWLStatement;
@@ -45,18 +47,16 @@ import it.unibz.inf.ontop.si.OntopSemanticIndexLoader;
 import it.unibz.inf.ontop.si.SemanticIndexException;
 import utils.Config;
 
-
-
 public class PolicyReasoner {
-	
+
 	private String ontologyIri = Config.getInstance().getOntologyIri();
 
 	private OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
 	private OWLOntology ontology = null;
 	private OWLDataFactory factory = manager.getOWLDataFactory();
-	
+
 	private QuestOWL reasoner = null;
-	
+
 	private int indCounter = 0;
 
 	private boolean checkModalityConflict(Policy a, Policy b) {
@@ -79,8 +79,7 @@ public class PolicyReasoner {
 			String subject = condition.getSubject().toString();
 			String object = condition.getObject().toString();
 
-			// Assuming individual is a variable. 
-			// TODO support individuals in policy
+			// TODO: implement individuals in policy descriptions
 			OWLNamedIndividual subjectInd = getOrCreateIndividual(subject, cache);
 
 			if (predicate.contains("#type")) {
@@ -97,7 +96,7 @@ public class PolicyReasoner {
 					manager.addAxiom(ontology, axiom);
 					axioms.add(axiom);
 				} else {
-					// Data Property
+					// TODO: Data Property
 				}
 			}
 		}
@@ -108,28 +107,28 @@ public class PolicyReasoner {
 		try {
 			ontology = manager.loadOntologyFromOntologyDocument(new File(Config.getInstance().getOntologyFile()));
 		} catch (Exception e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 	}
 
-	private void startReasoner() throws SemanticIndexException, IllegalConfigurationException, OWLOntologyCreationException {
+	private void startReasoner()
+			throws SemanticIndexException, IllegalConfigurationException, OWLOntologyCreationException {
 		Properties properties = new Properties();
-		try (OntopSemanticIndexLoader siLoader = OntopSemanticIndexLoader.loadOntologyIndividuals(ontology, properties)) {
-			QuestOWLFactory questFactory = new QuestOWLFactory();
-			reasoner = (QuestOWL) questFactory.createReasoner(siLoader.getConfiguration());
+		try (OntopSemanticIndexLoader siLoader = OntopSemanticIndexLoader.loadOntologyIndividuals(ontology,
+				properties)) {
+			reasoner = (QuestOWL) new QuestOWLFactory().createReasoner(siLoader.getConfiguration());
 		}
 	}
 
-	public boolean checkConflict(Policy pA, Policy pB) throws OWLException, IllegalConfigurationException, SemanticIndexException {
+	public boolean checkConflict(Policy pA, Policy pB)
+			throws OWLException, IllegalConfigurationException, SemanticIndexException {
 
 		if (!checkModalityConflict(pA, pB))
 			return false;
 
-		resetIndividuals();
-
 		loadOntology();
 
+		indCounter = 0;
 		HashMap<String, OWLNamedIndividual> varIndMap = new HashMap<String, OWLNamedIndividual>();
 
 		Policy p1 = null;
@@ -149,22 +148,20 @@ public class PolicyReasoner {
 			createdAxioms.addAll(freezeQuery(p1.getActionDescription(), varIndMap));
 
 			startReasoner();
-			OntopOWLConnection conn = reasoner.getConnection();
-			OntopOWLStatement st = conn.createStatement();
-			
-			try {
-				TupleOWLResultSet rs = st.executeSelectQuery(p2.getActionDescription().toString());
+
+			try (OntopOWLConnection conn = reasoner.getConnection();
+					OntopOWLStatement st = conn.createStatement();
+					TupleOWLResultSet rs = st.executeSelectQuery(p2.getActionDescription().toString());) {
+
 				while (rs.hasNext()) {
 					OWLBindingSet result = rs.next();
 					HashMap<String, OWLNamedIndividual> map = new HashMap<String, OWLNamedIndividual>();
 					for (String var : p2.getActionDescription().getResultVars()) {
-						System.out.println(var);
 						OWLNamedIndividual binding = (OWLNamedIndividual) result.getOWLObject(var);
 						map.put("?" + var, binding);
 					}
 					results.add(map);
 				}
-				rs.close();
 			} catch (Exception e) {
 				System.err.println("PolicyReasoner Conflict Detection SQL Error: " + e.getMessage());
 				return false;
@@ -179,48 +176,22 @@ public class PolicyReasoner {
 
 		OWLNamedIndividual addressee = varIndMap.get(p1.getAddressee());
 		for (Map<String, OWLNamedIndividual> result : results) {
+
 			if (result.containsKey(p2.getAddressee())
 					&& !result.get(p2.getAddressee()).toString().equals(addressee.toString()))
 				continue;
 
 			result.put(p2.getAddressee(), addressee);
-
 			freezeQuery(p2.getActivation(), result);
 
 			startReasoner();
-			OntopOWLConnection conn = reasoner.getConnection();
-			OntopOWLStatement st = conn.createStatement();
 
-			TupleOWLResultSet rs = st.executeSelectQuery(p1.getActivation().toString());
-			p1.createInstancesWithBindings(rs);
-			rs.close();
+			HashSet<ActivePolicy> activeA = createActivePolicies(p1);
+			HashSet<ActivePolicy> activeB = createActivePolicies(p2);
 
-			HashSet<ActivePolicy> activeA = new HashSet<ActivePolicy>(p1.getInstances());
+			removeExpiredPolicies(activeA);
+			removeExpiredPolicies(activeB);
 
-			rs = st.executeSelectQuery(p2.getActivation().toString());
-			p2.createInstancesWithBindings(rs);
-			rs.close();
-
-			HashSet<ActivePolicy> activeB = new HashSet<ActivePolicy>(p2.getInstances());
-
-			// check if policies expire
-			for (Iterator<ActivePolicy> curr = activeA.iterator(); curr.hasNext();) {
-				ActivePolicy p = curr.next();
-				// Check deadline too?
-				BooleanOWLResultSet res = st.executeAskQuery(p.getExpiration());
-				if (res.getValue())
-					curr.remove();
-			}
-
-			for (Iterator<ActivePolicy> curr = activeB.iterator(); curr.hasNext();) {
-				ActivePolicy p = curr.next();
-				// Check deadline too?
-				BooleanOWLResultSet res = st.executeAskQuery(p.getExpiration());
-				if (res.getValue())
-					curr.remove();
-			}
-
-			// Does not conflict
 			if (activeA.size() == 0 || activeB.size() == 0)
 				continue;
 
@@ -232,26 +203,80 @@ public class PolicyReasoner {
 		return false;
 	}
 
+	public HashSet<ActivePolicy> createActivePolicies(Policy p) throws OWLException {
+		HashSet<ActivePolicy> instances = new HashSet<>();
+
+		try (OntopOWLConnection conn = reasoner.getConnection();
+				OntopOWLStatement st = conn.createStatement();
+				TupleOWLResultSet rs = st.executeSelectQuery(p.getActivation().toString());) {
+
+			if (!rs.hasNext())
+				return instances;
+
+			ParameterizedSparqlString pss = new ParameterizedSparqlString();
+			if (p.getExpiration() != null)
+				pss.setCommandText(p.getExpiration().toString());
+
+			List<String> resultVars = p.getActivation().getResultVars();
+			while (rs.hasNext()) {
+				OWLBindingSet result = rs.next();
+
+				String signature = p.getName();
+				for (String v : resultVars) {
+					OWLObject binding = result.getOWLObject(v);
+					String iri = binding.toString();
+
+					if (iri.charAt(0) == '<')
+						iri = iri.substring(1, iri.length() - 1);
+
+					if (p.getExpiration() != null) {
+						if (binding instanceof OWLLiteral)
+							pss.setLiteral(v, ((OWLLiteral) binding).getLiteral());
+						else
+							pss.setIri(v, iri);
+					}
+
+					signature += ";" + v + "," + iri.substring(iri.indexOf("#") + 1);
+				}
+
+				String expQuery = null;
+				if (p.getExpiration() != null)
+					expQuery = pss.asQuery().toString();
+
+				instances.add(new ActivePolicy(signature, p.getActionDescription().toString(), expQuery,
+						p.getDeadline(), p.getDeadlineUnit()));
+			}
+		}
+		return instances;
+	}
+
+	public void removeExpiredPolicies(HashSet<ActivePolicy> policies) throws OWLException {
+		try (OntopOWLConnection conn = reasoner.getConnection(); OntopOWLStatement st = conn.createStatement();) {
+			for (Iterator<ActivePolicy> curr = policies.iterator(); curr.hasNext();) {
+				ActivePolicy p = curr.next();
+				// TODO: Check deadline
+				if (p.getExpiration() != null) {
+					try (BooleanOWLResultSet res = st.executeAskQuery(p.getExpiration())) {
+						if (res.getValue())
+							curr.remove();
+					}
+				}
+			}
+		}
+	}
+
 	private OWLNamedIndividual getOrCreateIndividual(String var, Map<String, OWLNamedIndividual> cache) {
 		if (cache.containsKey(var))
 			return cache.get(var);
-		OWLNamedIndividual ind = factory.getOWLNamedIndividual(IRI.create(ontologyIri + getIndividual()));
+		OWLNamedIndividual ind = factory
+				.getOWLNamedIndividual(IRI.create(ontologyIri + "ind" + Integer.toString(indCounter++)));
 		cache.put(var, ind);
 		return ind;
 	}
-	
-	private String getIndividual() {
-		return "ind" + Integer.toString(indCounter++);
-	}
 
-	private void resetIndividuals() {
-		indCounter = 0;
-	}
+	public static void main(String[] args) throws ParserConfigurationException, IOException, SAXException, OWLException,
+			IllegalConfigurationException, SemanticIndexException {
 
-
-	public static void main(String[] args)
-			throws ParserConfigurationException, IOException, SAXException, OWLException, IllegalConfigurationException, SemanticIndexException {
-		
 		PolicyReader reader = new PolicyReader();
 		ArrayList<Policy> readPolicies = reader.readPolicies();
 

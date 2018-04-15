@@ -39,8 +39,9 @@ public class SystemFunctionParser {
     private final static String LESS_THAN = "less_than";
     private final static String LESS_THAN_OR_EQUAL = "less_than_or_equal";
 
-    private String timeVar = "";
-    private String timeVal = SchemaDateFormat.getTimeStamp();
+    //TODO: time
+    //private String timeVar = "";
+    //private String timeVal = SchemaDateFormat.getTimeStamp();
 
     public SystemFunctionParser() {
 
@@ -50,11 +51,11 @@ public class SystemFunctionParser {
         List<ElementFilter> filters = new ArrayList<ElementFilter>();
         List<Expr> expressions = new ArrayList<Expr>();
 
-        for (String f : functions) {
-            /*TODO Should do a regex check for parsing */
+        /*TODO Should do a regex check for parsing */
+        /*for (String f : functions) {
             if (f.contains(CURRENT_TIME))
                 timeVar = f.substring(f.indexOf("(") + 1, f.indexOf(")"));
-        }
+        }*/
 
         for (String f : functions) {
             if (f.contains(CURRENT_TIME))
@@ -171,10 +172,10 @@ public class SystemFunctionParser {
         return ret;
     }
 
-    private static String cleanExpr(String expr) {
+    /*private static String cleanExpr(String expr) {
         //remove all non-operators, non-whitespace, and non digit chars
         return expr.replaceAll("[^\\^\\*\\+\\-\\d/\\s]", "");
-    }
+    }*/
 
     private static boolean isInteger(String s) {
         try {

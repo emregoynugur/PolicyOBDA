@@ -1,4 +1,4 @@
-package main;
+package policy;
 
 import java.util.ArrayList;
 
@@ -10,7 +10,7 @@ import it.unibz.inf.ontop.owlapi.connection.OntopOWLConnection;
 import it.unibz.inf.ontop.owlapi.connection.OntopOWLStatement;
 import utils.Config;
 
-public class QueryManager {
+public class PolicyManager {
 
 	public void runQueries() throws Exception {
 		Config pConfig = Config.getInstance();

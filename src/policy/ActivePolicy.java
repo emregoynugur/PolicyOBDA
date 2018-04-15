@@ -1,45 +1,27 @@
-package main;
+package policy;
 
-import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
-
 public class ActivePolicy {
-	private String name;
-	private String goalState;
+	private String signature;
 	private String action;
 	private String expiration;
 	private double deadline;
 	private TimeUnit deadlineUnit;
 
-	private HashMap<String, String> bindings;
-	
-	public ActivePolicy(String name, String goalState, String action, String expiration, double deadline,
-			TimeUnit deadlineUnit, HashMap<String, String> bindings) {
+	public ActivePolicy(String signature, String action, String expiration, double deadline,
+			TimeUnit deadlineUnit) {
 		super();
-		this.name = name;
-		this.goalState = goalState;
+		
+		this.signature = signature;
 		this.action = action;
 		this.expiration = expiration;
 		this.deadline = deadline;
 		this.deadlineUnit = deadlineUnit;
-		this.bindings = bindings;
 	}
 
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getGoalState() {
-		return goalState;
-	}
-
-	public void setGoalState(String goalState) {
-		this.goalState = goalState;
+	public String getSignature() {
+		return signature;
 	}
 
 	public String getAction() {
@@ -74,12 +56,28 @@ public class ActivePolicy {
 		this.deadlineUnit = deadlineUnit;
 	}
 
-	public HashMap<String, String> getBindings() {
-		return bindings;
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ActivePolicy other = (ActivePolicy) obj;
+		if (signature == null) {
+			if (other.signature != null)
+				return false;
+		} else if (!signature.equals(other.signature))
+			return false;
+		return true;
 	}
 
-	public void setBindings(HashMap<String, String> bindings) {
-		this.bindings = bindings;
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((signature == null) ? 0 : signature.hashCode());
+		return result;
 	}
-
 }

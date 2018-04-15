@@ -1,4 +1,4 @@
-package main;
+package policy;
 
 import java.io.File;
 import java.io.IOException;
@@ -174,7 +174,6 @@ public class PolicyReader {
 				String addressee = node.getAttributes().getNamedItem("Addressee").getNodeValue();
 				String addresseeRole = "";
 				String actionVar = "";
-				String goal = "";
 
 				Query actionDescription = null;
 				Query activation = null;
@@ -200,9 +199,6 @@ public class PolicyReader {
 							text = addresseeRole + "," + text;
 							activation = parseConditions(text.split(REGEX));
 							break;
-						case "Goal":
-							goal = text;
-							break;
 						case "ActionDescription":
 							actionVar = childNode.getAttributes().getNamedItem("Var").getNodeValue();
 							actionDescription = parseConditions(text.split(REGEX));
@@ -227,7 +223,7 @@ public class PolicyReader {
 				}
 
 				policies.add(new Policy(name, modality, addressee, addresseeRole, actionVar, actionDescription,
-						activation, cost, deadline, unit, expiration, goal));
+						activation, cost, deadline, unit, expiration));
 			}
 		}
 
