@@ -231,8 +231,7 @@ public class PolicyReader {
 	}
 
 	public static void main(String[] args) throws ParserConfigurationException, IOException, SAXException {
-		PolicyReader reader = new PolicyReader();
-		ArrayList<Policy> readPolicies = reader.readPolicies();
-		System.out.println(readPolicies);
+//		PolicyReader reader = new PolicyReader();
+//		ArrayList<Policy> readPolicies = reader.readPolicies();
 	}
 }

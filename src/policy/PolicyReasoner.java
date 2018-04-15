@@ -36,6 +36,7 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.reasoner.IllegalConfigurationException;
 import org.xml.sax.SAXException;
 
+import it.unibz.inf.ontop.owlapi.OntopOWLReasoner;
 import it.unibz.inf.ontop.owlapi.connection.OntopOWLConnection;
 import it.unibz.inf.ontop.owlapi.connection.OntopOWLStatement;
 import it.unibz.inf.ontop.owlapi.impl.QuestOWL;
@@ -54,8 +55,6 @@ public class PolicyReasoner {
 	private OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
 	private OWLOntology ontology = null;
 	private OWLDataFactory factory = manager.getOWLDataFactory();
-
-	private QuestOWL reasoner = null;
 
 	private int indCounter = 0;
 
@@ -111,13 +110,15 @@ public class PolicyReasoner {
 		}
 	}
 
-	private void startReasoner()
+	private QuestOWL startQuestReasoner()
 			throws SemanticIndexException, IllegalConfigurationException, OWLOntologyCreationException {
+		QuestOWL reasoner = null;
 		Properties properties = new Properties();
 		try (OntopSemanticIndexLoader siLoader = OntopSemanticIndexLoader.loadOntologyIndividuals(ontology,
 				properties)) {
 			reasoner = (QuestOWL) new QuestOWLFactory().createReasoner(siLoader.getConfiguration());
 		}
+		return reasoner;
 	}
 
 	public boolean checkConflict(Policy pA, Policy pB)
@@ -147,7 +148,7 @@ public class PolicyReasoner {
 			createdAxioms.addAll(freezeQuery(p1.getActivation(), varIndMap));
 			createdAxioms.addAll(freezeQuery(p1.getActionDescription(), varIndMap));
 
-			startReasoner();
+			QuestOWL reasoner = startQuestReasoner();
 
 			try (OntopOWLConnection conn = reasoner.getConnection();
 					OntopOWLStatement st = conn.createStatement();
@@ -163,9 +164,12 @@ public class PolicyReasoner {
 					results.add(map);
 				}
 			} catch (Exception e) {
+				reasoner.close();
 				System.err.println("PolicyReasoner Conflict Detection SQL Error: " + e.getMessage());
 				return false;
 			}
+			
+			reasoner.close();
 
 			if (!results.isEmpty())
 				break;
@@ -184,13 +188,15 @@ public class PolicyReasoner {
 			result.put(p2.getAddressee(), addressee);
 			freezeQuery(p2.getActivation(), result);
 
-			startReasoner();
+			QuestOWL reasoner = startQuestReasoner();
 
-			HashSet<ActivePolicy> activeA = createActivePolicies(p1);
-			HashSet<ActivePolicy> activeB = createActivePolicies(p2);
+			HashSet<ActivePolicy> activeA = createActivePolicies(p1, reasoner);
+			HashSet<ActivePolicy> activeB = createActivePolicies(p2, reasoner);
 
-			removeExpiredPolicies(activeA);
-			removeExpiredPolicies(activeB);
+			removeExpiredPolicies(activeA, reasoner);
+			removeExpiredPolicies(activeB, reasoner);
+			
+			reasoner.close();
 
 			if (activeA.size() == 0 || activeB.size() == 0)
 				continue;
@@ -199,11 +205,11 @@ public class PolicyReasoner {
 				return true;
 			}
 		}
-
+		
 		return false;
 	}
 
-	public HashSet<ActivePolicy> createActivePolicies(Policy p) throws OWLException {
+	public HashSet<ActivePolicy> createActivePolicies(Policy p, OntopOWLReasoner reasoner) throws OWLException {
 		HashSet<ActivePolicy> instances = new HashSet<>();
 
 		try (OntopOWLConnection conn = reasoner.getConnection();
@@ -250,7 +256,7 @@ public class PolicyReasoner {
 		return instances;
 	}
 
-	public void removeExpiredPolicies(HashSet<ActivePolicy> policies) throws OWLException {
+	public void removeExpiredPolicies(HashSet<ActivePolicy> policies, OntopOWLReasoner reasoner) throws OWLException {
 		try (OntopOWLConnection conn = reasoner.getConnection(); OntopOWLStatement st = conn.createStatement();) {
 			for (Iterator<ActivePolicy> curr = policies.iterator(); curr.hasNext();) {
 				ActivePolicy p = curr.next();

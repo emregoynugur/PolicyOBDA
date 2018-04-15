@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <Policies>
-	<Policy Name="TestObligation" Modality="owlpolar:'Obligation'"
+	<Policy Name="NotifyDoorbell" Modality="owlpolar:'Obligation'"
 		Addressee="?d">
 		<AddresseeRole>Doorbell(?d)</AddresseeRole>
 		<Activation> Flat(?f), DoorbellOutput(?do), belongsTo(?d, ?f), producedBy(?do, ?d), Person(?p), residesIn(?p, ?f)
@@ -11,7 +11,7 @@
 		<Expiration> gotNotifiedFor(?p, ?do) </Expiration>
 		<Cost>5.0</Cost>
 	</Policy>
-	<Policy Name="SilentMode" Modality="owlpolar:'Prohibition'"
+	<Policy Name="SleepingBaby" Modality="owlpolar:'Prohibition'"
 		Addressee="?d">
 		<AddresseeRole>Device(?d)</AddresseeRole>
 		<Activation> Person(?p), SoundNotification(?t), disabledNotificationType(?p, ?t) </Activation>
