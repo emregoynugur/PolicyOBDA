@@ -1,21 +1,17 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <Policies>
-	<Policy Name="NotifyDoorbell" Modality="owlpolar:'Obligation'"
-		Addressee="?d">
+	<Policy Name="NotifyDoorbell" Modality="Obligation" Addressee="?d">
 		<AddresseeRole>Doorbell(?d)</AddresseeRole>
 		<Activation> Flat(?f), DoorbellOutput(?do), belongsTo(?d, ?f), producedBy(?do, ?d), Person(?p), residesIn(?p, ?f)
 		</Activation>
-		<Goal> notify-people-in-flat(?f, ?do) </Goal>
 		<ActionDescription Var="?a"> SoundAction(?a)
 		</ActionDescription>
 		<Expiration> gotNotifiedFor(?p, ?do) </Expiration>
 		<Cost>5.0</Cost>
 	</Policy>
-	<Policy Name="SleepingBaby" Modality="owlpolar:'Prohibition'"
-		Addressee="?d">
+	<Policy Name="SleepingBaby" Modality="Prohibition" Addressee="?d">
 		<AddresseeRole>Device(?d)</AddresseeRole>
 		<Activation> Person(?p), SoundNotification(?t), disabledNotificationType(?p, ?t) </Activation>
-		<Goal> play-sound(?sa, ?e)</Goal>
 		<ActionDescription Var="?a"> SoundAction(?a) </ActionDescription>
 		<Expiration> Hall(?p) </Expiration>
 		<Cost>8.0</Cost>

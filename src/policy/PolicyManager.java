@@ -28,12 +28,12 @@ public class PolicyManager {
 	// Normative State
 	private HashSet<ActivePolicy> prohibitions;
 	private HashSet<ActivePolicy> obligations;
-	
-	public HashSet<ActivePolicy> getProhibitions(){
+
+	public HashSet<ActivePolicy> getProhibitions() {
 		return prohibitions;
 	}
-	
-	public HashSet<ActivePolicy> getObligations(){
+
+	public HashSet<ActivePolicy> getObligations() {
 		return obligations;
 	}
 
@@ -43,8 +43,11 @@ public class PolicyManager {
 		Config pConfig = Config.getInstance();
 		OntopOWLFactory factory = OntopOWLFactory.defaultFactory();
 		OntopSQLOWLAPIConfiguration config = (OntopSQLOWLAPIConfiguration) OntopSQLOWLAPIConfiguration.defaultBuilder()
-				.r2rmlMappingFile(pConfig.getObdaFile()).ontologyFile(pConfig.getOntologyFile())
-				.propertyFile(pConfig.getObdaPropertiesFile()).enableTestMode().build();
+	                .nativeOntopMappingFile(pConfig.getObdaFile())
+	                .ontologyFile(pConfig.getOntologyFile())
+	                .propertyFile(pConfig.getObdaPropertiesFile())
+	                .enableTestMode()
+	                .build();
 
 		owlReasoner = factory.createReasoner(config);
 		policies = new PolicyReader().readPolicies();
@@ -54,7 +57,7 @@ public class PolicyManager {
 	}
 
 	public void updateActivePolicies() throws Exception {
-		
+
 		for (int i = 0; i < policies.size(); i++) {
 			HashSet<ActivePolicy> instances = policyReasoner.createActivePolicies(policies.get(i), owlReasoner);
 
@@ -64,7 +67,7 @@ public class PolicyManager {
 			else
 				obligations.addAll(instances);
 		}
-		
+
 		// TODO: check deadlines for expirations of obligations?
 		policyReasoner.removeExpiredPolicies(prohibitions, owlReasoner);
 		policyReasoner.removeExpiredPolicies(obligations, owlReasoner);
@@ -108,7 +111,7 @@ public class PolicyManager {
 			root.setLevel(Level.OFF);
 
 			PolicyManager manager = new PolicyManager();
-			manager.checkAllConflicts();
+			manager.updateActivePolicies();
 			manager.stop();
 		} catch (Exception e) {
 			e.printStackTrace();

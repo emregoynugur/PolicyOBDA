@@ -257,6 +257,9 @@
         <ObjectProperty IRI="#hasOutputType"/>
     </Declaration>
     <Declaration>
+        <Class IRI="#Baby"/>
+    </Declaration>
+    <Declaration>
         <Class IRI="#TemperatureOutput"/>
     </Declaration>
     <Declaration>
@@ -302,6 +305,10 @@
     <SubClassOf>
         <Class IRI="#Apartment"/>
         <Class IRI="#IndoorSpace"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Baby"/>
+        <Class IRI="#Person"/>
     </SubClassOf>
     <SubClassOf>
         <Class IRI="#Building"/>
