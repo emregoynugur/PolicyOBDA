@@ -42,8 +42,7 @@ public class Config {
 	}
 
 	public String getProperty(String key) {
-		String value = this.configFile.getProperty(key);
-		return value;
+		return this.configFile.getProperty(key);
 	}
 
 }

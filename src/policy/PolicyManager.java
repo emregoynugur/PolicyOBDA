@@ -13,6 +13,7 @@ import org.semanticweb.owlapi.reasoner.IllegalConfigurationException;
 import org.xml.sax.SAXException;
 
 import ch.qos.logback.classic.Level;
+import examples.SmartHome;
 import it.unibz.inf.ontop.injection.OntopSQLOWLAPIConfiguration;
 import it.unibz.inf.ontop.owlapi.OntopOWLFactory;
 import it.unibz.inf.ontop.owlapi.OntopOWLReasoner;
@@ -109,7 +110,8 @@ public class PolicyManager {
 			ch.qos.logback.classic.Logger root = (ch.qos.logback.classic.Logger) org.slf4j.LoggerFactory
 					.getLogger(ch.qos.logback.classic.Logger.ROOT_LOGGER_NAME);
 			root.setLevel(Level.OFF);
-
+			
+			SmartHome.prepareH2Database();
 			PolicyManager manager = new PolicyManager();
 			manager.updateActivePolicies();
 			manager.stop();
