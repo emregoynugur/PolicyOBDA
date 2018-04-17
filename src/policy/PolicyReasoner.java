@@ -215,7 +215,7 @@ public class PolicyReasoner {
 		try (OntopOWLConnection conn = reasoner.getConnection();
 				OntopOWLStatement st = conn.createStatement();
 				TupleOWLResultSet rs = st.executeSelectQuery(p.getActivation().toString());) {
-
+			
 			if (!rs.hasNext())
 				return instances;
 

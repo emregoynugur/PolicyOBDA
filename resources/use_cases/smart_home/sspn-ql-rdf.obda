@@ -1,5 +1,5 @@
 [PrefixDeclaration]
-:			http://cs.ozyegin.edu.tr/muratsensoy/2015/03/sspn-ql#
+:		http://cs.ozyegin.edu.tr/muratsensoy/2015/03/sspn-ql#
 owl:		http://www.w3.org/2002/07/owl#
 rdf:		http://www.w3.org/1999/02/22-rdf-syntax-ns#
 xml:		http://www.w3.org/XML/1998/namespace
@@ -35,5 +35,13 @@ source		select * from notifications where type = 1
 mappingId	Disabled Notifications
 target		:person{personid} :disabledNotificationType :notification{id} . 
 source		select * from notifications where active = false
+
+mappingId	(DUMMY) Television
+target		:flat a :Flat . :device{id} a :Television ; :belongsTo :flat . 
+source		select * from notifications where type=2
+
+mappingId	(DUMMY) hasSpeaker hasDisplay
+target		:device{deviceid} :hasSpeaker :hello{id} ; :hasDisplay :hello{id} . 
+source		select * from events where type=2
 ]]
 

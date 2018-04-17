@@ -18,6 +18,7 @@ import it.unibz.inf.ontop.injection.OntopSQLOWLAPIConfiguration;
 import it.unibz.inf.ontop.owlapi.OntopOWLFactory;
 import it.unibz.inf.ontop.owlapi.OntopOWLReasoner;
 import it.unibz.inf.ontop.si.SemanticIndexException;
+import planning.PddlGenerator;
 import utils.Config;
 
 public class PolicyManager {
@@ -98,6 +99,10 @@ public class PolicyManager {
 		return conflicts;
 	}
 
+	public void startPlanner() {
+		PddlGenerator pddl = new PddlGenerator(owlReasoner);
+		pddl.generateDomainFile();
+	}
 	public void stop() throws Exception {
 		owlReasoner.close();
 	}
@@ -113,7 +118,8 @@ public class PolicyManager {
 			
 			SmartHome.prepareH2Database();
 			PolicyManager manager = new PolicyManager();
-			manager.updateActivePolicies();
+			manager.startPlanner();
+			//manager.updateActivePolicies();
 			manager.stop();
 		} catch (Exception e) {
 			e.printStackTrace();

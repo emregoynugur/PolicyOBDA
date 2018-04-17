@@ -14,43 +14,10 @@
     <Prefix name="obda" IRI="https://w3id.org/obda/vocabulary#"/>
     <Prefix name="rdfs" IRI="http://www.w3.org/2000/01/rdf-schema#"/>
     <Declaration>
-        <Class IRI="#Room"/>
-    </Declaration>
-    <Declaration>
-        <ObjectProperty IRI="#inRoom"/>
-    </Declaration>
-    <Declaration>
-        <ObjectProperty IRI="#hasReceiver"/>
-    </Declaration>
-    <Declaration>
-        <ObjectProperty IRI="#produces"/>
-    </Declaration>
-    <Declaration>
-        <Class IRI="#TemperatureSensor"/>
-    </Declaration>
-    <Declaration>
-        <Class IRI="#Hall"/>
-    </Declaration>
-    <Declaration>
-        <Class IRI="#IndoorSpace"/>
-    </Declaration>
-    <Declaration>
         <Class IRI="#OutputData"/>
     </Declaration>
     <Declaration>
-        <ObjectProperty IRI="#hasLocation"/>
-    </Declaration>
-    <Declaration>
-        <DataProperty IRI="#hasPrecondition"/>
-    </Declaration>
-    <Declaration>
         <Class IRI="#Effects"/>
-    </Declaration>
-    <Declaration>
-        <Class IRI="#NetworkInterface"/>
-    </Declaration>
-    <Declaration>
-        <ObjectProperty IRI="#hasNetworkInterface"/>
     </Declaration>
     <Declaration>
         <ObjectProperty IRI="#getNotifiedWith"/>
@@ -59,43 +26,22 @@
         <ObjectProperty IRI="#hasNotificationType"/>
     </Declaration>
     <Declaration>
-        <Class IRI="#HumidityUnit"/>
-    </Declaration>
-    <Declaration>
-        <NamedIndividual IRI="#celsius"/>
-    </Declaration>
-    <Declaration>
-        <DataProperty IRI="#hasEffect"/>
-    </Declaration>
-    <Declaration>
-        <Class IRI="#Apartment"/>
+        <DataProperty IRI="#hasNetworkIdentifier"/>
     </Declaration>
     <Declaration>
         <Class IRI="#Object"/>
     </Declaration>
     <Declaration>
-        <DataProperty IRI="#hasNetworkIdentifier"/>
-    </Declaration>
-    <Declaration>
         <Class IRI="#Device"/>
-    </Declaration>
-    <Declaration>
-        <DataProperty IRI="#hasDate"/>
     </Declaration>
     <Declaration>
         <ObjectProperty IRI="#hasPowerLevel"/>
     </Declaration>
     <Declaration>
-        <Class IRI="#SoundNotification"/>
-    </Declaration>
-    <Declaration>
         <Class IRI="#HumiditySensing"/>
     </Declaration>
     <Declaration>
-        <Class IRI="#TemperatureSensing"/>
-    </Declaration>
-    <Declaration>
-        <ObjectProperty IRI="#canNotifyWith"/>
+        <ObjectProperty IRI="#hasDisplay"/>
     </Declaration>
     <Declaration>
         <NamedIndividual IRI="#minute"/>
@@ -104,16 +50,10 @@
         <ObjectProperty IRI="#hasTemperatureUnit"/>
     </Declaration>
     <Declaration>
-        <Class IRI="#Input"/>
-    </Declaration>
-    <Declaration>
-        <Class IRI="#Action"/>
-    </Declaration>
-    <Declaration>
         <NamedIndividual IRI="#kelvin"/>
     </Declaration>
     <Declaration>
-        <Class IRI="#Location"/>
+        <Class IRI="#SMSNotification"/>
     </Declaration>
     <Declaration>
         <DataProperty IRI="#hasLongitude"/>
@@ -122,46 +62,22 @@
         <Class IRI="#Door"/>
     </Declaration>
     <Declaration>
-        <Class IRI="#SMSNotification"/>
-    </Declaration>
-    <Declaration>
         <Class IRI="#EmailNotification"/>
-    </Declaration>
-    <Declaration>
-        <Class IRI="#TemperatureUnit"/>
-    </Declaration>
-    <Declaration>
-        <DataProperty IRI="#hasIntegerValue"/>
     </Declaration>
     <Declaration>
         <Class IRI="#Platform"/>
     </Declaration>
     <Declaration>
-        <DataProperty IRI="#hasValue"/>
-    </Declaration>
-    <Declaration>
-        <Class IRI="#HumidityOutput"/>
-    </Declaration>
-    <Declaration>
         <DataProperty IRI="#hasSubject"/>
-    </Declaration>
-    <Declaration>
-        <ObjectProperty IRI="#disabledNotificationType"/>
     </Declaration>
     <Declaration>
         <DataProperty IRI="#hasDecimalValue"/>
     </Declaration>
     <Declaration>
+        <ObjectProperty IRI="#disabledNotificationType"/>
+    </Declaration>
+    <Declaration>
         <ObjectProperty IRI="#hasSender"/>
-    </Declaration>
-    <Declaration>
-        <ObjectProperty IRI="#belongsToSpace"/>
-    </Declaration>
-    <Declaration>
-        <ObjectProperty IRI="#isOnPlatform"/>
-    </Declaration>
-    <Declaration>
-        <Class IRI="#Space"/>
     </Declaration>
     <Declaration>
         <DataProperty IRI="#hasLatitude"/>
@@ -170,49 +86,19 @@
         <Class IRI="#Person"/>
     </Declaration>
     <Declaration>
-        <Class IRI="#Unit"/>
-    </Declaration>
-    <Declaration>
-        <ObjectProperty IRI="#hasOutputData"/>
-    </Declaration>
-    <Declaration>
-        <Class IRI="#PhysicalObject"/>
-    </Declaration>
-    <Declaration>
-        <Class IRI="#Notification"/>
-    </Declaration>
-    <Declaration>
-        <DataProperty IRI="#hasIPAddress"/>
-    </Declaration>
-    <Declaration>
         <ObjectProperty IRI="#hasHumidityUnit"/>
-    </Declaration>
-    <Declaration>
-        <DataProperty IRI="#hasRemainingDuration"/>
     </Declaration>
     <Declaration>
         <NamedIndividual IRI="#second"/>
     </Declaration>
     <Declaration>
-        <Class IRI="#Parameter"/>
-    </Declaration>
-    <Declaration>
-        <Class IRI="#Agent"/>
-    </Declaration>
-    <Declaration>
         <Class IRI="#SoundAction"/>
-    </Declaration>
-    <Declaration>
-        <Class IRI="#InteractiveSensing"/>
     </Declaration>
     <Declaration>
         <Class IRI="#ElectronicAgent"/>
     </Declaration>
     <Declaration>
         <DataProperty IRI="#hasBatteryPercentage"/>
-    </Declaration>
-    <Declaration>
-        <ObjectProperty IRI="#observes"/>
     </Declaration>
     <Declaration>
         <ObjectProperty IRI="#hasSubsystem"/>
@@ -239,34 +125,19 @@
         <ObjectProperty IRI="#hasEvent"/>
     </Declaration>
     <Declaration>
-        <ObjectProperty IRI="#hasUnit"/>
-    </Declaration>
-    <Declaration>
-        <ObjectProperty IRI="#gotNotifiedFor"/>
-    </Declaration>
-    <Declaration>
         <Class IRI="#PowerLevel"/>
     </Declaration>
     <Declaration>
         <Class IRI="#Event"/>
     </Declaration>
     <Declaration>
-        <Class IRI="#Flat"/>
-    </Declaration>
-    <Declaration>
         <ObjectProperty IRI="#hasOutputType"/>
-    </Declaration>
-    <Declaration>
-        <Class IRI="#Baby"/>
     </Declaration>
     <Declaration>
         <Class IRI="#TemperatureOutput"/>
     </Declaration>
     <Declaration>
         <DataProperty IRI="#hasParameter"/>
-    </Declaration>
-    <Declaration>
-        <DataProperty IRI="#hasStringValue"/>
     </Declaration>
     <Declaration>
         <Class IRI="#VisualAction"/>
@@ -276,6 +147,150 @@
     </Declaration>
     <Declaration>
         <DataProperty IRI="#hasMACAddress"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#TimeUnit"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#residesIn"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Room"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#inRoom"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#hasReceiver"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#produces"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#TemperatureSensor"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Hall"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#IndoorSpace"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#hasLocation"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#hasPrecondition"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#NetworkInterface"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#hasNetworkInterface"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#hasSpeaker"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#HumidityUnit"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#celsius"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#hasEffect"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Apartment"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#hasDate"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#SoundNotification"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#TemperatureSensing"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#canNotifyWith"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Input"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Action"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Location"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#TemperatureUnit"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#hasIntegerValue"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#hasValue"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#HumidityOutput"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#belongsToSpace"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#isOnPlatform"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Space"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Unit"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#hasOutputData"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#PhysicalObject"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Notification"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#hasIPAddress"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#hasRemainingDuration"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Parameter"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Agent"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#InteractiveSensing"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#observes"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Television"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#hasUnit"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#gotNotifiedFor"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Flat"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Baby"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#hasStringValue"/>
     </Declaration>
     <Declaration>
         <Class IRI="#Building"/>
@@ -290,13 +305,7 @@
         <Class IRI="#Speaker"/>
     </Declaration>
     <Declaration>
-        <Class IRI="#TimeUnit"/>
-    </Declaration>
-    <Declaration>
         <Class IRI="#Preconditions"/>
-    </Declaration>
-    <Declaration>
-        <ObjectProperty IRI="#residesIn"/>
     </Declaration>
     <SubClassOf>
         <Class IRI="#Agent"/>
@@ -611,6 +620,30 @@
             <ObjectProperty IRI="#canNotifyWith"/>
             <Class IRI="#SoundNotification"/>
         </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Speaker"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#hasSpeaker"/>
+            <Class IRI="#Speaker"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Television"/>
+        <Class IRI="#Device"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Television"/>
+        <ObjectIntersectionOf>
+            <ObjectSomeValuesFrom>
+                <ObjectProperty IRI="#hasDisplay"/>
+                <Class abbreviatedIRI="owl:Thing"/>
+            </ObjectSomeValuesFrom>
+            <ObjectSomeValuesFrom>
+                <ObjectProperty IRI="#hasSpeaker"/>
+                <Class abbreviatedIRI="owl:Thing"/>
+            </ObjectSomeValuesFrom>
+        </ObjectIntersectionOf>
     </SubClassOf>
     <SubClassOf>
         <Class IRI="#TemperatureOutput"/>
