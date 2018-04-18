@@ -30,6 +30,10 @@ public class PolicyManager {
 	// Normative State
 	private HashSet<ActivePolicy> prohibitions;
 	private HashSet<ActivePolicy> obligations;
+	
+	public OntopOWLReasoner getOWLReasoner() {
+		return owlReasoner;
+	}
 
 	public HashSet<ActivePolicy> getProhibitions() {
 		return prohibitions;
@@ -99,10 +103,6 @@ public class PolicyManager {
 		return conflicts;
 	}
 
-	public void startPlanner() {
-		PddlGenerator pddl = new PddlGenerator(owlReasoner);
-		pddl.generateDomainFile();
-	}
 	public void stop() throws Exception {
 		owlReasoner.close();
 	}
@@ -118,8 +118,12 @@ public class PolicyManager {
 			
 			SmartHome.prepareH2Database();
 			PolicyManager manager = new PolicyManager();
-			manager.startPlanner();
-			//manager.updateActivePolicies();
+			manager.updateActivePolicies();
+			
+			PddlGenerator pddl = new PddlGenerator(manager);
+			//pddl.generateDomainFile();
+			pddl.generateProblemFile();
+			
 			manager.stop();
 		} catch (Exception e) {
 			e.printStackTrace();

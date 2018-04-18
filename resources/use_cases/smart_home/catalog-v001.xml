@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <catalog prefer="public" xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog">
     <group id="Folder Repository, directory=, recursive=true, Auto-Update=true, version=2" prefer="public" xml:base="">
-        <uri id="Automatically generated entry, Timestamp=1523995136718" name="http://cs.ozyegin.edu.tr/muratsensoy/2015/03/sspn-ql" uri="sspn-ql-rdf.owl"/>
+        <uri id="Automatically generated entry, Timestamp=1524057049245" name="http://cs.ozyegin.edu.tr/muratsensoy/2015/03/sspn-ql" uri="sspn-ql-rdf.owl"/>
     </group>
 </catalog>

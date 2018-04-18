@@ -211,7 +211,7 @@ public class PolicyReasoner {
 
 	public HashSet<ActivePolicy> createActivePolicies(Policy p, OntopOWLReasoner reasoner) throws OWLException {
 		HashSet<ActivePolicy> instances = new HashSet<>();
-
+	
 		try (OntopOWLConnection conn = reasoner.getConnection();
 				OntopOWLStatement st = conn.createStatement();
 				TupleOWLResultSet rs = st.executeSelectQuery(p.getActivation().toString());) {
@@ -245,12 +245,13 @@ public class PolicyReasoner {
 					signature += ";" + v + "," + iri.substring(iri.indexOf("#") + 1);
 				}
 
-				String expQuery = null;
+				Query expQuery = null;
 				if (p.getExpiration() != null)
-					expQuery = pss.asQuery().toString();
+					expQuery = pss.asQuery();
 
-				instances.add(new ActivePolicy(signature, p.getActionDescription().toString(), expQuery,
-						p.getDeadline(), p.getDeadlineUnit()));
+				OWLNamedIndividual addressee = (OWLNamedIndividual) result.getOWLObject(p.getAddressee().substring(1));
+				instances.add(new ActivePolicy(p.getName(), addressee.getIRI().getShortForm(), signature, p.getActionDescription().toString(), expQuery,
+						p.getCost(), p.getDeadline(), p.getDeadlineUnit()));
 			}
 		}
 		return instances;
@@ -262,7 +263,7 @@ public class PolicyReasoner {
 				ActivePolicy p = curr.next();
 				// TODO: Check deadline
 				if (p.getExpiration() != null) {
-					try (BooleanOWLResultSet res = st.executeAskQuery(p.getExpiration())) {
+					try (BooleanOWLResultSet res = st.executeAskQuery(p.getExpiration().toString())) {
 						if (res.getValue())
 							curr.remove();
 					}

@@ -89,6 +89,9 @@
         <ObjectProperty IRI="#hasHumidityUnit"/>
     </Declaration>
     <Declaration>
+        <Class IRI="#Adult"/>
+    </Declaration>
+    <Declaration>
         <NamedIndividual IRI="#second"/>
     </Declaration>
     <Declaration>
@@ -307,6 +310,10 @@
     <Declaration>
         <Class IRI="#Preconditions"/>
     </Declaration>
+    <SubClassOf>
+        <Class IRI="#Adult"/>
+        <Class IRI="#Person"/>
+    </SubClassOf>
     <SubClassOf>
         <Class IRI="#Agent"/>
         <Class IRI="#PhysicalObject"/>

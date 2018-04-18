@@ -2,7 +2,7 @@
 <Policies>
 	<Policy Name="NotifyDoorbell" Modality="Obligation" Addressee="?d">
 		<AddresseeRole>Doorbell(?d)</AddresseeRole>
-		<Activation> Flat(?f), DoorbellOutput(?do), belongsTo(?d, ?f), producedBy(?do, ?d), Person(?p), residesIn(?p, ?f)
+		<Activation> Flat(?f), DoorbellOutput(?do), belongsTo(?d, ?f), producedBy(?do, ?d), Adult(?p), residesIn(?p, ?f)
 		</Activation>
 		<ActionDescription Var="?a"> SoundAction(?a)
 		</ActionDescription>

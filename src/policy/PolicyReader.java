@@ -154,6 +154,8 @@ public class PolicyReader {
 		for (String v : variables)
 			if (!v.contains("'"))
 				q.addResultVar(v);
+		
+		q.setDistinct(true);
 
 		return q;
 	}

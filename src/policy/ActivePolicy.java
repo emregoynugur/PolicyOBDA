@@ -2,22 +2,42 @@ package policy;
 
 import java.util.concurrent.TimeUnit;
 
+import org.apache.jena.query.Query;
+
 public class ActivePolicy {
 	private String signature;
+	private String addressee;
 	private String action;
-	private String expiration;
+	private String name;
+	private double cost;
 	private double deadline;
 	private TimeUnit deadlineUnit;
-
-	public ActivePolicy(String signature, String action, String expiration, double deadline,
+	private Query expiration;
+	
+	public ActivePolicy(String name, String addressee ,String signature, String action, Query expiration, double cost, double deadline,
 			TimeUnit deadlineUnit) {
 		super();
 		
+		this.name = name;
+		this.addressee = addressee;
 		this.signature = signature;
 		this.action = action;
 		this.expiration = expiration;
+		this.cost = cost;
 		this.deadline = deadline;
 		this.deadlineUnit = deadlineUnit;
+	}
+	
+	public double getCost() {
+		return cost;
+	}
+	
+	public String getAddressee() {
+		return addressee;
+	}
+	
+	public String getName() {
+		return name;
 	}
 
 	public String getSignature() {
@@ -32,11 +52,11 @@ public class ActivePolicy {
 		this.action = action;
 	}
 
-	public String getExpiration() {
+	public Query getExpiration() {
 		return expiration;
 	}
 
-	public void setExpiration(String expiration) {
+	public void setExpiration(Query expiration) {
 		this.expiration = expiration;
 	}
 
