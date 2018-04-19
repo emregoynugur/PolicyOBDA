@@ -191,6 +191,9 @@
         <ObjectProperty IRI="#hasNetworkInterface"/>
     </Declaration>
     <Declaration>
+        <ObjectProperty IRI="#enabledNotificationType"/>
+    </Declaration>
+    <Declaration>
         <ObjectProperty IRI="#hasSpeaker"/>
     </Declaration>
     <Declaration>

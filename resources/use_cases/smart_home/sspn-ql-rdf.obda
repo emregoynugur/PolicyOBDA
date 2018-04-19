@@ -47,5 +47,17 @@ source		select * from events where type=2
 mappingId	Adult
 target		:person{id} a :Adult . 
 source		select * from people where age >= 18
+
+mappingId	Television
+target		:room a :Room . :device{id} a :Television ; :inRoom :room . 
+source		select * from devices where type=2
+
+mappingId	Visual Notifications
+target		:notification{id} a :VisualNotification . 
+source		select * from notifications where type = 2
+
+mappingId	Enabled Notifications
+target		:person{personid} :enabledNotificationType :notification{id} . 
+source		select * from notifications where active = true
 ]]
 

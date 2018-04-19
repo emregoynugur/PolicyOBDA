@@ -9,7 +9,7 @@
 		<Expiration> gotNotifiedFor(?p, ?do) </Expiration>
 		<Cost>5.0</Cost>
 	</Policy>
-	<Policy Name="SleepingBaby" Modality="Prohibition" Addressee="?d">
+	<Policy Name="SoundDisabled" Modality="Prohibition" Addressee="?d">
 		<AddresseeRole>Device(?d)</AddresseeRole>
 		<Activation> Person(?p), SoundNotification(?t), disabledNotificationType(?p, ?t) </Activation>
 		<ActionDescription Var="?a"> SoundAction(?a) </ActionDescription>

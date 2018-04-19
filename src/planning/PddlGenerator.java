@@ -40,7 +40,7 @@ public class PddlGenerator {
 
 	private ArrayList<LispExprList> derivedAxioms = new ArrayList<LispExprList>();
 
-	public boolean generateDomainFile() {
+	public boolean generateDomainFile(List<LispExprList> actions) {
 		LispExprList definition = new LispExprList();
 		definition.add(new Atom("define"));
 
@@ -52,34 +52,55 @@ public class PddlGenerator {
 		requirements.add(new Atom(":requirements"));
 		requirements.add(new Atom(":adl"));
 		requirements.add(new Atom(":derived-predicates"));
+		requirements.add(new Atom(":action-costs"));
 
 		/* TODO: Data properties */
 		definition.add(domain);
 		definition.add(requirements);
 		definition.add(getPredicates());
+		definition.add(getFunctions());
+		
+		for(LispExprList action : actions)
+			definition.add(action);
 
 		for (LispExprList derived : derivedAxioms)
 			definition.add(derived);
-
-		/*
-		 * findProhibitedActions(); for (LispExprList action : getActions())
-		 * definition.add(action);
-		 * 
-		 */
 
 		System.out.println(definition);
 
 		return true;
 	}
+	
+	private LispExprList getFunctions() {
+		LispExprList functions = new LispExprList();
+		functions.add(new Atom(":functions"));
+		
+		LispExprList totalcost = new LispExprList();
+		totalcost.add(new Atom("total-cost"));
+		
+		functions.add(totalcost);
+		
+		HashSet<String> seen = new HashSet<>();
+		for(ActivePolicy policy : manager.getProhibitions()) {
+			
+			if(seen.contains(policy.getName()))
+				continue;
+			
+			seen.add(policy.getName());
+			
+			LispExprList cost = new LispExprList();
+			cost.add(new Atom(policy.getName()));
+			cost.add(new Atom("?device"));
+			
+			functions.add(cost);
+		}
+		
+		return functions;
+	}
 
 	private LispExprList getPredicates() {
 		LispExprList predicates = new LispExprList();
 		predicates.add(new Atom(":predicates"));
-
-		LispExprList isConsistent = new LispExprList();
-		isConsistent.add(new Atom("isConsistent"));
-
-		predicates.add(isConsistent);
 
 		Set<OWLClass> classes = manager.getOWLReasoner().getRootOntology().getClassesInSignature();
 		for (OWLClass owlClass : classes) {
