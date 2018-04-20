@@ -1,0 +1,77 @@
+0
+begin_metric
+1
+end_metric
+begin_variables
+2
+var20 2 -1
+var28 2 -1
+end_variables
+begin_state
+1
+1
+end_state
+begin_goal
+1
+1 0
+end_goal
+3
+begin_operator
+locate-people person1 room
+0
+1
+0
+0 -1 0
+1
+end_operator
+begin_operator
+notify-with-sound person1 output1 device1
+0
+1
+0
+1 -1 0
+8
+end_operator
+begin_operator
+notify-with-visual person1 output1 device2 room
+1
+0 0
+1
+0
+1 -1 0
+1
+end_operator
+0
+begin_SG
+switch 0
+check 2
+0
+1
+check 1
+2
+check 0
+check 0
+end_SG
+begin_DTG
+0
+1
+0
+0
+0
+end_DTG
+begin_DTG
+0
+2
+0
+1
+0
+0
+2
+1
+0 0
+end_DTG
+begin_CG
+1
+1 1
+0
+end_CG
