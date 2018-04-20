@@ -1,5 +1,8 @@
 package planning;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -40,7 +43,7 @@ public class PddlGenerator {
 
 	private ArrayList<LispExprList> derivedAxioms = new ArrayList<LispExprList>();
 
-	public boolean generateDomainFile(List<LispExprList> actions) {
+	public boolean generateDomainFile(List<LispExprList> actions) throws IOException {
 		LispExprList definition = new LispExprList();
 		definition.add(new Atom("define"));
 
@@ -67,6 +70,8 @@ public class PddlGenerator {
 			definition.add(derived);
 
 		System.out.println(definition);
+		
+		Files.write(Paths.get(Config.getInstance().getPlannerDomain()), definition.toString().getBytes());
 
 		return true;
 	}
@@ -205,7 +210,7 @@ public class PddlGenerator {
 			derivedAxioms.add(derived);
 	}
 
-	public boolean generateProblemFile() throws ReasonerInternalException, OWLException {
+	public boolean generateProblemFile() throws ReasonerInternalException, OWLException, IOException {
 		LispExprList definition = new LispExprList();
 		definition.add(new Atom("define"));
 
@@ -226,6 +231,8 @@ public class PddlGenerator {
 		definition.add(getMinimizeMetric());
 
 		System.out.println(definition);
+		
+		Files.write(Paths.get(Config.getInstance().getPlannerProblem()), definition.toString().getBytes());
 
 		return true;
 	}

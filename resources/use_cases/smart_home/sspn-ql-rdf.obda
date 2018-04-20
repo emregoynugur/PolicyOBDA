@@ -40,10 +40,6 @@ mappingId	(DUMMY) Television
 target		:flat a :Flat . :device{id} a :Television ; :belongsTo :flat . 
 source		select * from notifications where type=2
 
-mappingId	(DUMMY) hasSpeaker hasDisplay
-target		:device{deviceid} :hasSpeaker :hello{id} ; :hasDisplay :hello{id} . 
-source		select * from events where type=2
-
 mappingId	Adult
 target		:person{id} a :Adult . 
 source		select * from people where age >= 18

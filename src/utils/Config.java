@@ -40,6 +40,22 @@ public class Config {
 	public String getObdaPropertiesFile() {
 		return this.configFile.getProperty("obdaPropertiesFile");
 	}
+	
+	public String getPlanner() {
+		return this.configFile.getProperty("planner");
+	}
+	
+	public String getPlannerDomain() {
+		return this.configFile.getProperty("plannerDomain");
+	}
+	
+	public String getPlannerProblem() {
+		return this.configFile.getProperty("plannerProblem");
+	}
+	
+	public String getPlannerOutput() {
+		return this.configFile.getProperty("plannerOutput");
+	}
 
 	public String getProperty(String key) {
 		return this.configFile.getProperty(key);

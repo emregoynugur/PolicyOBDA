@@ -12,6 +12,7 @@ import org.h2.tools.RunScript;
 
 import ch.qos.logback.classic.Level;
 import planning.PddlGenerator;
+import planning.Planner;
 import planning.parser.Atom;
 import planning.parser.LispExprList;
 import policy.PolicyManager;
@@ -129,6 +130,7 @@ public class SmartHome {
 		parameters.add(new Atom("?person"));
 		parameters.add(new Atom("?event"));
 		parameters.add(new Atom("?device"));
+		parameters.add(new Atom("?room"));
 		
 		notify.add(parameters);
 		
@@ -167,6 +169,8 @@ public class SmartHome {
 			PddlGenerator pddl = new PddlGenerator(manager);
 			pddl.generateDomainFile(SmartHome.getPDDLActions());
 			pddl.generateProblemFile();
+			
+			Planner.runPlanner();
 			
 			manager.stop();
 		} catch (Exception e) {
