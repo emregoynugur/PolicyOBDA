@@ -1,7 +1,6 @@
 package planning;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -28,15 +27,6 @@ public class Planner {
 				Paths.get(config.getPlannerProblem()).toAbsolutePath().toString(), config.getPlannerCommand());
         pb.directory(Paths.get(config.getPlanner()).toAbsolutePath().getParent().toFile());
         
-        String f = Paths.get(config.getPlanner()).toAbsolutePath().getParent().toString();
-        
-        Files.createFile(Paths.get(f + "/output.txt"));
-        
-        pb.redirectErrorStream(true);
-        pb.redirectError(new File(f + "/output.txt"));
-        pb.redirectOutput(new File(f + "/output.txt"));
-        pb.redirectInput(new File(f + "/output.txt"));
-
 		Process process = pb.start();
 		int errCode = process.waitFor();
 		
