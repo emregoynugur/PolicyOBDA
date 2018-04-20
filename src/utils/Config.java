@@ -45,6 +45,10 @@ public class Config {
 		return this.configFile.getProperty("planner");
 	}
 	
+	public String getPlannerCommand() {
+		return this.configFile.getProperty("plannerCommand");
+	}
+	
 	public String getPlannerDomain() {
 		return this.configFile.getProperty("plannerDomain");
 	}

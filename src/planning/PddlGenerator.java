@@ -69,8 +69,6 @@ public class PddlGenerator {
 		for (LispExprList derived : derivedAxioms)
 			definition.add(derived);
 
-		System.out.println(definition);
-		
 		Files.write(Paths.get(Config.getInstance().getPlannerDomain()), definition.toString().getBytes());
 
 		return true;
@@ -186,8 +184,8 @@ public class PddlGenerator {
 			if (subClasses.size() > 1)
 				conditions.add(new Atom("or"));
 
-			// TODO: add support for custom rules. i.e. hasSpeaker & hasDisplay ->
-			// Television
+			// TODO: add support for custom rules.
+			//  i.e. hasSpeaker & hasDisplay -> Television
 			for (OWLClass subClass : subClasses) {
 				LispExprList rule = new LispExprList();
 
@@ -230,8 +228,6 @@ public class PddlGenerator {
 		definition.add(getGoalState());
 		definition.add(getMinimizeMetric());
 
-		System.out.println(definition);
-		
 		Files.write(Paths.get(Config.getInstance().getPlannerProblem()), definition.toString().getBytes());
 
 		return true;
@@ -250,7 +246,7 @@ public class PddlGenerator {
 			LispExprList cond = new LispExprList();
 			cond.add(new Atom("and"));
 			
-			//TODO: watch out for unbounded variables in the expiration query
+			//TODO: watch out for unbound variables in the expiration query
 			//TODO: below implementation is not robust
 			ElementGroup query = (ElementGroup) obligation.getExpiration().getQueryPattern();
 			for(Element elem : query.getElements()) {
@@ -306,8 +302,8 @@ public class PddlGenerator {
 				if (owlClass.isOWLThing())
 					continue;
 
+				//TODO: if possible, use Ontop API to get individuals without query re-writing. i.e. use derived-predicates for inference.
 				String q = "SELECT DISTINCT ?i WHERE { ?i a <" + owlClass.getIRI() + "> }";
-
 				try (TupleOWLResultSet rs = st.executeSelectQuery(q);) {
 
 					while (rs.hasNext()) {

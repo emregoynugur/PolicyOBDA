@@ -334,7 +334,8 @@ def normalize(task):
     eliminate_existential_quantifiers_from_preconditions(task)
     eliminate_existential_quantifiers_from_conditional_effects(task)
 
-    verify_axiom_predicates(task)
+    #TODO: commented below line as a tmp solution
+    #verify_axiom_predicates(task)
 
 def verify_axiom_predicates(task):
     # Verify that derived predicates are not used in :init or

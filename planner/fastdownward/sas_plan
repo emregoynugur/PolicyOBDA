@@ -1,3 +1,0 @@
-(locate-people person1 room)
-(notify-with-visual person1 output1 device2 room)
-; cost = 8 (general cost)
