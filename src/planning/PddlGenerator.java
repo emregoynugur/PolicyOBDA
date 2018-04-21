@@ -208,7 +208,7 @@ public class PddlGenerator {
 			derivedAxioms.add(derived);
 	}
 
-	public boolean generateProblemFile() throws ReasonerInternalException, OWLException, IOException {
+	public boolean generateProblemFile(HashSet<ActivePolicy> obligations) throws ReasonerInternalException, OWLException, IOException {
 		LispExprList definition = new LispExprList();
 		definition.add(new Atom("define"));
 
@@ -225,7 +225,7 @@ public class PddlGenerator {
 
 		addObjectsAndInitialState(definition);
 
-		definition.add(getGoalState());
+		definition.add(getGoalState(obligations));
 		definition.add(getMinimizeMetric());
 
 		Files.write(Paths.get(Config.getInstance().getPlannerProblem()), definition.toString().getBytes());
@@ -233,13 +233,10 @@ public class PddlGenerator {
 		return true;
 	}
 	
-	private LispExprList getGoalState() {
+	private LispExprList getGoalState(HashSet<ActivePolicy> obligations) {
 		LispExprList goal = new LispExprList();
 		goal.add(new Atom(":goal"));
 				
-		//assuming all obligations are instances of the same policy
-		HashSet<ActivePolicy> obligations = manager.getObligations();
-
 		List<LispExprList> conditions = new ArrayList<>();
 		for(ActivePolicy obligation : obligations) {
 			

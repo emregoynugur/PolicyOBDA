@@ -26,7 +26,7 @@ public class PolicyManager {
 
 	// Normative State
 	private HashSet<ActivePolicy> prohibitions;
-	private HashSet<ActivePolicy> obligations;
+	private HashMap<String, HashSet<ActivePolicy>> obligations;
 	
 	public OntopOWLReasoner getOWLReasoner() {
 		return owlReasoner;
@@ -36,7 +36,7 @@ public class PolicyManager {
 		return prohibitions;
 	}
 
-	public HashSet<ActivePolicy> getObligations() {
+	public HashMap<String, HashSet<ActivePolicy>> getObligations() {
 		return obligations;
 	}
 
@@ -56,7 +56,7 @@ public class PolicyManager {
 		policies = new PolicyReader().readPolicies();
 		policyReasoner = new PolicyReasoner();
 		prohibitions = new HashSet<>();
-		obligations = new HashSet<>();
+		obligations = new HashMap<String, HashSet<ActivePolicy>>();
 	}
 
 	public void updateActivePolicies() throws Exception {
@@ -65,15 +65,27 @@ public class PolicyManager {
 			HashSet<ActivePolicy> instances = policyReasoner.createActivePolicies(policies.get(i), owlReasoner);
 
 			// TODO: determine domain actions (of planner) that will get affected
-			if (policies.get(i).getModality().contains("Prohibition"))
+			if (policies.get(i).getModality().contains("Prohibition")) {
 				prohibitions.addAll(instances);
-			else
-				obligations.addAll(instances);
+			} else if(policies.get(i).getModality().contains("Obligation")){
+				for(ActivePolicy instance : instances) {
+					String key = instance.getName() + "-" + instance.getAddressee();
+					if(!obligations.containsKey(key)) {
+						obligations.put(key, new HashSet<ActivePolicy>());
+					}
+					obligations.get(key).add(instance);
+				}
+			}
 		}
 
 		// TODO: check deadlines for expirations of obligations?
+		
+		//check expired prohibitions
 		policyReasoner.removeExpiredPolicies(prohibitions, owlReasoner);
-		policyReasoner.removeExpiredPolicies(obligations, owlReasoner);
+		
+		//check expired obligations
+		for(String key : obligations.keySet())
+			policyReasoner.removeExpiredPolicies(obligations.get(key), owlReasoner);
 	}
 
 	public HashMap<Policy, ArrayList<Policy>> checkAllConflicts()

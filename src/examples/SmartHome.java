@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import org.h2.tools.RunScript;
@@ -15,6 +16,7 @@ import planning.PddlGenerator;
 import planning.Planner;
 import planning.parser.Atom;
 import planning.parser.LispExprList;
+import policy.ActivePolicy;
 import policy.PolicyManager;
 import utils.Config;
 
@@ -167,8 +169,15 @@ public class SmartHome {
 			manager.updateActivePolicies();
 			
 			PddlGenerator pddl = new PddlGenerator(manager);
+			
 			pddl.generateDomainFile(SmartHome.getPDDLActions());
-			pddl.generateProblemFile();
+			
+			//TODO: implement a proper mechanism to consume obligations
+			//TODO: ensure obligations is not empty
+			String first = (manager.getObligations().size() > 0) ? manager.getObligations().keySet().iterator().next() : null;
+			HashSet<ActivePolicy> obligations = (first == null) ? new HashSet<ActivePolicy> () : manager.getObligations().get(first);
+
+			pddl.generateProblemFile(obligations);
 			
 			Planner.runPlanner();
 			
