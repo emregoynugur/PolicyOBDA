@@ -41,8 +41,8 @@ public class Config {
 		return this.configFile.getProperty("obdaPropertiesFile");
 	}
 	
-	public String getPlanner() {
-		return this.configFile.getProperty("planner");
+	public String getPlannerDir() {
+		return this.configFile.getProperty("plannerDir");
 	}
 	
 	public String getPlannerCommand() {

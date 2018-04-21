@@ -22,19 +22,19 @@ public class Planner {
 		if (!Files.exists(Paths.get(config.getPlannerProblem())))
 			return false;
 
-		ProcessBuilder pb = new ProcessBuilder(Paths.get(config.getPlanner()).toAbsolutePath().toString(),
-				Paths.get(config.getPlannerDomain()).toAbsolutePath().toString(),
-				Paths.get(config.getPlannerProblem()).toAbsolutePath().toString(), config.getPlannerCommand());
-        pb.directory(Paths.get(config.getPlanner()).toAbsolutePath().getParent().toFile());
-        
+		String plannerCmd = Paths.get(config.getPlannerDir()).toAbsolutePath() + "/" + config.getPlannerCommand();
+		ProcessBuilder pb = new ProcessBuilder("bash","-c", plannerCmd);
+		pb.directory(Paths.get(config.getPlannerDir()).toAbsolutePath().toFile());
+
 		Process process = pb.start();
 		int errCode = process.waitFor();
-		
+
 		System.out.println("Planner command executed, any errors? " + (errCode == 0 ? "No" : "Yes"));
-		        System.out.println("Planner Output:\n" + output(process.getInputStream()));
+		System.out.println("Planner Output:\n" + output(process.getInputStream()));
+
 		return true;
 	}
-	
+
 	private static String output(InputStream inputStream) throws IOException {
 		StringBuilder sb = new StringBuilder();
 		BufferedReader br = null;
