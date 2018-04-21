@@ -4,18 +4,23 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.semanticweb.owlapi.model.OWLException;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.reasoner.IllegalConfigurationException;
+import org.semanticweb.owlapi.reasoner.ReasonerInternalException;
 import org.xml.sax.SAXException;
 
 import it.unibz.inf.ontop.injection.OntopSQLOWLAPIConfiguration;
 import it.unibz.inf.ontop.owlapi.OntopOWLFactory;
 import it.unibz.inf.ontop.owlapi.OntopOWLReasoner;
 import it.unibz.inf.ontop.si.SemanticIndexException;
+import planning.PddlGenerator;
+import planning.Planner;
+import planning.parser.LispExprList;
 import utils.Config;
 
 public class PolicyManager {
@@ -59,7 +64,7 @@ public class PolicyManager {
 		obligations = new HashMap<String, HashSet<ActivePolicy>>();
 	}
 
-	public void updateActivePolicies() throws Exception {
+	public void updateNormativeState() throws Exception {
 
 		for (int i = 0; i < policies.size(); i++) {
 			HashSet<ActivePolicy> instances = policyReasoner.createActivePolicies(policies.get(i), owlReasoner);
@@ -100,8 +105,6 @@ public class PolicyManager {
 				if (policyReasoner.checkConflict(policies.get(i), policies.get(j))) {
 					Policy second = policies.get(j);
 
-					System.out.println(first.getName() + " might conflict with " + second.getName());
-
 					if (!conflicts.containsKey(first))
 						conflicts.put(first, new ArrayList<Policy>());
 
@@ -110,6 +113,24 @@ public class PolicyManager {
 			}
 		}
 		return conflicts;
+	}
+	
+	public void executeObligations(List<LispExprList> actions) throws IOException, InterruptedException, ReasonerInternalException, OWLException {
+		
+		if(obligations.size() == 0)
+			return;
+		
+		PddlGenerator pddl = new PddlGenerator(this);
+		
+		pddl.generateDomainFile(actions);
+		
+		//TODO: implement a proper mechanism to consume obligations
+		//TODO: just change the goal state instead of re-generating the entire problem file.
+		for(String obligation : obligations.keySet()) {
+			HashSet<ActivePolicy> instances = obligations.get(obligation);
+			pddl.generateProblemFile(instances);
+			Planner.runPlanner();
+		}
 	}
 
 	public void stop() throws Exception {

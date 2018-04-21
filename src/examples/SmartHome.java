@@ -6,17 +6,16 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.h2.tools.RunScript;
 
 import ch.qos.logback.classic.Level;
-import planning.PddlGenerator;
-import planning.Planner;
 import planning.parser.Atom;
 import planning.parser.LispExprList;
-import policy.ActivePolicy;
+import policy.Policy;
 import policy.PolicyManager;
 import utils.Config;
 
@@ -166,20 +165,16 @@ public class SmartHome {
 			SmartHome.prepareH2Database();
 			
 			PolicyManager manager = new PolicyManager();
-			manager.updateActivePolicies();
 			
-			PddlGenerator pddl = new PddlGenerator(manager);
+			// Potential conflicts can be found to take precautions.
+			HashMap<Policy, ArrayList<Policy>> conflicts = manager.checkAllConflicts();
+			for(Policy p1 : conflicts.keySet()) {
+				String list = conflicts.get(p1).stream().map(Policy::getName).collect(Collectors.joining(","));
+				System.out.println(p1.getName() + " might conflict with the following policies: " + list);
+			}
 			
-			pddl.generateDomainFile(SmartHome.getPDDLActions());
-			
-			//TODO: implement a proper mechanism to consume obligations
-			//TODO: ensure obligations is not empty
-			String first = (manager.getObligations().size() > 0) ? manager.getObligations().keySet().iterator().next() : null;
-			HashSet<ActivePolicy> obligations = (first == null) ? new HashSet<ActivePolicy> () : manager.getObligations().get(first);
-
-			pddl.generateProblemFile(obligations);
-			
-			Planner.runPlanner();
+			manager.updateNormativeState();
+			manager.executeObligations(SmartHome.getPDDLActions());
 			
 			manager.stop();
 		} catch (Exception e) {
