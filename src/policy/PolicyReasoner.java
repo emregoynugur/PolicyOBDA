@@ -219,9 +219,9 @@ public class PolicyReasoner {
 			if (!rs.hasNext())
 				return instances;
 
-			ParameterizedSparqlString pss = new ParameterizedSparqlString();
+			ParameterizedSparqlString expiration = new ParameterizedSparqlString();
 			if (p.getExpiration() != null)
-				pss.setCommandText(p.getExpiration().toString());
+				expiration.setCommandText(p.getExpiration().toString());
 
 			List<String> resultVars = p.getActivation().getResultVars();
 			while (rs.hasNext()) {
@@ -237,20 +237,20 @@ public class PolicyReasoner {
 
 					if (p.getExpiration() != null) {
 						if (binding instanceof OWLLiteral)
-							pss.setLiteral(v, ((OWLLiteral) binding).getLiteral());
+							expiration.setLiteral(v, ((OWLLiteral) binding).getLiteral());
 						else
-							pss.setIri(v, iri);
+							expiration.setIri(v, iri);
 					}
 
 					signature += ";" + v + "," + iri.substring(iri.indexOf("#") + 1);
 				}
 
-				Query expQuery = null;
+				Query expirationQuery = null;
 				if (p.getExpiration() != null)
-					expQuery = pss.asQuery();
+					expirationQuery = expiration.asQuery();
 
 				OWLNamedIndividual addressee = (OWLNamedIndividual) result.getOWLObject(p.getAddressee().substring(1));
-				instances.add(new ActivePolicy(p.getName(), addressee.getIRI().getShortForm(), signature, p.getActionDescription().toString(), expQuery,
+				instances.add(new ActivePolicy(p.getName(), addressee.getIRI().getShortForm(), signature, p.getActionDescription().toString(), expirationQuery,
 						p.getCost(), p.getDeadline(), p.getDeadlineUnit()));
 			}
 		}

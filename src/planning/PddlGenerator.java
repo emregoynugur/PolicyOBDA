@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -62,8 +63,8 @@ public class PddlGenerator {
 		definition.add(requirements);
 		definition.add(getPredicates());
 		definition.add(getFunctions());
-		
-		for(LispExprList action : actions)
+
+		for (LispExprList action : actions)
 			definition.add(action);
 
 		for (LispExprList derived : derivedAxioms)
@@ -73,31 +74,27 @@ public class PddlGenerator {
 
 		return true;
 	}
-	
+
 	private LispExprList getFunctions() {
 		LispExprList functions = new LispExprList();
 		functions.add(new Atom(":functions"));
-		
+
 		LispExprList totalcost = new LispExprList();
 		totalcost.add(new Atom("total-cost"));
-		
+
 		functions.add(totalcost);
-		
-		HashSet<String> seen = new HashSet<>();
-		for(ActivePolicy policy : manager.getProhibitions()) {
-			
-			if(seen.contains(policy.getName()))
-				continue;
-			
-			seen.add(policy.getName());
-			
+
+		HashMap<String, HashSet<ActivePolicy>> prohibitions = manager.getProhibitions();
+		for (String key : prohibitions.keySet()) {
+			ActivePolicy policy = prohibitions.get(key).iterator().next();
+
 			LispExprList cost = new LispExprList();
 			cost.add(new Atom(policy.getName()));
 			cost.add(new Atom("?device"));
-			
+
 			functions.add(cost);
 		}
-		
+
 		return functions;
 	}
 
@@ -185,7 +182,7 @@ public class PddlGenerator {
 				conditions.add(new Atom("or"));
 
 			// TODO: add support for custom rules.
-			//  i.e. hasSpeaker & hasDisplay -> Television
+			// i.e. hasSpeaker & hasDisplay -> Television
 			for (OWLClass subClass : subClasses) {
 				LispExprList rule = new LispExprList();
 
@@ -208,7 +205,8 @@ public class PddlGenerator {
 			derivedAxioms.add(derived);
 	}
 
-	public boolean generateProblemFile(HashSet<ActivePolicy> obligations) throws ReasonerInternalException, OWLException, IOException {
+	public boolean generateProblemFile(HashSet<ActivePolicy> obligations)
+			throws ReasonerInternalException, OWLException, IOException {
 		LispExprList definition = new LispExprList();
 		definition.add(new Atom("define"));
 
@@ -232,26 +230,27 @@ public class PddlGenerator {
 
 		return true;
 	}
-	
+
 	private LispExprList getGoalState(HashSet<ActivePolicy> obligations) {
 		LispExprList goal = new LispExprList();
 		goal.add(new Atom(":goal"));
-				
+
 		List<LispExprList> conditions = new ArrayList<>();
-		for(ActivePolicy obligation : obligations) {
-			
+		for (ActivePolicy obligation : obligations) {
+
 			LispExprList cond = new LispExprList();
 			cond.add(new Atom("and"));
-			
-			//TODO: watch out for unbound variables in the expiration query
-			//TODO: below implementation is not robust
+
+			// TODO: watch out for unbound variables in the expiration query
+			// TODO: below implementation is not robust
 			ElementGroup query = (ElementGroup) obligation.getExpiration().getQueryPattern();
-			for(Element elem : query.getElements()) {
-				TriplePath triple = ((ElementPathBlock)elem).getPattern().getList().get(0);
-				
+			for (Element elem : query.getElements()) {
+				TriplePath triple = ((ElementPathBlock) elem).getPattern().getList().get(0);
+
 				LispExprList pred = new LispExprList();
-				
-				if(triple.getPredicate().getLocalName().contains("type") || triple.getPredicate().getLocalName().contains("a")) {
+
+				if (triple.getPredicate().getLocalName().contains("type")
+						|| triple.getPredicate().getLocalName().contains("a")) {
 					pred.add(new Atom(triple.getObject().getLocalName()));
 					pred.add(new Atom(triple.getSubject().getLocalName()));
 				} else {
@@ -259,30 +258,29 @@ public class PddlGenerator {
 					pred.add(new Atom(triple.getSubject().getLocalName()));
 					pred.add(new Atom(triple.getObject().getLocalName()));
 				}
-				
+
 				cond.add(pred);
 			}
-			
+
 			conditions.add(cond);
 		}
-		
-		if(obligations.size() > 1) {
+
+		if (obligations.size() > 1) {
 			LispExprList preds = new LispExprList();
 			preds.add(new Atom("or"));
-			for(LispExprList cond : conditions)
+			for (LispExprList cond : conditions)
 				preds.add(cond);
 			goal.add(preds);
-		}
-		else {
+		} else {
 			goal.add(conditions.get(0));
 		}
-		
+
 		return goal;
 	}
 
 	private LispExprList addObjectsAndInitialState(LispExprList definition)
 			throws ReasonerInternalException, OWLException {
-		
+
 		LispExprList initialState = new LispExprList();
 		initialState.add(new Atom(":init"));
 
@@ -299,7 +297,8 @@ public class PddlGenerator {
 				if (owlClass.isOWLThing())
 					continue;
 
-				//TODO: if possible, use Ontop API to get individuals without query re-writing. i.e. use derived-predicates for inference.
+				// TODO: if possible, use Ontop API to get individuals without query re-writing.
+				// i.e. use derived-predicates for inference.
 				String q = "SELECT DISTINCT ?i WHERE { ?i a <" + owlClass.getIRI() + "> }";
 				try (TupleOWLResultSet rs = st.executeSelectQuery(q);) {
 
@@ -356,28 +355,20 @@ public class PddlGenerator {
 
 			initialState.add(initCost);
 
-			// TODO: tmp solution to avoid duplicate cost functions
-			HashSet<String> seen = new HashSet<>();
-			HashSet<ActivePolicy> prohibitions = manager.getProhibitions();
-			for (ActivePolicy prohibition : prohibitions) {
-				
-				String signature = prohibition.getName() + "-" + prohibition.getAddressee();
-				
-				if (seen.contains(signature))
-					continue;
-				
+			HashMap<String, HashSet<ActivePolicy>> prohibitions = manager.getProhibitions();
+			for (String key : prohibitions.keySet()) {
+				ActivePolicy prohibition = prohibitions.get(key).iterator().next();
+
 				LispExprList initFunction = new LispExprList();
 				LispExprList costFunction = new LispExprList();
-			
-				costFunction.add(new Atom(prohibition.getName())); 
+
+				costFunction.add(new Atom(prohibition.getName()));
 				costFunction.add(new Atom(prohibition.getAddressee()));
-			
-				initFunction.add(new Atom("=")); 
+
+				initFunction.add(new Atom("="));
 				initFunction.add(costFunction);
 				initFunction.add(new Atom(Integer.toString((int) prohibition.getCost())));
-				
-				seen.add(signature);
-				 
+
 				initialState.add(initFunction);
 			}
 		}

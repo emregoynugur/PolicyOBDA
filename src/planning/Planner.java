@@ -23,26 +23,38 @@ public class Planner {
 			return false;
 
 		String plannerCmd = Paths.get(config.getPlannerDir()).toAbsolutePath() + "/" + config.getPlannerCommand();
-		ProcessBuilder pb = new ProcessBuilder("bash","-c", plannerCmd);
+		ProcessBuilder pb = new ProcessBuilder("bash", "-c", plannerCmd);
 		pb.directory(Paths.get(config.getPlannerDir()).toAbsolutePath().toFile());
 
 		Process process = pb.start();
 		int errCode = process.waitFor();
 
-		System.out.println("Planner command executed, any errors? " + (errCode == 0 ? "No" : "Yes"));
-		System.out.println("Planner Output:\n" + output(process.getInputStream()));
+		System.out.println("\tPlanner command executed, any errors? " + (errCode == 0 ? "No" : "Yes"));
+		System.out.println("\tPlanner Output:\n\n" + output(process.getInputStream()));
 
 		return true;
 	}
 
+	// TODO: this output parser only works for fast-downward
 	private static String output(InputStream inputStream) throws IOException {
+
+		boolean solutionFound = false;
+		boolean planCost = false;
+
 		StringBuilder sb = new StringBuilder();
 		BufferedReader br = null;
 		try {
 			br = new BufferedReader(new InputStreamReader(inputStream));
 			String line = null;
-			while ((line = br.readLine()) != null) {
-				sb.append(line + System.getProperty("line.separator"));
+			while ((line = br.readLine()) != null && !planCost) {
+				if (solutionFound) {
+					sb.append("\t\t" + line + System.getProperty("line.separator"));
+				}
+				if (line.contains("Solution found")) {
+					solutionFound = true;
+				} else if (line.contains("Plan cost")) {
+					planCost = true;
+				}
 			}
 		} finally {
 			br.close();

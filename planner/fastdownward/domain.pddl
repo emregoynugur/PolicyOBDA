@@ -61,6 +61,7 @@
     (hasOutputType ?s ?o)) 
   (:functions 
     (total-cost) 
+    (SoundDisabled ?device) 
     (SoundDisabled ?device)) 
   (:action locate-people :parameters 
     (?person ?room) :precondition 

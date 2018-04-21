@@ -30,14 +30,14 @@ public class PolicyManager {
 	private ArrayList<Policy> policies;
 
 	// Normative State
-	private HashSet<ActivePolicy> prohibitions;
+	private HashMap<String, HashSet<ActivePolicy>> prohibitions;
 	private HashMap<String, HashSet<ActivePolicy>> obligations;
-	
+
 	public OntopOWLReasoner getOWLReasoner() {
 		return owlReasoner;
 	}
 
-	public HashSet<ActivePolicy> getProhibitions() {
+	public HashMap<String, HashSet<ActivePolicy>> getProhibitions() {
 		return prohibitions;
 	}
 
@@ -51,45 +51,42 @@ public class PolicyManager {
 		Config pConfig = Config.getInstance();
 		OntopOWLFactory factory = OntopOWLFactory.defaultFactory();
 		OntopSQLOWLAPIConfiguration config = (OntopSQLOWLAPIConfiguration) OntopSQLOWLAPIConfiguration.defaultBuilder()
-	                .nativeOntopMappingFile(pConfig.getObdaFile())
-	                .ontologyFile(pConfig.getOntologyFile())
-	                .propertyFile(pConfig.getObdaPropertiesFile())
-	                .enableTestMode()
-	                .build();
+				.nativeOntopMappingFile(pConfig.getObdaFile()).ontologyFile(pConfig.getOntologyFile())
+				.propertyFile(pConfig.getObdaPropertiesFile()).enableTestMode().build();
 
 		owlReasoner = factory.createReasoner(config);
 		policies = new PolicyReader().readPolicies();
 		policyReasoner = new PolicyReasoner();
-		prohibitions = new HashSet<>();
+		prohibitions = new HashMap<String, HashSet<ActivePolicy>>();
 		obligations = new HashMap<String, HashSet<ActivePolicy>>();
 	}
 
 	public void updateNormativeState() throws Exception {
 
 		for (int i = 0; i < policies.size(); i++) {
+			
 			HashSet<ActivePolicy> instances = policyReasoner.createActivePolicies(policies.get(i), owlReasoner);
 
-			// TODO: determine domain actions (of planner) that will get affected
-			if (policies.get(i).getModality().contains("Prohibition")) {
-				prohibitions.addAll(instances);
-			} else if(policies.get(i).getModality().contains("Obligation")){
-				for(ActivePolicy instance : instances) {
-					String key = instance.getName() + "-" + instance.getAddressee();
-					if(!obligations.containsKey(key)) {
-						obligations.put(key, new HashSet<ActivePolicy>());
-					}
-					obligations.get(key).add(instance);
+			boolean isProhibition = policies.get(i).getModality().contains("Prohibition");
+			HashMap<String, HashSet<ActivePolicy>> set = (isProhibition) ? prohibitions : obligations;
+
+			for (ActivePolicy instance : instances) {
+				String key = instance.getName() + "-" + instance.getAddressee();
+				if (!set.containsKey(key)) {
+					set.put(key, new HashSet<ActivePolicy>());
 				}
+				set.get(key).add(instance);
 			}
 		}
 
 		// TODO: check deadlines for expirations of obligations?
-		
-		//check expired prohibitions
-		policyReasoner.removeExpiredPolicies(prohibitions, owlReasoner);
-		
-		//check expired obligations
-		for(String key : obligations.keySet())
+
+		// check expired prohibitions
+		for (String key : prohibitions.keySet())
+			policyReasoner.removeExpiredPolicies(prohibitions.get(key), owlReasoner);
+
+		// check expired obligations
+		for (String key : obligations.keySet())
 			policyReasoner.removeExpiredPolicies(obligations.get(key), owlReasoner);
 	}
 
@@ -114,19 +111,21 @@ public class PolicyManager {
 		}
 		return conflicts;
 	}
-	
-	public void executeObligations(List<LispExprList> actions) throws IOException, InterruptedException, ReasonerInternalException, OWLException {
-		
-		if(obligations.size() == 0)
+
+	public void executeObligations(List<LispExprList> actions)
+			throws IOException, InterruptedException, ReasonerInternalException, OWLException {
+
+		if (obligations.size() == 0)
 			return;
-		
+
 		PddlGenerator pddl = new PddlGenerator(this);
-		
+
 		pddl.generateDomainFile(actions);
-		
-		//TODO: implement a proper mechanism to consume obligations
-		//TODO: just change the goal state instead of re-generating the entire problem file.
-		for(String obligation : obligations.keySet()) {
+
+		// TODO: implement a proper mechanism to consume obligations
+		// TODO: just change the goal state instead of re-generating the entire problem
+		// file.
+		for (String obligation : obligations.keySet()) {
 			HashSet<ActivePolicy> instances = obligations.get(obligation);
 			pddl.generateProblemFile(instances);
 			Planner.runPlanner();
