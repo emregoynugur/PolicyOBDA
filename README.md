@@ -49,7 +49,9 @@ A relational database may not be a good choice for such an application. However 
 
 * The *current state* and the schema of a very simple smart home database (H2 in-memory database) is provided in */resources/use_cases	/smart_home/h2.sql*.
 
-* The *current state* includes a doorbell, a television, a baby (John), and an adult (Bob). The goal of the application is to find a way to notify *Bob*, while minimizing the violation costs. 
+* The *current state* includes a doorbell, a television, a baby (John), and an adult (Bob). 
+
+* The goal of the demo is finding a way to notify *Bob* without violating the sound policy. 
 
 The demo application first reads the provided policies and finds the conflict. Then, it updates the normative state (finds active policy instances). Finally, it runs the planner to execute obligated actions by minimizing (or avoiding) violation costs.
 
