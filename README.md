@@ -3,7 +3,7 @@
 This repository contains sample code and resources to help with the implementation of the policy framework (utilizing ontology based data access) described in our work (cite). 
 This implementation is a work in progress and it is missing several features to be used in production. However, all the functionality described in our work (cite) is implemented. Below we provide an overview of our policy framework.
 
-![](resources/images/obda.eps?raw=true)
+![](/resources/images/obda.eps?raw=true)
 
 
 ## Getting Started
