@@ -67,6 +67,9 @@ We provide the smart home system with only two policies; a prohibition (SoundDis
 
 5. It runs the **fast-downward planner** to find the best plan that minimizes (or avoids) violation costs. In this example, the planner first locates Bob and notifies him using a visual notification action, thus the found plan does not violate the sound policy.
 
+![](/resources/images/smart_home.png?raw=true)
+
+
 #### How to run
 
 If the dependencies described in the prerequisites section are installed, simply running  `SmartHome.java` file is sufficient to execute this scenario. The resources used in this example can be found under the `/resources/use_cases/smart_home/` folder.
