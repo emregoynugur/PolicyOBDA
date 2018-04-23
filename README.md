@@ -55,6 +55,10 @@ We provide the smart home system with only two policies; a prohibition (SoundDis
 
 * The goal is to notify the adult resident *Bob* without violating the sound policy. 
 
+#### How to run
+
+If the dependencies described in the prerequisites section are installed, simply running  `SmartHome.java` file is sufficient to execute this scenario. The resources used in this example can be found under the `/resources/use_cases/smart_home/` folder.
+
 #### Workflow
 
 1. The application copies its **configuration file** to the project's folder, starts an **in-memory H2 database** instance, and populates it. 
@@ -69,7 +73,3 @@ We provide the smart home system with only two policies; a prohibition (SoundDis
 
 ![](/resources/images/smart_home.png?raw=true)
 
-
-#### How to run
-
-If the dependencies described in the prerequisites section are installed, simply running  `SmartHome.java` file is sufficient to execute this scenario. The resources used in this example can be found under the `/resources/use_cases/smart_home/` folder.
