@@ -1,7 +1,10 @@
 # A Semantic Policy Framework for IoT
 
 This repository contains sample code and resources to help with the implementation of the policy framework (utilizing ontology based data access) described in our work (cite). 
-This implementation is a work in progress and it is missing several features to be used in production. However, all the functionality described in our work (cite) is implemented.
+This implementation is a work in progress and it is missing several features to be used in production. However, all the functionality described in our work (cite) is implemented. Below we provide an overview of our policy framework.
+
+![](resources/images/obda.eps?raw=true)
+
 
 ## Getting Started
 
@@ -13,7 +16,7 @@ The project is being developed with [Java 8](http://www.oracle.com/technetwork/j
 
 The easiest way to run the project is installing [Eclipse](https://www.eclipse.org/downloads/) (or your favorite IDE) and import the code as a [Maven](https://maven.apache.org/install.html) project. The IDE should automatically download all the dependencies.
 
-We use the [Fast Downward](http://fast-downward.org/) planner in our tests. We recommend using the source code provided in our repository, as we had to make a slight change (`disabled verify_axiom_predicates function`) in the code. (This *hack* will be addressed in the future.) See the [instructions](http://www.fast-downward.org/ObtainingAndRunningFastDownward) to compile the planner. 
+We use the [Fast Downward](http://fast-downward.org/) planner in our tests. We recommend using the source code provided in our repository, as we had to make a slight change (`disabled verify_axiom_predicates function`) in the code. (This issue will be addressed in the future.) See the [instructions](http://www.fast-downward.org/ObtainingAndRunningFastDownward) to compile the planner. 
 
 ### Configuration File
 
@@ -35,28 +38,35 @@ smartHomeDB=resources/use_cases/smart_home/h2.sql
 
 ## Use Cases
 
-We provide two examples in this project; a smart home example that works with a single in-memory database and a smart mine example that works with data federation. 
+We provide two examples in this project; a smart home example that works with a single in-memory database and a smart mine example that works with data federation.  Furthermore, the second use case *smart mine* allows us to show how our policy framework can be integrated into in-use IoT systems that work with multiple data sources.
 
 ### Smart Home
 
-A relational database may not be a good choice for such an application. However we use this example, as it is easy to understand. The implementation demonstrates the following scenario:
+We use this scenario only to demonstrate the basic functionality and to explain how our policy library can be used. This is a toy example and definitely not an attempt towards building a smart home application.
 
-* The used ontology, the mappings, and the policy file can be found under the */resources/use_cases/smart_home/* folder.
+#### Description
 
-* There are only two policies given to the smart home system; a prohibition (SoundDisabled) that disables sound notifications, and an obligation (NotifyDoorbell) that forces a doorbell to notify the residents if there is someone at the door. 
-
-* SoundDisabled and NotifyDoorbell policies are in conflict.
-
-* The *current state* and the schema of a very simple smart home database (H2 in-memory database) is provided in */resources/use_cases	/smart_home/h2.sql*.
-
-* The *current state* includes a doorbell, a television, a baby (John), and an adult (Bob). 
-
-* The goal of the demo is finding a way to notify *Bob* without violating the sound policy. 
-
-The demo application first reads the provided policies and finds the conflict. Then, it updates the normative state (finds active policy instances). Finally, it runs the planner to execute obligated actions by minimizing (or avoiding) violation costs.
+We provide the smart home system with only two policies; a prohibition (SoundDisabled) that disables sound notifications, and an obligation (NotifyDoorbell) that forces a doorbell to notify the residents if there is someone at the door. 
 
 
+* Given policies SoundDisabled and NotifyDoorbell are in conflict.
 
+* The *current state* includes a doorbell, a television, a baby (*John*), an adult (*Bob*), and a doorbell event. 
 
+* The goal is to notify the adult resident *Bob* without violating the sound policy. 
 
+#### Workflow
 
+1. The application copies its **configuration file** to the project's folder, starts an **in-memory H2 database** instance, and populates it. 
+
+2. The application reads the descriptions given in the **policies.xml** file and looks for potential **conflicts**.
+
+3. It updates the **normative state**. e.g. updates active/expired policy instances.
+
+4. The applications creates the **domain**  and **problem** files for the PDDL planner. The domain actions are **hard-coded** into the example.
+
+5. It runs the **fast-downward planner** to find the best plan that minimizes (or avoids) violation costs. In this example, the planner first locates Bob and notifies him using a visual notification action, thus the found plan does not violate the sound policy.
+
+#### How to run
+
+If the dependencies described in the prerequisites section are installed, simply running  `SmartHome.java` file is sufficient to execute this scenario. The resources used in this example can be found under the `/resources/use_cases/smart_home/` folder.
