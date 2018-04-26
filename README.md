@@ -1,9 +1,14 @@
 # A Semantic Policy Framework for IoT
 
 This repository contains sample code and resources to help with the implementation of the policy framework (utilizing ontology based data access) described in our work (cite). 
-This implementation is a work in progress and it is missing several features to be used in production. However, all the functionality described in our work (cite) is implemented. Below we provide an overview of our policy framework.
+This implementation is a work in progress and it is missing several features to be used in production. However, all the functionality described in our work (cite) is implemented. 
+
+## Overview
+
+This software takes the following as inputs: a policy file that contains all the policies, an ontology that is used to describe those policies, and the database mappings of the ontology. Then, the software can be used to detect conflicts between policies, to keep track of active policy instances, and to generate plans to execute obligation policies by minimizing policy violation costs. We note that converting action descriptions to PDDL is not in the scope of this work and PDDL actions should be provided to the planner. An overview of the architecture is provided below.
 
 ![](/resources/images/obda.png?raw=true)
+
 
 
 ## Getting Started
@@ -72,4 +77,5 @@ If the dependencies described in the prerequisites section are installed, simply
 5. It runs the **fast-downward planner** to find the best plan that minimizes (or avoids) violation costs. In this example, the planner first locates Bob and notifies him using a visual notification action, thus the found plan does not violate the sound policy.
 
 ![](/resources/images/smart_home.png?raw=true)
+
 
