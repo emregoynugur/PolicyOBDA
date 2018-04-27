@@ -68,7 +68,7 @@ public class PolicyReasoner {
 		return false;
 	}
 
-	private Set<OWLAxiom> freezeQuery(Query query, Map<String, OWLNamedIndividual> cache) {
+	private Set<OWLAxiom> freezeQuery(Query query, Map<String, OWLNamedIndividual> variableCache) {
 		Set<OWLAxiom> axioms = new HashSet<OWLAxiom>();
 		ElementTriplesBlock conditions = (ElementTriplesBlock) query.getQueryPattern();
 		for (Iterator<Triple> it = conditions.patternElts(); it.hasNext();) {
@@ -78,8 +78,7 @@ public class PolicyReasoner {
 			String subject = condition.getSubject().toString();
 			String object = condition.getObject().toString();
 
-			// TODO: implement individuals in policy descriptions
-			OWLNamedIndividual subjectInd = getOrCreateIndividual(subject, cache);
+			OWLNamedIndividual subjectInd = getOrCreateIndividual(subject, variableCache);
 
 			if (predicate.contains("#type")) {
 				OWLClass owlClass = factory.getOWLClass(IRI.create(object));
@@ -89,7 +88,7 @@ public class PolicyReasoner {
 			} else {
 				if (object.charAt(0) == '?') {
 					OWLObjectProperty property = factory.getOWLObjectProperty(IRI.create(predicate));
-					OWLIndividual objectInd = getOrCreateIndividual(object, cache);
+					OWLIndividual objectInd = getOrCreateIndividual(object, variableCache);
 					OWLObjectPropertyAssertionAxiom axiom = factory.getOWLObjectPropertyAssertionAxiom(property,
 							subjectInd, objectInd);
 					manager.addAxiom(ontology, axiom);
@@ -130,7 +129,8 @@ public class PolicyReasoner {
 		loadOntology();
 
 		indCounter = 0;
-		HashMap<String, OWLNamedIndividual> varIndMap = new HashMap<String, OWLNamedIndividual>();
+
+		HashMap<String, OWLNamedIndividual> variableIndividuals = new HashMap<String, OWLNamedIndividual>();
 
 		Policy p1 = null;
 		Policy p2 = null;
@@ -138,15 +138,17 @@ public class PolicyReasoner {
 		Set<OWLAxiom> createdAxioms = new HashSet<OWLAxiom>();
 		List<Map<String, OWLNamedIndividual>> results = new ArrayList<Map<String, OWLNamedIndividual>>();
 		for (int i = 0; i < 2; i++) {
+
 			p1 = i == 0 ? pA : pB;
 			p2 = i == 0 ? pB : pA;
 
 			if (i == 1) {
 				manager.removeAxioms(ontology, createdAxioms);
+				variableIndividuals.clear();
 			}
 
-			createdAxioms.addAll(freezeQuery(p1.getActivation(), varIndMap));
-			createdAxioms.addAll(freezeQuery(p1.getActionDescription(), varIndMap));
+			createdAxioms.addAll(freezeQuery(p1.getActivation(), variableIndividuals));
+			createdAxioms.addAll(freezeQuery(p1.getActionDescription(), variableIndividuals));
 
 			QuestOWL reasoner = startQuestReasoner();
 
@@ -168,7 +170,7 @@ public class PolicyReasoner {
 				System.err.println("PolicyReasoner Conflict Detection SQL Error: " + e.getMessage());
 				return false;
 			}
-			
+
 			reasoner.close();
 
 			if (!results.isEmpty())
@@ -178,7 +180,7 @@ public class PolicyReasoner {
 		if (results == null || results.isEmpty())
 			return false;
 
-		OWLNamedIndividual addressee = varIndMap.get(p1.getAddressee());
+		OWLNamedIndividual addressee = variableIndividuals.get(p1.getAddressee());
 		for (Map<String, OWLNamedIndividual> result : results) {
 
 			if (result.containsKey(p2.getAddressee())
@@ -186,6 +188,7 @@ public class PolicyReasoner {
 				continue;
 
 			result.put(p2.getAddressee(), addressee);
+
 			freezeQuery(p2.getActivation(), result);
 
 			QuestOWL reasoner = startQuestReasoner();
@@ -195,7 +198,7 @@ public class PolicyReasoner {
 
 			removeExpiredPolicies(activeA, reasoner);
 			removeExpiredPolicies(activeB, reasoner);
-			
+
 			reasoner.close();
 
 			if (activeA.size() == 0 || activeB.size() == 0)
@@ -205,17 +208,17 @@ public class PolicyReasoner {
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
 
 	public HashSet<ActivePolicy> createActivePolicies(Policy p, OntopOWLReasoner reasoner) throws OWLException {
 		HashSet<ActivePolicy> instances = new HashSet<>();
-	
+
 		try (OntopOWLConnection conn = reasoner.getConnection();
 				OntopOWLStatement st = conn.createStatement();
 				TupleOWLResultSet rs = st.executeSelectQuery(p.getActivation().toString());) {
-			
+
 			if (!rs.hasNext())
 				return instances;
 
@@ -250,8 +253,9 @@ public class PolicyReasoner {
 					expirationQuery = expiration.asQuery();
 
 				OWLNamedIndividual addressee = (OWLNamedIndividual) result.getOWLObject(p.getAddressee().substring(1));
-				instances.add(new ActivePolicy(p.getName(), addressee.getIRI().getShortForm(), signature, p.getActionDescription().toString(), expirationQuery,
-						p.getCost(), p.getDeadline(), p.getDeadlineUnit()));
+				instances.add(new ActivePolicy(p.getName(), addressee.getIRI().getShortForm(), signature,
+						p.getActionDescription().toString(), expirationQuery, p.getCost(), p.getDeadline(),
+						p.getDeadlineUnit()));
 			}
 		}
 		return instances;
@@ -272,13 +276,18 @@ public class PolicyReasoner {
 		}
 	}
 
-	private OWLNamedIndividual getOrCreateIndividual(String var, Map<String, OWLNamedIndividual> cache) {
-		if (cache.containsKey(var))
-			return cache.get(var);
-		OWLNamedIndividual ind = factory
-				.getOWLNamedIndividual(IRI.create(ontologyIri + "ind" + Integer.toString(indCounter++)));
-		cache.put(var, ind);
-		return ind;
+	private OWLNamedIndividual getOrCreateIndividual(String var, Map<String, OWLNamedIndividual> variableCache) {
+		if (var.charAt(0) == '?') {
+			if (variableCache.containsKey(var))
+				return variableCache.get(var);
+
+			OWLNamedIndividual individual = factory
+					.getOWLNamedIndividual(IRI.create(ontologyIri + "ind" + Integer.toString(indCounter++)));
+			variableCache.put(var, individual);
+			return individual;
+		}
+
+		return factory.getOWLNamedIndividual(IRI.create(ontologyIri + var));
 	}
 
 	public static void main(String[] args) throws ParserConfigurationException, IOException, SAXException, OWLException,
