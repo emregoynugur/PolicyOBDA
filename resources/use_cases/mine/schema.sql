@@ -1,3 +1,7 @@
+CREATE USER iot WITH PASSWORD 'iot';
+
+GRANT ALL ON DATABASE smart_mine TO iot;
+
 drop schema public cascade;
 
 create schema public;
