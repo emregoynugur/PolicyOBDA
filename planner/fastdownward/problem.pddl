@@ -8815,28 +8815,8 @@
   (:goal 
     (or 
       (and 
-        (SafeZone region19)) 
+        (SafeZone region20)) 
       (and 
-        (SafeZone region5)) 
-      (and 
-        (SafeZone region13)) 
-      (and 
-        (SafeZone region1)) 
-      (and 
-        (SafeZone region4)) 
-      (and 
-        (SafeZone region16)) 
-      (and 
-        (SafeZone region23)) 
-      (and 
-        (SafeZone region3)) 
-      (and 
-        (SafeZone region29)) 
-      (and 
-        (SafeZone region27)) 
-      (and 
-        (SafeZone region8)) 
-      (and 
-        (SafeZone region15)))) 
+        (SafeZone region16)))) 
   (:metric minimize 
     (total-cost)))

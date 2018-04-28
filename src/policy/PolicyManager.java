@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map.Entry;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -80,27 +82,20 @@ public class PolicyManager {
 		}
 
 		// TODO: check deadlines for expirations of obligations?
-		HashSet<String> expiredPolicies = new HashSet<>();
 
 		// check expired prohibitions
-		for (String key : prohibitions.keySet()) {
-			policyReasoner.removeExpiredPolicies(prohibitions.get(key), owlReasoner);
-			if (prohibitions.get(key).size() == 0)
-				expiredPolicies.add(key);
-		}
-
-		// check expired obligations
-		for (String key : obligations.keySet()) {
-			policyReasoner.removeExpiredPolicies(obligations.get(key), owlReasoner);
-			if (obligations.get(key).size() == 0)
-				expiredPolicies.add(key);
-		}
-
-		for (String key : expiredPolicies) {
-			if (prohibitions.containsKey(key))
-				prohibitions.remove(key);
-			else
-				obligations.remove(key);
+		updateExpiredPolicies(false);
+		updateExpiredPolicies(true);
+	}
+	
+	private void updateExpiredPolicies(boolean positives) throws OWLException {
+		Iterator<Entry<String, HashSet<ActivePolicy>>> iter = (positives) ? prohibitions.entrySet().iterator() : obligations.entrySet().iterator();
+		while (iter.hasNext()) {
+			Entry<String, HashSet<ActivePolicy>> entry = iter.next();
+			policyReasoner.removeExpiredPolicies(entry.getValue(), owlReasoner);
+			if (entry.getValue().size() == 0) {
+				iter.remove();
+			}
 		}
 	}
 
