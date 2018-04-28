@@ -134,13 +134,13 @@ These instructions are taken from [Ontop's tutorial](https://github.com/ontop/on
 
 ##### Creating the federated view in Eclipse
 
-First create a Teiid model project for the relational database.
+###### Create the Teiid model project for the relational database.
 
 1. Select `File > New > Others` from the menu bar
 2. Choose `Teiid Designer > Teiid Model Project` from the menu bar
 3. Project name: FederatedMine
 
-After creating the project, we need to create a PostgreSQL connection. 
+###### Create the PostgreSQL connection. 
 
 1. Switch to Teiid Designer perspective.
 2. Select `File > Import > Teiid Designer > JDBC Database`
@@ -158,15 +158,15 @@ After creating the project, we need to create a PostgreSQL connection.
 8. Click next again, select *public schema*, and then click next one more time.
 9. Click finish.
 
-Now, create a Teiid Server instance to test if PostgreSQL connection is working.
+###### Create the Teiid Server instance to test if PostgreSQL connection is working.
 
 1. Click on the "No default server defined" link at the bottom of "Connections" tab. A dialog window will pop out to create a new Teiid server connection.
 2. Select "WildFly 10.x".
 3. Set the server's host name according to your server installation (by default, use localhost for local installation). Accept the other default values by selecting "Next".
 4. Set the server's name to IoTServer
 5. Click "Next" (twice).
-6. Adjust the "Home Directory" to your TEIID_HOME location.
-7. Adjust the "Configuration file" to TEIID_HOME/standalone/configuration/**standalone-teiid.xml**.
+6. Adjust the "Home Directory" to your $TEIID_HOME location.
+7. Adjust the "Configuration file" to $TEIID_HOME/standalone/configuration/**standalone-teiid.xml**.
 8. Enter the credentials set in the previous step. Double click on "IoTServer" in the "Servers" tab.
 	* Management Login Credentials:
 		* Username: iotadmin
@@ -175,6 +175,45 @@ Now, create a Teiid Server instance to test if PostgreSQL connection is working.
 		* Username: iotuser
 		* Password: iot
 9. Click on the green button to start the server.
-10. Finally, check if both links "Check Administration Button" and "Check JDBC Connection" in *Teiid Instance" tab returns **OK**.
+10. Finally, check if both links "Check Administration Button" and "Check JDBC Connection" in "Teiid Instance" tab returns **OK**.
 
-Follow [this tutorial](https://developer.jboss.org/wiki/ConnectToAMongoDBSource)  to connect the MongoDB server. Please read our notes below before you start the tutorial.
+###### Create the MongoDB connection
+
+1. Locate the below line in your *$TEIID_HOME/standalone/configuration/**standalone-teiid.xml*
+```xml
+<resource-adapter id="mongodb">
+	<module slot="main" id="org.jboss.teiid.resource-adapter.mongodb"/>
+</resource-adapter>
+```
+
+2. Replace the above piece of code with the following snippet.
+```xml
+<resource-adapter id="mongodb">
+	<module slot="main" id="org.jboss.teiid.resource-adapter.mongodb"/>
+	<transaction-support>NoTransaction</transaction-support>
+	<connection-definitions>
+      <connection-definition 
+ 			classname="org.teiid.resource.adapter.mongodb.MongoDBManagedConnectionFactory" 
+            jndi-name="java:/mongoDS" enabled="true" use-java-context="true" pool-					name="teiid-mongodb-ds">
+          <config-property name="Database"> smart_mine </config-property>
+          <config-property name="RemoteServerList"> localhost:27017 </config-property>
+          <config-property name="Username"> iot </config-property>
+          <config-property name="Password"> iot </config-property>
+      </connection-definition>
+    </connection-definitions>
+</resource-adapter>
+```
+3. Restart the Teiid Server. 
+4. Select `File > Import... > Teiid Connection >> Source Model` , then click Next.
+5. Choose the `java:/MongoDS` data source, click next and name the model "MongoDS".
+
+##### Create the Virtual Database
+
+1. Select both "MongoDS.xmi" and "PostgreSQL.xmi" in Model Explorer and do right-click `New > Teiid VDB`.
+2. Name the VDB model "SmartMine".
+3. Select "SmartMine.vdb" in "Model Explorer" and do right-click Modeling > Execute VDB. This will deploy the VDB to the server and Eclipse will switch to "Database Development" perspective. 
+4. (Optional) You can create "Foreign Keys" between tables in different data sources in your VDB model and query these tables in the "Database Development" perspective.
+5. The virtual database for our example is now up and running. We provide an overview below.
+
+
+![](/resources/images/virtual_db.png?raw=true)
