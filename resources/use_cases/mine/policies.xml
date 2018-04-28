@@ -44,7 +44,7 @@
     <!-- When someone presses his panic button, take him to the safety -->
     <Policy Name="HelpPanickedPersonnel" Modality="Obligation" Addressee="?e">
     	<AddresseeRole> Employee(?e) </AddresseeRole>
-    	<Activation> panic(?p, ?urgent), inRegion(?p, ?region), inRegion(?e, ?region) </Activation>
+    	<Activation> panic(?p, ?panic), sys:'equals'(?panic, true), inRegion(?p, ?region), inRegion(?e, ?region) </Activation>
     	<ActionDescription Var="?a"> Rescue(?a), actor(?a, ?e), target(?a, ?p) </ActionDescription>
     	<Expiration>inRegion(?p, ?safe), SafeZone(?safe)</Expiration>
     	<Deadline> 10:minutes </Deadline>

@@ -84,23 +84,21 @@ public class PolicyReader {
 			Integer.parseInt(data);
 			return NodeFactory.createLiteral(data, XSD.INT);
 		} catch (NumberFormatException e) {
-			System.out.println(data + " is not a int");
 		}
 
 		try {
 			Double.parseDouble(data);
 			return NodeFactory.createLiteral(data, XSD.DOUBLE);
 		} catch (NumberFormatException e) {
-			System.out.println(data + " is not a double");
 		}
 
 		try {
 			Boolean.parseBoolean(data);
 			return NodeFactory.createLiteral(data, XSD.BOOLEAN);
 		} catch (NumberFormatException e) {
-			System.out.println(data + " is not a boolean");
 		}
-
+		
+		System.err.println("Unsupported data type");
 		return null;
 	}
 

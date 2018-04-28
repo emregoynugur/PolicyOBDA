@@ -16,6 +16,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.apache.jena.graph.Triple;
 import org.apache.jena.query.ParameterizedSparqlString;
 import org.apache.jena.query.Query;
+import org.apache.jena.sparql.syntax.ElementGroup;
 import org.apache.jena.sparql.syntax.ElementTriplesBlock;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.IRI;
@@ -67,9 +68,14 @@ public class PolicyReasoner {
 
 		return false;
 	}
+	
 
-	private Set<OWLAxiom> freezeQuery(Query query, Map<String, OWLNamedIndividual> variableCache) {
-		Set<OWLAxiom> axioms = new HashSet<OWLAxiom>();
+	private boolean freezeQuery(Query query, Map<String, OWLNamedIndividual> variableCache, Set<OWLAxiom> axioms) {
+		
+		// TODO: Data Property
+		if(query.getQueryPattern() instanceof ElementGroup)
+			return false;
+		
 		ElementTriplesBlock conditions = (ElementTriplesBlock) query.getQueryPattern();
 		for (Iterator<Triple> it = conditions.patternElts(); it.hasNext();) {
 			Triple condition = it.next();
@@ -95,13 +101,18 @@ public class PolicyReasoner {
 					axioms.add(axiom);
 				} else {
 					// TODO: Data Property
+					return false;
 				}
 			}
 		}
-		return axioms;
+		return true;
 	}
 
 	private void loadOntology() {
+		
+		if(ontology != null)
+			return;
+
 		try {
 			ontology = manager.loadOntologyFromOntologyDocument(new File(Config.getInstance().getOntologyFile()));
 		} catch (Exception e1) {
@@ -147,8 +158,15 @@ public class PolicyReasoner {
 				variableIndividuals.clear();
 			}
 
-			createdAxioms.addAll(freezeQuery(p1.getActivation(), variableIndividuals));
-			createdAxioms.addAll(freezeQuery(p1.getActionDescription(), variableIndividuals));
+			Set<OWLAxiom> axioms = new HashSet<OWLAxiom>();
+			
+			if(!freezeQuery(p1.getActivation(), variableIndividuals, axioms)) 
+				return false;
+			
+			if(!freezeQuery(p1.getActionDescription(), variableIndividuals, axioms))
+				return false;
+
+			createdAxioms.addAll(axioms);
 
 			QuestOWL reasoner = startQuestReasoner();
 
@@ -189,7 +207,8 @@ public class PolicyReasoner {
 
 			result.put(p2.getAddressee(), addressee);
 
-			freezeQuery(p2.getActivation(), result);
+			if(!freezeQuery(p2.getActivation(), result, new HashSet<OWLAxiom>()))
+				return false;
 
 			QuestOWL reasoner = startQuestReasoner();
 

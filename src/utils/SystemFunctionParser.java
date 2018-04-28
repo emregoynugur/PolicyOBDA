@@ -19,6 +19,7 @@ import org.apache.jena.sparql.expr.E_NotEquals;
 import org.apache.jena.sparql.expr.E_Subtract;
 import org.apache.jena.sparql.expr.Expr;
 import org.apache.jena.sparql.expr.ExprVar;
+import org.apache.jena.sparql.expr.nodevalue.NodeValueBoolean;
 import org.apache.jena.sparql.expr.nodevalue.NodeValueFloat;
 import org.apache.jena.sparql.expr.nodevalue.NodeValueInteger;
 import org.apache.jena.sparql.syntax.ElementFilter;
@@ -120,6 +121,8 @@ public class SystemFunctionParser {
             return new NodeValueInteger(Integer.parseInt(param));
         else if (isFloat(param))
             return new NodeValueFloat(Float.parseFloat(param));
+        else if(isBoolean(param))
+        	return new NodeValueBoolean(Boolean.parseBoolean(param));
 //            else if (SchemaDateFormat.isDate(op))
 //                return new NodeValueDT("asd", null);
 //            else if (param.contains(timeVar))
@@ -180,6 +183,18 @@ public class SystemFunctionParser {
     private static boolean isInteger(String s) {
         try {
             Integer.parseInt(s);
+        } catch (NumberFormatException e) {
+            return false;
+        } catch (NullPointerException e) {
+            return false;
+        }
+        // only got here if we didn't return false
+        return true;
+    }
+    
+    private static boolean isBoolean(String s) {
+        try {
+            Boolean.parseBoolean(s);
         } catch (NumberFormatException e) {
             return false;
         } catch (NullPointerException e) {
