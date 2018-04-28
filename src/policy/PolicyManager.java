@@ -64,7 +64,7 @@ public class PolicyManager {
 	public void updateNormativeState() throws Exception {
 
 		for (int i = 0; i < policies.size(); i++) {
-			
+
 			HashSet<ActivePolicy> instances = policyReasoner.createActivePolicies(policies.get(i), owlReasoner);
 
 			boolean isProhibition = policies.get(i).getModality().contains("Prohibition");
@@ -80,14 +80,28 @@ public class PolicyManager {
 		}
 
 		// TODO: check deadlines for expirations of obligations?
+		HashSet<String> expiredPolicies = new HashSet<>();
 
 		// check expired prohibitions
-		for (String key : prohibitions.keySet())
+		for (String key : prohibitions.keySet()) {
 			policyReasoner.removeExpiredPolicies(prohibitions.get(key), owlReasoner);
+			if (prohibitions.get(key).size() == 0)
+				expiredPolicies.add(key);
+		}
 
 		// check expired obligations
-		for (String key : obligations.keySet())
+		for (String key : obligations.keySet()) {
 			policyReasoner.removeExpiredPolicies(obligations.get(key), owlReasoner);
+			if (obligations.get(key).size() == 0)
+				expiredPolicies.add(key);
+		}
+
+		for (String key : expiredPolicies) {
+			if (prohibitions.containsKey(key))
+				prohibitions.remove(key);
+			else
+				obligations.remove(key);
+		}
 	}
 
 	public HashMap<Policy, ArrayList<Policy>> checkAllConflicts()
