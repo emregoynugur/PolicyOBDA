@@ -1,6 +1,8 @@
 package planning;
 
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -15,7 +17,9 @@ import org.apache.jena.sparql.syntax.ElementGroup;
 import org.apache.jena.sparql.syntax.ElementPathBlock;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLDataProperty;
 import org.semanticweb.owlapi.model.OWLException;
+import org.semanticweb.owlapi.model.OWLLiteral;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLObjectPropertyExpression;
@@ -318,9 +322,9 @@ public class PddlGenerator {
 				}
 			}
 
-			Set<OWLObjectProperty> properties = manager.getOWLReasoner().getRootOntology()
+			Set<OWLObjectProperty> objectProperties = manager.getOWLReasoner().getRootOntology()
 					.getObjectPropertiesInSignature();
-			for (OWLObjectProperty property : properties) {
+			for (OWLObjectProperty property : objectProperties) {
 				String q = "SELECT DISTINCT ?s ?o WHERE { ?s <" + property.getIRI() + "> ?o }";
 				try (TupleOWLResultSet rs = st.executeSelectQuery(q);) {
 
@@ -343,8 +347,44 @@ public class PddlGenerator {
 					}
 				}
 			}
-
+			
 			definition.add(getObjects(individuals));
+			
+			Set<OWLDataProperty> dataProperties = manager.getOWLReasoner().getRootOntology()
+					.getDataPropertiesInSignature();
+			
+			for (OWLDataProperty property : dataProperties) {
+				String q = "SELECT DISTINCT ?s ?d WHERE { ?s <" + property.getIRI() + "> ?d }";
+				try (TupleOWLResultSet rs = st.executeSelectQuery(q);) {
+
+					while (rs.hasNext()) {
+						OWLBindingSet result = rs.next();
+						
+						LispExprList initFunction = new LispExprList();
+						initFunction.add(new Atom("="));
+						
+						LispExprList costFunction = new LispExprList();
+						costFunction.add(new Atom(property.getIRI().getShortForm()));
+						costFunction.add(new Atom(((OWLNamedIndividual) result.getOWLObject("s")).getIRI().getShortForm()));
+						
+						initFunction.add(costFunction);
+						
+						OWLLiteral data = (OWLLiteral) result.getOWLObject("d");
+						if(data.isDouble()) {
+							BigDecimal value = new BigDecimal(Double.parseDouble(data.getLiteral()));
+							initFunction.add(new Atom(value.setScale(2, RoundingMode.HALF_UP).toString()));
+						} else if (data.isBoolean()) {
+							String value = (data.getLiteral().contains("true")) ? "1" : "0";
+							initFunction.add(new Atom(value));
+						}else{
+							initFunction.add(new Atom(data.getLiteral()));
+						}
+						
+						initialState.add(initFunction);
+
+					}
+				}
+			}
 
 			LispExprList initCost = new LispExprList();
 			LispExprList totalCost = new LispExprList();

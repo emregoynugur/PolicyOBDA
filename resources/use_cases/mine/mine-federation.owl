@@ -22,6 +22,12 @@
     
 
 
+    <!-- https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#actor -->
+
+    <owl:ObjectProperty rdf:about="https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#actor"/>
+    
+
+
     <!-- https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#assignedTo -->
 
     <owl:ObjectProperty rdf:about="https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#assignedTo"/>
@@ -79,6 +85,12 @@
     <!-- https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#readBy -->
 
     <owl:ObjectProperty rdf:about="https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#readBy"/>
+    
+
+
+    <!-- https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#target -->
+
+    <owl:ObjectProperty rdf:about="https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#target"/>
     
 
 
@@ -350,10 +362,26 @@
     
 
 
+    <!-- https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#EnterRegion -->
+
+    <owl:Class rdf:about="https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#EnterRegion">
+        <rdfs:subClassOf rdf:resource="https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#Action"/>
+    </owl:Class>
+    
+
+
     <!-- https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#Equipment -->
 
     <owl:Class rdf:about="https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#Equipment">
         <rdfs:subClassOf rdf:resource="https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#Asset"/>
+    </owl:Class>
+    
+
+
+    <!-- https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#Evacuate -->
+
+    <owl:Class rdf:about="https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#Evacuate">
+        <rdfs:subClassOf rdf:resource="https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#Action"/>
     </owl:Class>
     
 

@@ -5,7 +5,7 @@
     <Policy Name="DrillingProhibition" Modality="Prohibition" Addressee="?e">
     	<AddresseeRole> Employee(?e) </AddresseeRole>
     	<Activation> inRegion(?e, ?region) </Activation>
-    	<ActionDescription Var="?a"> DrillingAction(?a), actor(?a, ?e), target(?a, ?region) </ActionDescription>
+    	<ActionDescription Var="?a"> Drill(?a), actor(?a, ?e), target(?a, ?region) </ActionDescription>
     	<Expiration> Driller(?e) </Expiration>
     	<Cost> 10.0 </Cost>
     </Policy>
@@ -55,7 +55,7 @@
     <Policy Name="WarnEmployeeCarbonMonoxide" Modality="Obligation" Addressee="?e">
     	<AddresseeRole> Employee(?e) </AddresseeRole>
     	<Activation> inRegion(?e, ?region), oxygen(?region, ?carbonmonoxide), sys:'greater_than'(?carbonmonoxide, 1.0) </Activation>
-    	<ActionDescription Var="?a"> VentilateRegion(?a), actor(?a, ?e), target(?a, ?region) </ActionDescription>
+    	<ActionDescription Var="?a"> Ventilate(?a), actor(?a, ?e), target(?a, ?region) </ActionDescription>
     	<Expiration>SafeZone(?region)</Expiration>
     	<Deadline> 5:minutes </Deadline>
     	<Cost> 30.0 </Cost>

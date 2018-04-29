@@ -1,11 +1,11 @@
 import random
 
-n_regions = 30
-n_employees = 200
-n_assets = 800
-n_gas = 30
-n_location = 30
-n_vehicles = 30
+n_regions = 3
+n_employees = 10
+n_assets = 80
+n_gas = 3
+n_location = 3
+n_vehicles = 3
 
 n_readings_loc = 1
 n_readings_gas = 1
