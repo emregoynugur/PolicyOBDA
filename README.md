@@ -80,7 +80,16 @@ If the dependencies described in the prerequisites section are installed, simply
 
 ### Smart Mine
 
-This is a naive implementation of our policy framework utilizing data federation and OBDA with Ontop. We simplified and distributed the data of a real application into two different sources but we did not do it in the most efficient way to show that we can join different data sources to query a concept or property.
+This is a naive implementation of our policy framework utilizing data federation and OBDA with Ontop. 
+
+
+#### Description
+
+We simplified and distributed the data of a real coal mine [application](http://litumiot.com/mine-rtls-worker-tracking/) into two different sources. We did not consider doing any optimizations, while splitting the data. We simply intend to show how our policy framework can be integrated into in-use applications with multiple data sources.
+
+The data used in this example is generated randomly, however it may still not be very meaningful and there are many active instances of policies.
+
+
 
 #### Prerequisites
 
