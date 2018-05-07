@@ -12,7 +12,7 @@ import ch.qos.logback.classic.Level;
 import policy.Policy;
 import policy.PolicyManager;
 
-public class SmartMine {
+public class SmartMineFederation {
 	
 	public static void copyConfigFile() throws IOException {
 		Path src = Paths.get("resources/use_cases/mine/config.properties");
@@ -34,7 +34,7 @@ public class SmartMine {
 					.getLogger(ch.qos.logback.classic.Logger.ROOT_LOGGER_NAME);
 			root.setLevel(Level.OFF);
 			
-			SmartMine.copyConfigFile();
+			SmartMineFederation.copyConfigFile();
 			
 			PolicyManager manager = new PolicyManager();
 			
