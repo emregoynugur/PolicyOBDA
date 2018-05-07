@@ -3,9 +3,13 @@
 This repository contains sample code and resources to help with the implementation of the policy framework (utilizing ontology based data access) described in our work (cite). 
 This implementation is a work in progress and it is missing several features to be used in production. However, all the functionality described in our work (cite) is implemented. 
 
-## Overview
+## What is a policy framework?
 
-This software takes the following as inputs: a policy file that contains all the policies, an ontology that is used to describe those policies, and the database mappings of the ontology. Then, the software can be used to detect conflicts between policies, to keep track of active policy instances, and to generate plans to execute obligation policies by minimizing policy violation costs. We note that converting action descriptions to PDDL is not in the scope of this work and PDDL actions should be provided to the planner. An overview of the architecture is provided below.
+Policies are external instructions (very similar to event-condition action rules) that define a system's behaviours. However, they are "soft" rules that can be violated in case of a conflict. i.e. one policy may forbid opening a window if there is a cat in the room, while the other policy may oblige opening a window. In this case, one of the policies should be violated if there is no other way to ventilate the room. In the context of Internet of Things (IoT), policy frameworks can be used to develop digital assistants such as Siri, Alexa, or Google Home.
+
+The software in the repository takes the following as inputs: a policy file that contains all the policies, an ontology that is used to describe those policies, and the database mappings of the ontology. 
+
+Then, the software can be used to detect conflicts between policies, to keep track of active policy instances, and to generate plans for executing obligations while minimizing policy violation costs. We note that converting action descriptions to PDDL is not in the scope of this work and PDDL actions should be provided to the planner. An overview of the architecture is provided below.
 
 ![](/resources/images/obda.png?raw=true)
 
