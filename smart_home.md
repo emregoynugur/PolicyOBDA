@@ -1,6 +1,6 @@
 ### Smart Home
 
-We use this scenario only to demonstrate the basic functionality and to explain how our policy library can be used. This is a toy example and definitely not an attempt towards building a smart home application.
+This scenario demonstrates the basic functionality and how the Java code in this repository can be used. This is a toy example and definitely not an attempt towards building a smart home application. The code runs with an H2 database, however any SQL database can be used by changing connection settings.
 
 #### Description
 

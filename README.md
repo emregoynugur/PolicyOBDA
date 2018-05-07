@@ -10,7 +10,6 @@ This software takes the following as inputs: a policy file that contains all the
 ![](/resources/images/obda.png?raw=true)
 
 
-
 ## Getting Started
 
 These instructions will let you run our project and examples on your local machine for development or testing purposes. 
