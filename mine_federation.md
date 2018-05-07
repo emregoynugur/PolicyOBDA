@@ -1,14 +1,11 @@
 ### Smart Mine - Federation
 
-This is a naive implementation of our policy framework utilizing data federation and OBDA with Ontop. 
+This example illustrates how the proposed framework can be integrated into in-use applications with multiple data sources.
 
 
 #### Description
 
-We simplified and distributed the data of a real coal mine [application](http://litumiot.com/mine-rtls-worker-tracking/) into two different sources. We did not consider doing any optimizations, while splitting the data. We simply intend to show how our policy framework can be integrated into in-use applications with multiple data sources.
-
-The data used in this example is generated randomly, however it may still not be very meaningful and there are many active instances of policies.
-
+We simplified and distributed the data of a real coal mine [application](http://litumiot.com/mine-rtls-worker-tracking/) into two different sources. We did not consider doing any optimizations, while splitting the data. The data used in this example is generated randomly. Thus, active instances of policies may not be very meaningful.
 
 
 #### Prerequisites
@@ -23,16 +20,16 @@ The data used in this example is generated randomly, however it may still not be
 
 #### Setup
 
-After downloading the requirements mentioned above, please follow these instructions to get the data federation solution up and running. We followed [Ontop's tutorial](https://github.com/ontop/ontop/wiki/BookFederationTutorial) to create our example. Similar instructions can be found in their site.
+After downloading the requirements mentioned above, please follow the below instructions to get the data federation solution up and running. We followed [Ontop's tutorial](https://github.com/ontop/ontop/wiki/BookFederationTutorial) to create this example. 
 
 ##### Preparing the data sources
 
 ###### PostreSQL
+
 1. Create PostgreSQL database by running `CREATE DATABASE smart_mine;` in `psql`
 2. Create the tables by running the script located in the example's folder.  `psql smart_mine < ./resources/use_cases/mine/schema.sql`
 
 ###### MongoDB
-
 
 3. Start the MongoDB server. 
 4. Connect to your MongoDB server. (On macOS `mongod`command in terminal can be used to start a server and `mongo` command can be used to connect to that instance in another terminal window.
@@ -114,7 +111,6 @@ These instructions are taken from [Ontop's tutorial](https://github.com/ontop/on
 	<module slot="main" id="org.jboss.teiid.resource-adapter.mongodb"/>
 </resource-adapter>
 ```
-
 2. Replace the above piece of code with the following snippet.
 ```xml
 <resource-adapter id="mongodb">
