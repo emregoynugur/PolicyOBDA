@@ -22,9 +22,9 @@ These instructions will let you run our project and examples on your local machi
 
 The project is being developed with [Java 8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html).
 
-The easiest way to run the project is installing [Eclipse](https://www.eclipse.org/downloads/) (or your favorite IDE) and import the code as a [Maven](https://maven.apache.org/install.html) project. The IDE should automatically download all the dependencies.
+The easiest way to run the project is installing [Eclipse](https://www.eclipse.org/downloads/) (or your favorite IDE) and importing the code as a [Maven](https://maven.apache.org/install.html) project. The IDE should automatically download all the dependencies.
 
-We use the [Fast Downward](http://fast-downward.org/) planner in our tests. We recommend using the source code provided in our repository, as we had to make a slight change (disabled `verify_axiom_predicates` function in `/translate/normalize.py` file) in the code. (This issue will be addressed in the future.) See the [instructions](http://www.fast-downward.org/ObtainingAndRunningFastDownward) to compile the planner. 
+We use the [Fast Downward](http://fast-downward.org/) planner in our tests. We recommend using the source code provided in our repository, as we had to make a slight change (disabled `verify_axiom_predicates` function in `/translate/normalize.py` file) in the code. (This issue will be addressed in the future.) See the [instructions](http://www.fast-downward.org/ObtainingAndRunningFastDownward) to compile the planner. Be sure to compile the planner before you try running the smart home example.
 
 ### Configuration File
 
@@ -46,7 +46,7 @@ smartHomeDB=resources/use_cases/smart_home/h2.sql
 
 ## Use Cases
 
-We provide two examples in this project; a smart home example that works with a single in-memory database and a smart mine example that works with data federation.  Furthermore, the second use case *smart mine* allows us to show how our policy framework can be integrated into in-use IoT systems that work with multiple data sources.
+We provide two examples in this project; a smart home example that works with a single in-memory database and a smart mine example that works with data federation. 
 
 * [Smart Home](smart_home.md)
 * [Smart Mine (with federation)](mine_federation.md)
