@@ -13,7 +13,7 @@
 		<AddresseeRole>Device(?d)</AddresseeRole>
 		<Activation> Person(?p), SoundNotification(?t), disabledNotificationType(?p, ?t) </Activation>
 		<ActionDescription Var="?a"> SoundAction(?a) </ActionDescription>
-		<Expiration> Hall(?p) </Expiration>
+		<Expiration> </Expiration>
 		<Cost>8.0</Cost>
 	</Policy>
 </Policies>
