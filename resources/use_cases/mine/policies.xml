@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <Policies>
 	<!-- Hand Held Drillers would require miners to function. -->
-	<!-- If the driller is in its assigned location and there are no miners to use it, it shouldn't work. -->
     <Policy Name="DrillingProhibition" Modality="Prohibition" Addressee="?e">
     	<AddresseeRole> Employee(?e) </AddresseeRole>
     	<Activation> inRegion(?e, ?region) </Activation>
@@ -11,7 +10,6 @@
     </Policy>
 
     <!-- If the asset is out of its assigned location, it shouldn't work -->
-    <!-- This is already being done by their software. But it just sends a notification/alarm. -->
     <Policy Name="AssetGeoFencing" Modality="Prohibition" Addressee="?tool">
     	<AddresseeRole> Tool(?tool) </AddresseeRole>
     	<Activation> inRegion(?tool, ?region), assignedTo(?tool, ?assigned), sys:'not_equals'(?region, ?assigned) </Activation>
@@ -21,7 +19,6 @@
     </Policy>
 
     <!-- Employees cannot go to the areas, for which they are not authorized -->
-    <!-- Tag is the addresse, since I assumed that personal tags are opening the doors -->
     <Policy Name="RestrictedArea" Modality="Prohibition" Addressee="?e">
     	<AddresseeRole> Employee(?e) </AddresseeRole>
     	<Activation> authorizationLevel(?e, ?level), sys:'less_than'(?level, 4) </Activation>
@@ -30,8 +27,7 @@
     	<Cost> 8.0 </Cost>
     </Policy>
 
-    <!-- If there is an explosion risk, take explosives to safety. 
-    	 However, blasters, who specializes in explosives, should do this operation. -->
+    <!-- If there is an explosion risk, take explosives to safety. However, blasters, who specializes in explosives, should do this operation. -->
     <Policy Name="GetOutOfExplosionZone" Modality="Obligation" Addressee="?e">
     	<AddresseeRole> Employee (?e) </AddresseeRole>
     	<Activation> inRegion(?e, ?region), ExplosionZone(?region) </Activation>
@@ -51,16 +47,17 @@
     	<Cost> 20.0 </Cost>
     </Policy>
 
-    <!-- Warn the personnel about a potential fire risk -->
+    <!-- Ventilate the room if carbonmonoxide level is high -->
     <Policy Name="WarnEmployeeCarbonMonoxide" Modality="Obligation" Addressee="?e">
     	<AddresseeRole> Employee(?e) </AddresseeRole>
-    	<Activation> inRegion(?e, ?region), oxygen(?region, ?carbonmonoxide), sys:'greater_than'(?carbonmonoxide, 1.0) </Activation>
+    	<Activation> inRegion(?e, ?region), carbonmonoxide(?region, ?carbonmonoxide), sys:'greater_than'(?carbonmonoxide, 1.0) </Activation>
     	<ActionDescription Var="?a"> Ventilate(?a), actor(?a, ?e), target(?a, ?region) </ActionDescription>
     	<Expiration>SafeZone(?region)</Expiration>
     	<Deadline> 5:minutes </Deadline>
     	<Cost> 30.0 </Cost>
     </Policy>
 
+    <!-- Fire Alarm -->
     <Policy Name="ExtinguishFire" Modality="Obligation" Addressee="?fm">
     	<AddresseeRole> Fireman(?fm) </AddresseeRole>
     	<Activation> hasDanger(?region, ?fire), Fire(?fire) </Activation>
@@ -80,6 +77,5 @@
     	<Cost> 40.0 </Cost>
     </Policy>
 
-    <!-- Fire Alarm -->
     <!-- Working zones must have sufficient lighting -->
 </Policies>
