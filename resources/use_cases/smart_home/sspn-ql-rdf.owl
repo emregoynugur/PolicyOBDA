@@ -14,115 +14,16 @@
     <Prefix name="obda" IRI="https://w3id.org/obda/vocabulary#"/>
     <Prefix name="rdfs" IRI="http://www.w3.org/2000/01/rdf-schema#"/>
     <Declaration>
+        <DataProperty IRI="#hasIntegerValue"/>
+    </Declaration>
+    <Declaration>
         <Class IRI="#Room"/>
     </Declaration>
     <Declaration>
         <ObjectProperty IRI="#inRoom"/>
     </Declaration>
     <Declaration>
-        <ObjectProperty IRI="#produces"/>
-    </Declaration>
-    <Declaration>
-        <Class IRI="#TemperatureSensor"/>
-    </Declaration>
-    <Declaration>
-        <Class IRI="#Hall"/>
-    </Declaration>
-    <Declaration>
-        <Class IRI="#IndoorSpace"/>
-    </Declaration>
-    <Declaration>
-        <Class IRI="#OutputData"/>
-    </Declaration>
-    <Declaration>
-        <ObjectProperty IRI="#hasLocation"/>
-    </Declaration>
-    <Declaration>
-        <Class IRI="#Effects"/>
-    </Declaration>
-    <Declaration>
-        <DataProperty IRI="#hasPrecondition"/>
-    </Declaration>
-    <Declaration>
-        <ObjectProperty IRI="#enabledNotificationType"/>
-    </Declaration>
-    <Declaration>
-        <ObjectProperty IRI="#getNotifiedWith"/>
-    </Declaration>
-    <Declaration>
-        <ObjectProperty IRI="#hasNotificationType"/>
-    </Declaration>
-    <Declaration>
-        <Class IRI="#HumidityUnit"/>
-    </Declaration>
-    <Declaration>
-        <NamedIndividual IRI="#celsius"/>
-    </Declaration>
-    <Declaration>
-        <DataProperty IRI="#hasEffect"/>
-    </Declaration>
-    <Declaration>
-        <Class IRI="#Apartment"/>
-    </Declaration>
-    <Declaration>
-        <DataProperty IRI="#hasNetworkIdentifier"/>
-    </Declaration>
-    <Declaration>
-        <Class IRI="#Device"/>
-    </Declaration>
-    <Declaration>
-        <DataProperty IRI="#hasDate"/>
-    </Declaration>
-    <Declaration>
-        <Class IRI="#SoundNotification"/>
-    </Declaration>
-    <Declaration>
-        <ObjectProperty IRI="#canNotifyWith"/>
-    </Declaration>
-    <Declaration>
-        <NamedIndividual IRI="#minute"/>
-    </Declaration>
-    <Declaration>
-        <ObjectProperty IRI="#hasTemperatureUnit"/>
-    </Declaration>
-    <Declaration>
-        <Class IRI="#Input"/>
-    </Declaration>
-    <Declaration>
-        <Class IRI="#Action"/>
-    </Declaration>
-    <Declaration>
-        <NamedIndividual IRI="#kelvin"/>
-    </Declaration>
-    <Declaration>
-        <Class IRI="#Location"/>
-    </Declaration>
-    <Declaration>
-        <DataProperty IRI="#hasLongitude"/>
-    </Declaration>
-    <Declaration>
-        <Class IRI="#SMSNotification"/>
-    </Declaration>
-    <Declaration>
-        <Class IRI="#Door"/>
-    </Declaration>
-    <Declaration>
-        <Class IRI="#EmailNotification"/>
-    </Declaration>
-    <Declaration>
-        <Class IRI="#TemperatureUnit"/>
-    </Declaration>
-    <Declaration>
-        <DataProperty IRI="#hasIntegerValue"/>
-    </Declaration>
-    <Declaration>
-        <Class IRI="#Platform"/>
-    </Declaration>
-    <Declaration>
         <DataProperty IRI="#hasValue"/>
-    </Declaration>
-    <Declaration>
-        <Class IRI="#HumidityOutput"/>
     </Declaration>
     <Declaration>
         <DataProperty IRI="#hasSubject"/>
@@ -131,10 +32,7 @@
         <DataProperty IRI="#hasDecimalValue"/>
     </Declaration>
     <Declaration>
-        <ObjectProperty IRI="#disabledNotificationType"/>
-    </Declaration>
-    <Declaration>
-        <Class IRI="#Space"/>
+        <DataProperty IRI="#hasPrecondition"/>
     </Declaration>
     <Declaration>
         <DataProperty IRI="#hasLatitude"/>
@@ -143,28 +41,34 @@
         <Class IRI="#Person"/>
     </Declaration>
     <Declaration>
-        <Class IRI="#Unit"/>
+        <NamedIndividual IRI="#celsius"/>
     </Declaration>
     <Declaration>
-        <ObjectProperty IRI="#hasOutputData"/>
+        <DataProperty IRI="#hasEffect"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#hasNetworkIdentifier"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Device"/>
     </Declaration>
     <Declaration>
         <DataProperty IRI="#hasIPAddress"/>
     </Declaration>
     <Declaration>
-        <ObjectProperty IRI="#hasHumidityUnit"/>
-    </Declaration>
-    <Declaration>
-        <DataProperty IRI="#hasRemainingDuration"/>
+        <DataProperty IRI="#hasDate"/>
     </Declaration>
     <Declaration>
         <Class IRI="#Adult"/>
     </Declaration>
     <Declaration>
+        <DataProperty IRI="#hasRemainingDuration"/>
+    </Declaration>
+    <Declaration>
         <NamedIndividual IRI="#second"/>
     </Declaration>
     <Declaration>
-        <Class IRI="#Parameter"/>
+        <Class IRI="#SoundNotification"/>
     </Declaration>
     <Declaration>
         <Class IRI="#SoundAction"/>
@@ -173,19 +77,13 @@
         <DataProperty IRI="#hasBatteryPercentage"/>
     </Declaration>
     <Declaration>
-        <Class IRI="#DoorbellOutput"/>
-    </Declaration>
-    <Declaration>
         <Class IRI="#NotificationType"/>
-    </Declaration>
-    <Declaration>
-        <NamedIndividual IRI="#hour"/>
     </Declaration>
     <Declaration>
         <Class IRI="#Television"/>
     </Declaration>
     <Declaration>
-        <ObjectProperty IRI="#belongsTo"/>
+        <NamedIndividual IRI="#hour"/>
     </Declaration>
     <Declaration>
         <ObjectProperty IRI="#producedBy"/>
@@ -197,19 +95,10 @@
         <ObjectProperty IRI="#gotNotifiedFor"/>
     </Declaration>
     <Declaration>
-        <ObjectProperty IRI="#hasUnit"/>
+        <NamedIndividual IRI="#minute"/>
     </Declaration>
     <Declaration>
         <Class IRI="#Event"/>
-    </Declaration>
-    <Declaration>
-        <ObjectProperty IRI="#hasOutputType"/>
-    </Declaration>
-    <Declaration>
-        <Class IRI="#Flat"/>
-    </Declaration>
-    <Declaration>
-        <Class IRI="#TemperatureOutput"/>
     </Declaration>
     <Declaration>
         <Class IRI="#Baby"/>
@@ -218,7 +107,13 @@
         <DataProperty IRI="#hasParameter"/>
     </Declaration>
     <Declaration>
+        <Class IRI="#DoorbellEvent"/>
+    </Declaration>
+    <Declaration>
         <DataProperty IRI="#hasStringValue"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Asleep"/>
     </Declaration>
     <Declaration>
         <Class IRI="#VisualAction"/>
@@ -230,7 +125,7 @@
         <DataProperty IRI="#hasMACAddress"/>
     </Declaration>
     <Declaration>
-        <Class IRI="#Building"/>
+        <Class IRI="#Action"/>
     </Declaration>
     <Declaration>
         <Class IRI="#Sensor"/>
@@ -239,66 +134,43 @@
         <Class IRI="#Speaker"/>
     </Declaration>
     <Declaration>
-        <Class IRI="#TimeUnit"/>
+        <Class IRI="#Awake"/>
     </Declaration>
     <Declaration>
-        <Class IRI="#Preconditions"/>
+        <NamedIndividual IRI="#kelvin"/>
     </Declaration>
     <Declaration>
-        <ObjectProperty IRI="#residesIn"/>
+        <Class IRI="#State"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#hasLongitude"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#SleepSensor"/>
     </Declaration>
     <SubClassOf>
         <Class IRI="#Adult"/>
         <Class IRI="#Person"/>
     </SubClassOf>
     <SubClassOf>
-        <Class IRI="#Apartment"/>
-        <Class IRI="#IndoorSpace"/>
+        <Class IRI="#Asleep"/>
+        <Class IRI="#State"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Awake"/>
+        <Class IRI="#State"/>
     </SubClassOf>
     <SubClassOf>
         <Class IRI="#Baby"/>
         <Class IRI="#Person"/>
     </SubClassOf>
     <SubClassOf>
-        <Class IRI="#Building"/>
-        <Class IRI="#IndoorSpace"/>
-    </SubClassOf>
-    <SubClassOf>
-        <Class IRI="#Device"/>
-        <ObjectSomeValuesFrom>
-            <ObjectProperty IRI="#canNotifyWith"/>
-            <Class IRI="#NotificationType"/>
-        </ObjectSomeValuesFrom>
-    </SubClassOf>
-    <SubClassOf>
-        <Class IRI="#Door"/>
-        <Class IRI="#Platform"/>
-    </SubClassOf>
-    <SubClassOf>
         <Class IRI="#Doorbell"/>
         <Class IRI="#Sensor"/>
     </SubClassOf>
     <SubClassOf>
-        <Class IRI="#Doorbell"/>
-        <ObjectSomeValuesFrom>
-            <ObjectProperty IRI="#produces"/>
-            <Class IRI="#DoorbellOutput"/>
-        </ObjectSomeValuesFrom>
-    </SubClassOf>
-    <SubClassOf>
-        <Class IRI="#DoorbellOutput"/>
-        <Class IRI="#OutputData"/>
-    </SubClassOf>
-    <SubClassOf>
-        <Class IRI="#EmailNotification"/>
-        <Class IRI="#NotificationType"/>
-    </SubClassOf>
-    <SubClassOf>
+        <Class IRI="#DoorbellEvent"/>
         <Class IRI="#Event"/>
-        <ObjectSomeValuesFrom>
-            <ObjectProperty IRI="#hasOutputData"/>
-            <Class IRI="#OutputData"/>
-        </ObjectSomeValuesFrom>
     </SubClassOf>
     <SubClassOf>
         <Class IRI="#Event"/>
@@ -315,78 +187,12 @@
         </DataSomeValuesFrom>
     </SubClassOf>
     <SubClassOf>
-        <Class IRI="#Flat"/>
-        <Class IRI="#IndoorSpace"/>
-    </SubClassOf>
-    <SubClassOf>
-        <Class IRI="#Hall"/>
-        <Class IRI="#IndoorSpace"/>
-    </SubClassOf>
-    <SubClassOf>
-        <Class IRI="#HumidityOutput"/>
-        <Class IRI="#OutputData"/>
-    </SubClassOf>
-    <SubClassOf>
-        <Class IRI="#HumidityOutput"/>
-        <ObjectSomeValuesFrom>
-            <ObjectProperty IRI="#hasHumidityUnit"/>
-            <Class IRI="#HumidityUnit"/>
-        </ObjectSomeValuesFrom>
-    </SubClassOf>
-    <SubClassOf>
-        <Class IRI="#HumidityOutput"/>
-        <DataSomeValuesFrom>
-            <DataProperty IRI="#hasDecimalValue"/>
-            <Datatype abbreviatedIRI="xsd:decimal"/>
-        </DataSomeValuesFrom>
-    </SubClassOf>
-    <SubClassOf>
-        <Class IRI="#HumidityUnit"/>
-        <Class IRI="#Unit"/>
-    </SubClassOf>
-    <SubClassOf>
-        <Class IRI="#IndoorSpace"/>
-        <Class IRI="#Space"/>
-    </SubClassOf>
-    <SubClassOf>
-        <Class IRI="#Location"/>
-        <DataSomeValuesFrom>
-            <DataProperty IRI="#hasLatitude"/>
-            <Datatype abbreviatedIRI="xsd:decimal"/>
-        </DataSomeValuesFrom>
-    </SubClassOf>
-    <SubClassOf>
-        <Class IRI="#Location"/>
-        <DataSomeValuesFrom>
-            <DataProperty IRI="#hasLongitude"/>
-            <Datatype abbreviatedIRI="xsd:decimal"/>
-        </DataSomeValuesFrom>
-    </SubClassOf>
-    <SubClassOf>
-        <Class IRI="#Person"/>
-        <ObjectSomeValuesFrom>
-            <ObjectProperty IRI="#getNotifiedWith"/>
-            <Class IRI="#NotificationType"/>
-        </ObjectSomeValuesFrom>
-    </SubClassOf>
-    <SubClassOf>
-        <Class IRI="#Room"/>
-        <Class IRI="#IndoorSpace"/>
-    </SubClassOf>
-    <SubClassOf>
-        <Class IRI="#SMSNotification"/>
-        <Class IRI="#NotificationType"/>
-    </SubClassOf>
-    <SubClassOf>
         <Class IRI="#Sensor"/>
         <Class IRI="#Device"/>
     </SubClassOf>
     <SubClassOf>
+        <Class IRI="#SleepSensor"/>
         <Class IRI="#Sensor"/>
-        <ObjectSomeValuesFrom>
-            <ObjectProperty IRI="#produces"/>
-            <Class IRI="#Event"/>
-        </ObjectSomeValuesFrom>
     </SubClassOf>
     <SubClassOf>
         <Class IRI="#SoundAction"/>
@@ -401,52 +207,8 @@
         <Class IRI="#Device"/>
     </SubClassOf>
     <SubClassOf>
-        <Class IRI="#Speaker"/>
-        <ObjectSomeValuesFrom>
-            <ObjectProperty IRI="#canNotifyWith"/>
-            <Class IRI="#SoundNotification"/>
-        </ObjectSomeValuesFrom>
-    </SubClassOf>
-    <SubClassOf>
         <Class IRI="#Television"/>
         <Class IRI="#Device"/>
-    </SubClassOf>
-    <SubClassOf>
-        <Class IRI="#TemperatureOutput"/>
-        <Class IRI="#OutputData"/>
-    </SubClassOf>
-    <SubClassOf>
-        <Class IRI="#TemperatureOutput"/>
-        <ObjectSomeValuesFrom>
-            <ObjectProperty IRI="#hasTemperatureUnit"/>
-            <Class IRI="#TemperatureUnit"/>
-        </ObjectSomeValuesFrom>
-    </SubClassOf>
-    <SubClassOf>
-        <Class IRI="#TemperatureOutput"/>
-        <DataSomeValuesFrom>
-            <DataProperty IRI="#hasDecimalValue"/>
-            <Datatype abbreviatedIRI="xsd:decimal"/>
-        </DataSomeValuesFrom>
-    </SubClassOf>
-    <SubClassOf>
-        <Class IRI="#TemperatureSensor"/>
-        <Class IRI="#Sensor"/>
-    </SubClassOf>
-    <SubClassOf>
-        <Class IRI="#TemperatureSensor"/>
-        <ObjectSomeValuesFrom>
-            <ObjectProperty IRI="#produces"/>
-            <Class IRI="#TemperatureOutput"/>
-        </ObjectSomeValuesFrom>
-    </SubClassOf>
-    <SubClassOf>
-        <Class IRI="#TemperatureUnit"/>
-        <Class IRI="#Unit"/>
-    </SubClassOf>
-    <SubClassOf>
-        <Class IRI="#TimeUnit"/>
-        <Class IRI="#Unit"/>
     </SubClassOf>
     <SubClassOf>
         <Class IRI="#VisualAction"/>
@@ -460,101 +222,17 @@
         <Class IRI="#SoundAction"/>
         <Class IRI="#VisualAction"/>
     </DisjointClasses>
-    <ClassAssertion>
-        <Class IRI="#TemperatureUnit"/>
-        <NamedIndividual IRI="#celsius"/>
-    </ClassAssertion>
-    <ClassAssertion>
-        <Class IRI="#TimeUnit"/>
-        <NamedIndividual IRI="#hour"/>
-    </ClassAssertion>
-    <ClassAssertion>
-        <Class IRI="#TemperatureUnit"/>
-        <NamedIndividual IRI="#kelvin"/>
-    </ClassAssertion>
-    <ClassAssertion>
-        <Class IRI="#TimeUnit"/>
-        <NamedIndividual IRI="#minute"/>
-    </ClassAssertion>
-    <ClassAssertion>
-        <Class IRI="#TimeUnit"/>
-        <NamedIndividual IRI="#second"/>
-    </ClassAssertion>
-    <SubObjectPropertyOf>
-        <ObjectProperty IRI="#hasHumidityUnit"/>
-        <ObjectProperty IRI="#hasUnit"/>
-    </SubObjectPropertyOf>
-    <SubObjectPropertyOf>
-        <ObjectProperty IRI="#hasTemperatureUnit"/>
-        <ObjectProperty IRI="#hasUnit"/>
-    </SubObjectPropertyOf>
-    <ObjectPropertyDomain>
-        <ObjectProperty IRI="#canNotifyWith"/>
-        <Class IRI="#Device"/>
-    </ObjectPropertyDomain>
-    <ObjectPropertyDomain>
-        <ObjectProperty IRI="#getNotifiedWith"/>
-        <Class IRI="#Person"/>
-    </ObjectPropertyDomain>
     <ObjectPropertyDomain>
         <ObjectProperty IRI="#gotNotifiedFor"/>
         <Class IRI="#Person"/>
-    </ObjectPropertyDomain>
-    <ObjectPropertyDomain>
-        <ObjectProperty IRI="#hasOutputData"/>
-        <Class IRI="#Event"/>
-    </ObjectPropertyDomain>
-    <ObjectPropertyDomain>
-        <ObjectProperty IRI="#hasOutputType"/>
-        <Class IRI="#Event"/>
-    </ObjectPropertyDomain>
-    <ObjectPropertyDomain>
-        <ObjectProperty IRI="#hasTemperatureUnit"/>
-        <Class IRI="#TemperatureOutput"/>
     </ObjectPropertyDomain>
     <ObjectPropertyDomain>
         <ObjectProperty IRI="#producedBy"/>
         <Class IRI="#Event"/>
     </ObjectPropertyDomain>
-    <ObjectPropertyDomain>
-        <ObjectProperty IRI="#residesIn"/>
-        <Class IRI="#Person"/>
-    </ObjectPropertyDomain>
-    <ObjectPropertyRange>
-        <ObjectProperty IRI="#canNotifyWith"/>
-        <Class IRI="#NotificationType"/>
-    </ObjectPropertyRange>
-    <ObjectPropertyRange>
-        <ObjectProperty IRI="#disabledNotificationType"/>
-        <Class IRI="#NotificationType"/>
-    </ObjectPropertyRange>
-    <ObjectPropertyRange>
-        <ObjectProperty IRI="#getNotifiedWith"/>
-        <Class IRI="#NotificationType"/>
-    </ObjectPropertyRange>
     <ObjectPropertyRange>
         <ObjectProperty IRI="#gotNotifiedFor"/>
         <Class IRI="#Event"/>
-    </ObjectPropertyRange>
-    <ObjectPropertyRange>
-        <ObjectProperty IRI="#hasLocation"/>
-        <Class IRI="#Location"/>
-    </ObjectPropertyRange>
-    <ObjectPropertyRange>
-        <ObjectProperty IRI="#hasOutputData"/>
-        <Class IRI="#OutputData"/>
-    </ObjectPropertyRange>
-    <ObjectPropertyRange>
-        <ObjectProperty IRI="#hasOutputType"/>
-        <Class IRI="#OutputData"/>
-    </ObjectPropertyRange>
-    <ObjectPropertyRange>
-        <ObjectProperty IRI="#hasTemperatureUnit"/>
-        <Class IRI="#TemperatureUnit"/>
-    </ObjectPropertyRange>
-    <ObjectPropertyRange>
-        <ObjectProperty IRI="#hasUnit"/>
-        <Class IRI="#Unit"/>
     </ObjectPropertyRange>
     <ObjectPropertyRange>
         <ObjectProperty IRI="#inRoom"/>
@@ -563,14 +241,6 @@
     <ObjectPropertyRange>
         <ObjectProperty IRI="#producedBy"/>
         <Class IRI="#Sensor"/>
-    </ObjectPropertyRange>
-    <ObjectPropertyRange>
-        <ObjectProperty IRI="#produces"/>
-        <Class IRI="#Event"/>
-    </ObjectPropertyRange>
-    <ObjectPropertyRange>
-        <ObjectProperty IRI="#residesIn"/>
-        <Class IRI="#Flat"/>
     </ObjectPropertyRange>
     <SubDataPropertyOf>
         <DataProperty IRI="#hasDecimalValue"/>
@@ -592,14 +262,6 @@
         <DataProperty IRI="#hasStringValue"/>
         <DataProperty IRI="#hasValue"/>
     </SubDataPropertyOf>
-    <DataPropertyDomain>
-        <DataProperty IRI="#hasLatitude"/>
-        <Class IRI="#Location"/>
-    </DataPropertyDomain>
-    <DataPropertyDomain>
-        <DataProperty IRI="#hasLongitude"/>
-        <Class IRI="#Location"/>
-    </DataPropertyDomain>
     <DataPropertyRange>
         <DataProperty IRI="#hasBatteryPercentage"/>
         <Datatype abbreviatedIRI="xsd:decimal"/>

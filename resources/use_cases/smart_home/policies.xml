@@ -2,16 +2,16 @@
 <Policies>
 	<Policy Name="NotifyDoorbell" Modality="Obligation" Addressee="?d">
 		<AddresseeRole>Doorbell(?d)</AddresseeRole>
-		<Activation> Flat(?f), DoorbellOutput(?do), belongsTo(?d, ?f), producedBy(?do, ?d), Adult(?p), residesIn(?p, ?f)
+		<Activation> DoorbellEvent(?de), producedBy(?de, ?d), Adult(?p)
 		</Activation>
 		<ActionDescription Var="?a"> SoundAction(?a)
 		</ActionDescription>
-		<Expiration> gotNotifiedFor(?p, ?do) </Expiration>
+		<Expiration> gotNotifiedFor(?p, ?de) </Expiration>
 		<Cost>5.0</Cost>
 	</Policy>
-	<Policy Name="SoundDisabled" Modality="Prohibition" Addressee="?d">
+	<Policy Name="SleepingBaby" Modality="Prohibition" Addressee="?d">
 		<AddresseeRole>Device(?d)</AddresseeRole>
-		<Activation> Person(?p), SoundNotification(?t), disabledNotificationType(?p, ?t) </Activation>
+		<Activation> Baby(?b), Asleep(?b) </Activation>
 		<ActionDescription Var="?a"> SoundAction(?a) </ActionDescription>
 		<Expiration> </Expiration>
 		<Cost>8.0</Cost>

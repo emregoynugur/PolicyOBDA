@@ -16,8 +16,8 @@ begin_variable
 var1
 -1
 2
-Atom gotnotifiedfor(person1, output1)
-NegatedAtom gotnotifiedfor(person1, output1)
+Atom gotnotifiedfor(person1, output2)
+NegatedAtom gotnotifiedfor(person1, output2)
 end_variable
 0
 begin_state
@@ -37,14 +37,14 @@ locate-people person1 room
 1
 end_operator
 begin_operator
-notify-with-sound person1 output1 device1
+notify-with-sound person1 output2 device1
 0
 1
 0 1 -1 0
 8
 end_operator
 begin_operator
-notify-with-visual person1 output1 device2 room
+notify-with-visual person1 output2 device2 room
 1
 0 0
 1

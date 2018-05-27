@@ -13,32 +13,16 @@ target		:device{id} a :Device .
 source		select * from devices
 
 mappingId	Doorbell
-target		:flat a :Flat . :device{id} a :Doorbell ; :belongsTo :flat . 
+target		:device{id} a :Doorbell . 
 source		select * from devices where type=1
 
 mappingId	Person
-target		:flat a :Flat . :person{id} a :Person ; :residesIn :flat . 
+target		:person{id} a :Person . 
 source		select * from people
-
-mappingId	Doorbell Output
-target		:output{id} a :DoorbellOutput ; :producedBy :device{deviceid} . 
-source		select * from events where type = 1
 
 mappingId	Baby
 target		:person{id} a :Baby . 
 source		select * from people where age <= 2
-
-mappingId	Sound Notifications
-target		:notification{id} a :SoundNotification . 
-source		select * from notifications where type = 1
-
-mappingId	Disabled Notifications
-target		:person{personid} :disabledNotificationType :notification{id} . 
-source		select * from notifications where active = false
-
-mappingId	(DUMMY) Television
-target		:flat a :Flat . :device{id} a :Television ; :belongsTo :flat . 
-source		select * from notifications where type=2
 
 mappingId	Adult
 target		:person{id} a :Adult . 
@@ -48,12 +32,20 @@ mappingId	Television
 target		:room a :Room . :device{id} a :Television ; :inRoom :room . 
 source		select * from devices where type=2
 
-mappingId	Visual Notifications
-target		:notification{id} a :VisualNotification . 
-source		select * from notifications where type = 2
+mappingId	Sleep Sensor
+target		:device{id} a :SleepSensor . 
+source		select * from devices where type=3
 
-mappingId	Enabled Notifications
-target		:person{personid} :enabledNotificationType :notification{id} . 
-source		select * from notifications where active = true
+mappingId	Asleep
+target		:device{deviceid} a :SleepSensor . :person{personid} a :Asleep . 
+source		select * from notifications where type = 3 and active = true
+
+mappingId	Awake
+target		:device{deviceid} a :SleepSensor . :person{personid} a :Awake . 
+source		select * from notifications where type=3 and active=false
+
+mappingId	Doorbell Event
+target		:output{id} a :DoorbellEvent ; :producedBy :device{deviceid} . 
+source		select * from notifications where type = 1
 ]]
 

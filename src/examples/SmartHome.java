@@ -118,7 +118,7 @@ public class SmartHome {
 		LispExprList effects = new LispExprList();
 		effects.add(new Atom("and"));
 		effects.add(getObjectPred("gotNotifiedFor", "?person", "?event"));
-		effects.add(getObjectPred("increase", "(total-cost)", "(SoundDisabled ?device)"));
+		effects.add(getObjectPred("increase", "(total-cost)", "(SleepingBaby ?device)"));
 		
 		notify.add(effects);
 		

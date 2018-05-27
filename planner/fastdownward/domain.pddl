@@ -2,67 +2,35 @@
   (domain iot) 
   (:requirements :adl :derived-predicates :action-costs) 
   (:predicates 
-    (TemperatureOutput ?t) 
-    (Action ?a) 
-    (Hall ?h) 
-    (Device ?d) 
-    (TimeUnit ?t) 
-    (Apartment ?a) 
-    (Flat ?f) 
-    (Effects ?e) 
-    (Speaker ?s) 
-    (Input ?i) 
-    (TemperatureUnit ?t) 
-    (Door ?d) 
-    (Person ?p) 
-    (Event ?e) 
-    (Unit ?u) 
-    (OutputData ?o) 
-    (NotificationType ?n) 
-    (Room ?r) 
-    (Parameter ?p) 
-    (EmailNotification ?e) 
-    (Preconditions ?p) 
-    (VisualAction ?v) 
-    (Location ?l) 
-    (IndoorSpace ?i) 
-    (Baby ?b) 
-    (SoundAction ?s) 
-    (DoorbellOutput ?d) 
-    (HumidityUnit ?h) 
-    (Platform ?p) 
-    (SoundNotification ?s) 
-    (Sensor ?s) 
-    (VisualNotification ?v) 
-    (Doorbell ?d) 
-    (TemperatureSensor ?t) 
+    (Awake ?a) 
+    (SleepSensor ?s) 
     (Television ?t) 
-    (Space ?s) 
-    (SMSNotification ?s) 
+    (Asleep ?a) 
+    (SoundAction ?s) 
+    (Baby ?b) 
+    (SoundNotification ?s) 
+    (Event ?e) 
+    (VisualNotification ?v) 
     (Adult ?a) 
-    (Building ?b) 
-    (HumidityOutput ?h) 
-    (hasOutputData ?s ?o) 
-    (belongsTo ?s ?o) 
-    (enabledNotificationType ?s ?o) 
-    (getNotifiedWith ?s ?o) 
-    (residesIn ?s ?o) 
-    (hasUnit ?s ?o) 
-    (gotNotifiedFor ?s ?o) 
-    (hasHumidityUnit ?s ?o) 
+    (Sensor ?s) 
+    (Room ?r) 
+    (Action ?a) 
+    (DoorbellEvent ?d) 
+    (Person ?p) 
+    (NotificationType ?n) 
+    (Speaker ?s) 
+    (Device ?d) 
+    (State ?s) 
+    (VisualAction ?v) 
+    (Doorbell ?d) 
     (producedBy ?s ?o) 
-    (disabledNotificationType ?s ?o) 
-    (hasTemperatureUnit ?s ?o) 
-    (produces ?s ?o) 
-    (hasNotificationType ?s ?o) 
-    (inRoom ?s ?o) 
-    (hasLocation ?s ?o) 
-    (canNotifyWith ?s ?o) 
-    (hasOutputType ?s ?o)) 
+    (gotNotifiedFor ?s ?o) 
+    (inRoom ?s ?o)) 
   (:functions 
     (total-cost) 
-    (SoundDisabled ?device) 
-    (SoundDisabled ?device)) 
+    (SleepingBaby ?device) 
+    (SleepingBaby ?device) 
+    (SleepingBaby ?device)) 
   (:action locate-people :parameters 
     (?person ?room) :precondition 
     (and 
@@ -78,7 +46,7 @@
       (Doorbell ?device)) :effect 
     (and 
       (gotNotifiedFor ?person ?event) 
-      (increase (total-cost) (SoundDisabled ?device)))) 
+      (increase (total-cost) (SleepingBaby ?device)))) 
   (:action notify-with-visual :parameters 
     (?person ?event ?device ?room) :precondition 
     (and 
@@ -90,10 +58,28 @@
       (gotNotifiedFor ?person ?event) 
       (increase (total-cost) 1))) 
   (:derived 
+    (Event ?e) 
+    (DoorbellEvent ?e)) 
+  (:derived 
+    (Sensor ?s) 
+    (or 
+      (SleepSensor ?s) 
+      (Doorbell ?s))) 
+  (:derived 
     (Action ?a) 
     (or 
       (SoundAction ?a) 
       (VisualAction ?a))) 
+  (:derived 
+    (Person ?p) 
+    (or 
+      (Adult ?p) 
+      (Baby ?p))) 
+  (:derived 
+    (NotificationType ?n) 
+    (or 
+      (VisualNotification ?n) 
+      (SoundNotification ?n))) 
   (:derived 
     (Device ?d) 
     (or 
@@ -101,50 +87,7 @@
       (Speaker ?d) 
       (Sensor ?d))) 
   (:derived 
-    (Person ?p) 
+    (State ?s) 
     (or 
-      (Adult ?p) 
-      (Baby ?p))) 
-  (:derived 
-    (Unit ?u) 
-    (or 
-      (HumidityUnit ?u) 
-      (TemperatureUnit ?u) 
-      (TimeUnit ?u))) 
-  (:derived 
-    (OutputData ?o) 
-    (or 
-      (HumidityOutput ?o) 
-      (DoorbellOutput ?o) 
-      (TemperatureOutput ?o))) 
-  (:derived 
-    (NotificationType ?n) 
-    (or 
-      (SMSNotification ?n) 
-      (EmailNotification ?n) 
-      (VisualNotification ?n) 
-      (SoundNotification ?n))) 
-  (:derived 
-    (IndoorSpace ?i) 
-    (or 
-      (Hall ?i) 
-      (Flat ?i) 
-      (Room ?i) 
-      (Building ?i) 
-      (Apartment ?i))) 
-  (:derived 
-    (Platform ?p) 
-    (Door ?p)) 
-  (:derived 
-    (Sensor ?s) 
-    (or 
-      (TemperatureSensor ?s) 
-      (Doorbell ?s))) 
-  (:derived 
-    (Space ?s) 
-    (IndoorSpace ?s)) 
-  (:derived 
-    (hasUnit ?s ?o) 
-    (or 
-      (hasHumidityUnit ?s ?o) 
-      (hasTemperatureUnit ?s ?o))))
+      (Awake ?s) 
+      (Asleep ?s))))
