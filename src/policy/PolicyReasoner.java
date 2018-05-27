@@ -134,6 +134,7 @@ public class PolicyReasoner {
 	public boolean checkConflict(Policy pA, Policy pB)
 			throws OWLException, IllegalConfigurationException, SemanticIndexException {
 
+		/* Check if policies have different modalities. If not, there is no conflict */
 		if (!checkModalityConflict(pA, pB))
 			return false;
 
@@ -145,7 +146,8 @@ public class PolicyReasoner {
 
 		Policy p1 = null;
 		Policy p2 = null;
-
+		
+		/* Check if one policy subsumes the other. */
 		Set<OWLAxiom> createdAxioms = new HashSet<OWLAxiom>();
 		List<Map<String, OWLNamedIndividual>> results = new ArrayList<Map<String, OWLNamedIndividual>>();
 		for (int i = 0; i < 2; i++) {
@@ -195,6 +197,7 @@ public class PolicyReasoner {
 				break;
 		}
 
+		/* Empty result set means, policies do not refine to same actions */
 		if (results == null || results.isEmpty())
 			return false;
 
@@ -214,6 +217,10 @@ public class PolicyReasoner {
 
 			HashSet<ActivePolicy> activeA = createActivePolicies(p1, reasoner);
 			HashSet<ActivePolicy> activeB = createActivePolicies(p2, reasoner);
+			
+			/* It seems that one of the descriptions subsumes the other.
+			 * Check if activation conditions of one policy, expires the other.
+			 */
 
 			removeExpiredPolicies(activeA, reasoner);
 			removeExpiredPolicies(activeB, reasoner);
@@ -223,6 +230,7 @@ public class PolicyReasoner {
 			if (activeA.size() == 0 || activeB.size() == 0)
 				continue;
 
+			/* Check if policies can be active at the same time in a consistent world state */
 			if (reasoner.isConsistent()) {
 				return true;
 			}

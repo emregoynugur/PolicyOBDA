@@ -11,6 +11,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,6 +20,7 @@ import org.h2.tools.RunScript;
 import ch.qos.logback.classic.Level;
 import planning.parser.Atom;
 import planning.parser.LispExprList;
+import policy.ActivePolicy;
 import policy.Policy;
 import policy.PolicyManager;
 import utils.Config;
@@ -61,6 +63,12 @@ public class SmartHome {
 		return pred;
 	}
 	
+	/* This method creates the PDDL definition of the locate-people action 
+		(:action locate-people 
+			:parameters (?person ?room)
+			:precondition (and (Room ?room) (Person ?person)) 
+ 			:effect (and (inRoom ?person ?room) (increase (total-cost) 1))) */ 
+	
 	private static LispExprList getLocateAction() {
 		/* Locate People */
 		LispExprList locate = new LispExprList();
@@ -91,6 +99,12 @@ public class SmartHome {
 		
 		return locate;
 	}
+	
+	/* This method creates the PDDL definition of the notify-with-sound action 
+	(:action  notify-with-sound
+		:parameters (?person ?room)
+		:precondition (?person ?event ?device) 
+		:effect (and (gotNotifiedFor ?person ?event) (increase (total-cost) (SleepingBaby ?device)))) */
 	
 	private static LispExprList getSoundAction() {
 		/* Locate People */
@@ -124,6 +138,12 @@ public class SmartHome {
 		
 		return notify;
 	}
+	
+	/* This method creates the PDDL definition of the notify-with-visual action 
+	(:action  notify-with-visual
+		:parameters (?person ?room)
+		:precondition (and (Person ?person) (Television ?device) (inRoom ?device ?room) (inRoom ?person ?room)) 
+		:effect (and (gotNotifiedFor ?person ?event) (increase (total-cost) 1))) */
 	
 	private static LispExprList getVisualAction() {
 		/* Locate People */
@@ -160,6 +180,7 @@ public class SmartHome {
 		return notify;
 	}
 	
+	/* Copies the configuration file required to run this example */
 	public static void copyConfigFile() throws IOException {
 		Path src = Paths.get("resources/use_cases/smart_home/config.properties");
 		Path dst = Paths.get("config.properties");
@@ -179,6 +200,7 @@ public class SmartHome {
 			ch.qos.logback.classic.Logger root = (ch.qos.logback.classic.Logger) org.slf4j.LoggerFactory
 					.getLogger(ch.qos.logback.classic.Logger.ROOT_LOGGER_NAME);
 			root.setLevel(Level.OFF);
+			
 			
 			SmartHome.copyConfigFile();
 			
@@ -222,8 +244,11 @@ public class SmartHome {
 			System.out.println("");
 			System.out.println("Running planner for obligations");
 			System.out.println("");
-
-			manager.executeObligations(SmartHome.getPDDLActions());
+			
+			for (String obligation : manager.getObligations().keySet()) {
+				HashSet<ActivePolicy> instances = manager.getObligations().get(obligation);
+				manager.executeObligations(SmartHome.getPDDLActions(), instances);
+			}
 			
 			manager.stop();
 		} catch (Exception e) {

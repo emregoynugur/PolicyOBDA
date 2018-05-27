@@ -121,7 +121,7 @@ public class PolicyManager {
 		return conflicts;
 	}
 
-	public void executeObligations(List<LispExprList> actions)
+	public void executeObligations(List<LispExprList> actions, HashSet<ActivePolicy> instances)
 			throws IOException, InterruptedException, ReasonerInternalException, OWLException {
 
 		if (obligations.size() == 0)
@@ -131,14 +131,13 @@ public class PolicyManager {
 
 		pddl.generateDomainFile(actions);
 
+		pddl.generateProblemFile(instances);
+		
+		Planner.runPlanner();
 		// TODO: implement a proper mechanism to consume obligations
 		// TODO: just change the goal state instead of re-generating the entire problem
 		// file.
-		for (String obligation : obligations.keySet()) {
-			HashSet<ActivePolicy> instances = obligations.get(obligation);
-			pddl.generateProblemFile(instances);
-			Planner.runPlanner();
-		}
+		
 	}
 
 	public void stop() throws Exception {
