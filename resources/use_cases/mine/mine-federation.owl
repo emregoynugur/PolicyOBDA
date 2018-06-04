@@ -34,21 +34,9 @@
     
 
 
-    <!-- https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#atLocation -->
+    <!-- https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#connected -->
 
-    <owl:ObjectProperty rdf:about="https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#atLocation"/>
-    
-
-
-    <!-- https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#connectedTo -->
-
-    <owl:ObjectProperty rdf:about="https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#connectedTo"/>
-    
-
-
-    <!-- https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#grantsAccess -->
-
-    <owl:ObjectProperty rdf:about="https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#grantsAccess"/>
+    <owl:ObjectProperty rdf:about="https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#connected"/>
     
 
 
@@ -76,15 +64,9 @@
     
 
 
-    <!-- https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#isNotifiedFor -->
+    <!-- https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#inVehicle -->
 
-    <owl:ObjectProperty rdf:about="https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#isNotifiedFor"/>
-    
-
-
-    <!-- https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#readBy -->
-
-    <owl:ObjectProperty rdf:about="https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#readBy"/>
+    <owl:ObjectProperty rdf:about="https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#inVehicle"/>
     
 
 
@@ -111,12 +93,6 @@
     
 
 
-    <!-- https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#backupBattery -->
-
-    <owl:DatatypeProperty rdf:about="https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#backupBattery"/>
-    
-
-
     <!-- https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#battery -->
 
     <owl:DatatypeProperty rdf:about="https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#battery"/>
@@ -129,51 +105,9 @@
     
 
 
-    <!-- https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#errorCode -->
-
-    <owl:DatatypeProperty rdf:about="https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#errorCode"/>
-    
-
-
-    <!-- https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#firstName -->
-
-    <owl:DatatypeProperty rdf:about="https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#firstName"/>
-    
-
-
-    <!-- https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#height -->
-
-    <owl:DatatypeProperty rdf:about="https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#height"/>
-    
-
-
-    <!-- https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#humidity -->
-
-    <owl:DatatypeProperty rdf:about="https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#humidity"/>
-    
-
-
-    <!-- https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#lastName -->
-
-    <owl:DatatypeProperty rdf:about="https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#lastName"/>
-    
-
-
-    <!-- https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#length -->
-
-    <owl:DatatypeProperty rdf:about="https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#length"/>
-    
-
-
     <!-- https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#methane -->
 
     <owl:DatatypeProperty rdf:about="https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#methane"/>
-    
-
-
-    <!-- https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#motionAlarm -->
-
-    <owl:DatatypeProperty rdf:about="https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#motionAlarm"/>
     
 
 
@@ -189,39 +123,9 @@
     
 
 
-    <!-- https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#status -->
-
-    <owl:DatatypeProperty rdf:about="https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#status"/>
-    
-
-
     <!-- https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#temperature -->
 
     <owl:DatatypeProperty rdf:about="https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#temperature"/>
-    
-
-
-    <!-- https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#temperatureAlarm -->
-
-    <owl:DatatypeProperty rdf:about="https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#temperatureAlarm"/>
-    
-
-
-    <!-- https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#width -->
-
-    <owl:DatatypeProperty rdf:about="https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#width"/>
-    
-
-
-    <!-- https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#x -->
-
-    <owl:DatatypeProperty rdf:about="https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#x"/>
-    
-
-
-    <!-- https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#y -->
-
-    <owl:DatatypeProperty rdf:about="https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#y"/>
     
 
 
@@ -288,17 +192,22 @@
     
 
 
-    <!-- https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#Corridor -->
-
-    <owl:Class rdf:about="https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#Corridor">
-        <rdfs:subClassOf rdf:resource="https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#Region"/>
-    </owl:Class>
-    
-
-
     <!-- https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#Danger -->
 
     <owl:Class rdf:about="https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#Danger"/>
+    
+
+
+    <!-- https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#Dangerous -->
+
+    <owl:Class rdf:about="https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#Dangerous">
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#hasDanger"/>
+                <owl:someValuesFrom rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
     
 
 
@@ -337,20 +246,6 @@
     <!-- https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#Employee -->
 
     <owl:Class rdf:about="https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#Employee"/>
-    
-
-
-    <!-- https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#Employer -->
-
-    <owl:Class rdf:about="https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#Employer"/>
-    
-
-
-    <!-- https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#EmptyZone -->
-
-    <owl:Class rdf:about="https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#EmptyZone">
-        <rdfs:subClassOf rdf:resource="https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#Region"/>
-    </owl:Class>
     
 
 
@@ -442,20 +337,6 @@
     
 
 
-    <!-- https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#FireZone -->
-
-    <owl:Class rdf:about="https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#FireZone">
-        <rdfs:subClassOf rdf:resource="https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#Region"/>
-        <rdfs:subClassOf>
-            <owl:Restriction>
-                <owl:onProperty rdf:resource="https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#hasDanger"/>
-                <owl:someValuesFrom rdf:resource="https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#Fire"/>
-            </owl:Restriction>
-        </rdfs:subClassOf>
-    </owl:Class>
-    
-
-
     <!-- https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#Fireman -->
 
     <owl:Class rdf:about="https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#Fireman">
@@ -484,25 +365,6 @@
 
     <owl:Class rdf:about="https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#HandHeldDriller">
         <rdfs:subClassOf rdf:resource="https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#Tool"/>
-    </owl:Class>
-    
-
-
-    <!-- https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#HazardousZone -->
-
-    <owl:Class rdf:about="https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#HazardousZone">
-        <rdfs:subClassOf rdf:resource="https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#Region"/>
-        <rdfs:subClassOf>
-            <owl:Class>
-                <owl:intersectionOf rdf:parseType="Collection">
-                    <rdf:Description rdf:about="https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#Region"/>
-                    <owl:Restriction>
-                        <owl:onProperty rdf:resource="https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#hasDanger"/>
-                        <owl:someValuesFrom rdf:resource="https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#Danger"/>
-                    </owl:Restriction>
-                </owl:intersectionOf>
-            </owl:Class>
-        </rdfs:subClassOf>
     </owl:Class>
     
 
@@ -539,14 +401,6 @@
     
 
 
-    <!-- https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#MiningZone -->
-
-    <owl:Class rdf:about="https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#MiningZone">
-        <rdfs:subClassOf rdf:resource="https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#Region"/>
-    </owl:Class>
-    
-
-
     <!-- https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#Move -->
 
     <owl:Class rdf:about="https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#Move">
@@ -559,14 +413,6 @@
 
     <owl:Class rdf:about="https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#MoveAsset">
         <rdfs:subClassOf rdf:resource="https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#Action"/>
-    </owl:Class>
-    
-
-
-    <!-- https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#NoDanger -->
-
-    <owl:Class rdf:about="https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#NoDanger">
-        <rdfs:subClassOf rdf:resource="https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#SensorReading"/>
     </owl:Class>
     
 
@@ -623,14 +469,6 @@
     
 
 
-    <!-- https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#RestrictedZone -->
-
-    <owl:Class rdf:about="https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#RestrictedZone">
-        <rdfs:subClassOf rdf:resource="https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#Region"/>
-    </owl:Class>
-    
-
-
     <!-- https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#RockFlow -->
 
     <owl:Class rdf:about="https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#RockFlow">
@@ -652,12 +490,6 @@
     <owl:Class rdf:about="https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#Scaler">
         <rdfs:subClassOf rdf:resource="https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#Vehicle"/>
     </owl:Class>
-    
-
-
-    <!-- https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#SensorReading -->
-
-    <owl:Class rdf:about="https://faculty.ozyegin.edu.tr/muratsensoy/mine-ontology#SensorReading"/>
     
 
 

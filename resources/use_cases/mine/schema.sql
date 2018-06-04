@@ -50,6 +50,7 @@ create table tbl_locations
 )
 ;
 
+
 create table tbl_readers
 (
 	rn_id integer not null
@@ -76,6 +77,25 @@ create table tbl_regions
 	create_date timestamp default ('now'::text)::date not null
 )
 ;
+
+create table tbl_connections
+(
+	from_loc integer not null,
+	to_loc   integer not null
+)
+;
+
+alter table tbl_connections
+	add constraint tbl_connections_from
+		foreign key (from_loc) references tbl_regions (region_id)
+;
+
+alter table tbl_connections
+	add constraint tbl_connections_to
+		foreign key (to_loc) references tbl_regions (region_id)
+;
+
+
 
 create table tbl_vehicles
 (

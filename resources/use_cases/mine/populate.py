@@ -1,9 +1,9 @@
 import random
 
-n_regions = 3
+n_regions = 10
 n_employees = 10
-n_assets = 80
-n_gas = 3
+n_assets = 40
+n_gas = 10
 n_location = 3
 n_vehicles = 3
 
@@ -12,6 +12,8 @@ n_readings_gas = 1
 
 regions = list()
 region_query = 'INSERT INTO tbl_regions (region_id, type) VALUES ({}, {});'
+connection_query = 'INSERT INTO tbl_connections (from_loc, to_loc) VALUES ({}, {});'
+
 region_types = 6
 
 output = open('instances.sql', 'w')
@@ -22,6 +24,10 @@ for i in range(1, n_regions + 1):
     region['type'] = random.randint(1, region_types)
     regions.append(region)
     output.write(region_query.format(region['region_id'], region['type']) + "\n")
+
+    if i > 1:
+        output.write(connection_query.format(region['region_id'], region['region_id'] - 1) + "\n")        
+
 
 
 tags = 1

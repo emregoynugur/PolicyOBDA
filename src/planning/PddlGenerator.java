@@ -88,14 +88,32 @@ public class PddlGenerator {
 
 		functions.add(totalcost);
 
+		HashSet<String> policyFunctions = new HashSet<>();
+		
 		HashMap<String, HashSet<ActivePolicy>> prohibitions = manager.getProhibitions();
 		for (String key : prohibitions.keySet()) {
 			ActivePolicy policy = prohibitions.get(key).iterator().next();
-
+			
+			if(policyFunctions.contains(policy.getName()))
+				continue;
+			
+			policyFunctions.add(policy.getName());
+			
 			LispExprList cost = new LispExprList();
 			cost.add(new Atom(policy.getName()));
 			cost.add(new Atom("?device"));
 
+			functions.add(cost);
+		}
+		
+		Set<OWLDataProperty> dataProperties = manager.getOWLReasoner().getRootOntology()
+				.getDataPropertiesInSignature();
+		for (OWLDataProperty property : dataProperties) {
+			
+			LispExprList cost = new LispExprList();			
+			cost.add(new Atom(property.getIRI().getShortForm()));
+			cost.add(new Atom("?device"));
+			
 			functions.add(cost);
 		}
 
@@ -369,10 +387,13 @@ public class PddlGenerator {
 						
 						initFunction.add(costFunction);
 						
+						// Some planers do not support decimals. Thus, we convert a double to int as follows:
+						// 2.56 -> 2.6 * 10 -> 26
 						OWLLiteral data = (OWLLiteral) result.getOWLObject("d");
 						if(data.isDouble()) {
 							BigDecimal value = new BigDecimal(Double.parseDouble(data.getLiteral()));
-							initFunction.add(new Atom(value.setScale(2, RoundingMode.HALF_UP).toString()));
+							value = value.setScale(2, RoundingMode.HALF_UP);
+							initFunction.add(new Atom(Integer.toString((int)(value.doubleValue() * 10))));
 						} else if (data.isBoolean()) {
 							String value = (data.getLiteral().contains("true")) ? "1" : "0";
 							initFunction.add(new Atom(value));
