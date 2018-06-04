@@ -1,14 +1,12 @@
 (define
   (problem smart-mine)
   (:domain smart-mine)
-  (:objects r1 r2 r3 r4 r5 r6 r7 transporter1 danger emp1)
+  (:objects r1 r2 r3 r4 r5 r6 transporter1 danger emp1)
   (:init
     (Region r1) (Region r2) (Region r3) (Region r4) (Region r5) (Region r6)
-    (Region r7)
     (connected r1 r2) (connected r2 r3) (connected r3 r4) 
     (connected r2 r1) (connected r3 r2) (connected r4 r3)
     (connected r4 r5) (connected r5 r6) (connected r6 r5) (connected r5 r4)
-    (connected r2 r7) (connected r7 r2) (connected r4 r7) (connected r7 r4)
     (= (total-cost) 0) 
     (CarbonMonoxideExposure danger) (hasDanger r3 danger) (Dangerous r3)
     (= (HighCarbonMonoxide r1) 0)
@@ -17,7 +15,6 @@
     (= (HighCarbonMonoxide r4) 0) 
     (= (HighCarbonMonoxide r5) 0)
     (= (HighCarbonMonoxide r6) 0)
-    (= (HighCarbonMonoxide r7) 0)
     ;(= (battery r1) 3.5)
     (Employee emp1) (inRegion emp1 r1)
     (Transporter transporter1) (inRegion transporter1 r1))
