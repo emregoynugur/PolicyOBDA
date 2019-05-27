@@ -1,48 +1,45 @@
-(define (domain smart-mine)
+(define (domain iot)
   (:requirements :adl :derived-predicates :action-costs) 
   (:predicates 
-    (Region ?r) (Dangerous ?r) (Employee ?e) (inVehicle ?e ?v)
-    (Transporter ?t) (Vehicle ?v) (hasDanger ?r ?d)
-    (inRegion ?s ?o) (connected ?s ?o) (CarbonMonoxideExposure ?d)
-    (computed-drive-cost ?from ?to) (Ventilated ?r)
+    (Person ?p) (Adult ?p) (Baby ?p) 
+    (SoundAction ?a) (SoundNotification ?a) (VisualAction ?a)
+    (Flat ?f) (inFlat ?o ?f) (hasResident ?f ?r) (inRoom ?r ?o)
+    (Event ?e) (DoorbellEvent ?e) (notifiedWith ?p ?a)
+    (producedBy ?e ?d) (gotNotifiedFor ?p ?e) (canPerform ?d ?a) 
   )
   
-  (:functions (total-cost) (HighCarbonMonoxide ?r))
+  (:functions (total-cost) (sleeping-baby ?d))
 
-  ;ideally this action should decrease the cost of the prohibition policy: (decrease (HighCarbonMonoxide ?region) 1)
-  ;however, not all planners support "decrease" functionality
-  (:action ventilate-region
-    :parameters (?region ?danger)
-    :precondition (and (Region ?region) (hasDanger ?region ?danger) (CarbonMonoxideExposure ?danger))
-    :effect(and (not (hasDanger ?region ?danger)) (not (CarbonMonoxideExposure ?danger)) (Ventilated ?region) (increase (total-cost) 1)))
+  (:action locate-residents 
+    :parameters (?person ?flat ?room)
+    :precondition (hasResident ?flat ?person)
+    :effect (inRoom ?person ?room))
 
-  (:action drive-vehicle-cost
-    :parameters (?truck ?from ?to)
-    :precondition (and (Vehicle ?truck) (Region ?from) (Region ?to) (inRegion ?truck ?from) (connected ?from ?to))
-    :effect (and (computed-drive-cost ?from ?to) (increase (total-cost) (HighCarbonMonoxide ?to))))
+  (:action notify-with-sound
+    :parameters (?device ?action ?person ?flat ?event)
+    :precondition (and (canPerform ?device ?action)
+                    (SoundAction ?action) (Event ?event)
+                    (Flat ?flat) (Person ?person) 
+                    (inFlat ?person ?flat) (inFlat ?device ?flat))
+    :effect (and (gotNotifiedFor ?person ?event) (notifiedWith ?person ?action) 
+            (increase (total-cost) (sleeping-baby ?device))))
 
+  (:action notify-with-visual
+    :parameters (?device ?action ?person ?room ?event)
+    :precondition (and (canPerform ?device ?action) (VisualAction ?action) 
+                    (Event ?event) (Person ?person) 
+                    (inRoom ?person ?room) (inRoom ?device ?room))
+    :effect (and (gotNotifiedFor ?person ?event) (notifiedWith ?person ?action)))
 
-  (:action drive-vehicle-cost
-    :parameters (?truck ?from ?to)
-    :precondition (and (Vehicle ?truck) (Ventilated ?to) (Region ?from) (Region ?to) (inRegion ?truck ?from) (connected ?from ?to))
-    :effect (and (computed-drive-cost ?from ?to) (increase (total-cost) 1)))
-
-  ; assuming there is always a driver inside a truck
-  (:action drive-vehicle
-    :parameters (?truck ?from ?to)
-    :precondition (and (computed-drive-cost ?from ?to) (Vehicle ?truck) (Region ?from) (Region ?to) (inRegion ?truck ?from) (connected ?from ?to))
-    :effect(and (not (computed-drive-cost ?from ?to)) (not (inRegion ?truck ?from)) (inRegion ?truck ?to) 
-            (forall (?per ?truck) 
-                    (when (inVehicle ?per ?truck)
-                          (and (not (inRegion ?per ?from)) (inRegion ?per ?to))))))
-
-  (:action load-employee-to-truck
-    :parameters (?per ?truck ?loc)
-    :precondition (and (Employee ?per) (Transporter ?truck) (Region ?loc)
-                     (inRegion ?truck ?loc) (inRegion ?per ?loc))
-    :effect (and (not (inRegion ?per ?loc)) (inVehicle ?per ?truck)))
- 
  (:derived 
-    (Vehicle ?v) 
-    (Transporter ?v)) 
+    (Event ?e) 
+    (DoorbellEvent ?e)) 
+
+ (:derived 
+    (SoundAction ?e) 
+    (SoundNotification ?e)) 
+
+ (:derived 
+    (Person ?p) 
+    (or (Adult ?p) (Baby ?p)))
 )
